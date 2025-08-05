@@ -90,7 +90,7 @@ namespace Stajyeryotom.Controllers
             }
 
             var totalDays = days.Count;
-            var remainingDays = 42 - totalDays;
+            var remainingDays = 35 - totalDays;
             var nextMonth = firstDayOfMonth.AddMonths(1);
 
             for (int day = 1; day <= remainingDays; day++)

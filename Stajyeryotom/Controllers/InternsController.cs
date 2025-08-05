@@ -37,9 +37,9 @@ namespace Stajyeryotom.Controllers
                 TotalItems = totalCount
             };
 
-            var model = new InternListViewModel()
+            var model = new ListViewModel<AccountDto>()
             {
-                Interns = interns,
+                List = interns as List<AccountDto>,
                 Pagination = paginaton,
             };
 
@@ -74,7 +74,6 @@ namespace Stajyeryotom.Controllers
             }
             else
             {
-
                 var model = new AccountDtoForCreation()
                 {
                     UserName = userNo
@@ -89,7 +88,7 @@ namespace Stajyeryotom.Controllers
         {
             if (!ModelState.IsValid)
             {
-                await PrepareDropdownsAsync(accountDto.DepartmentId, accountDto.SectionId);
+                await PrepareDropdownsAsync(accountDto.DepartmentId!.Value, accountDto.SectionId!.Value);
                 var html = await this.RenderViewAsync("_AddIntern", accountDto, true);
                 return Json(new { success = false, html = $"<div id='content' hx-swap-oob='true'>{html}</div>", message = "Stajyer oluşturulurken form hatası oluştu.", type = "warning" });
             }
@@ -113,7 +112,7 @@ namespace Stajyeryotom.Controllers
             }
             else
             {
-                await PrepareDropdownsAsync(accountDto.DepartmentId, accountDto.SectionId);
+                await PrepareDropdownsAsync(accountDto.DepartmentId!.Value, accountDto.SectionId!.Value);
                 var html = await this.RenderViewAsync("_AddIntern", accountDto, true);
                 return Json(new { success = false, html = $"<div id='content' hx-swap-oob='true'>{html}</div>", message = "Lütfen kurallara uygun şifre girin.", type = "danger" });
             }
@@ -151,7 +150,7 @@ namespace Stajyeryotom.Controllers
         {
             if (!ModelState.IsValid)
             {
-                await PrepareDropdownsAsync(accountDto.DepartmentId, accountDto.SectionId);
+                await PrepareDropdownsAsync(accountDto.DepartmentId!.Value, accountDto.SectionId!.Value);
                 var html = await this.RenderViewAsync("_UpdateIntern", accountDto, true);
                 return Json(new { success = false, html = $"<div id='content' hx-swap-oob='true'>{html}</div>", message = "Stajyer güncellenirken form hatası oluştu.", type = "warning" });
             }
@@ -170,7 +169,7 @@ namespace Stajyeryotom.Controllers
             }
             else
             {
-                await PrepareDropdownsAsync(accountDto.DepartmentId, accountDto.SectionId);
+                await PrepareDropdownsAsync(accountDto.DepartmentId!.Value, accountDto.SectionId!.Value);
                 var html = await this.RenderViewAsync("_UpdateIntern", accountDto, true);
                 return Json(new { success = false, html = $"<div id='content' hx-swap-oob='true'>{html}</div>", message = "Lütfen kurallara uygun şifre girin.", type = "danger" });
             }

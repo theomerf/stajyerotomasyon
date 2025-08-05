@@ -33,7 +33,7 @@ namespace Repositories
                 : _context.Set<T>().AsNoTracking().CountAsync();
         }
 
-        public IQueryable<T?> FindByCondition(Expression<Func<T, bool>> expression, bool trackChanges)
+        public IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression, bool trackChanges)
         {
             return trackChanges
                 ? _context.Set<T>().Where(expression)

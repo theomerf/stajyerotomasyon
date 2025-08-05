@@ -1,4 +1,4 @@
-﻿@model ApplicationListViewModel
+﻿@model ListViewModel<ApplicationDto>
 
 @{
     var selectedPageSize = Context.Request.Cookies["PageSize"];
@@ -34,10 +34,10 @@
     <div class="internlist-pagination">
         @if (pagination.CurrentPage > 1)
         {
-            <a href="@BuildPageUrl(1)" hx-get="@BuildPageUrl(1)" hx-on:click="window.scrollTo({ top: 0, behavior: 'smooth' });" hx-target="#content" hx-push-url="true" class="internlist-page-btn internlist-page-first">
+            <a href="@BuildPageUrl(1)" hx-get="@BuildPageUrl(1)" hx-on:click="window.scrollTo({ top: 0, behavior: 'smooth' });" hx-target="#content" hx-push-url="true" class="internlist-page-btn internlist-page-first pagination-send">
                 <i class="fa-solid fa-angles-left"></i>
             </a>
-            <a href="@BuildPageUrl(pagination.CurrentPage - 1)" hx-get="@BuildPageUrl(pagination.CurrentPage - 1)" hx-on:click="window.scrollTo({ top: 0, behavior: 'smooth' });" hx-target="#content" hx-push-url="true" class="internlist-page-btn internlist-page-prev">
+            <a href="@BuildPageUrl(pagination.CurrentPage - 1)" hx-get="@BuildPageUrl(pagination.CurrentPage - 1)" hx-on:click="window.scrollTo({ top: 0, behavior: 'smooth' });" hx-target="#content" hx-push-url="true" class="internlist-page-btn internlist-page-prev pagination-send">
                 <i class="fa-solid fa-chevron-left"></i>
             </a>
         }
@@ -49,7 +49,7 @@
 
         @if (startPage > 1)
         {
-            <a href="@BuildPageUrl(1)" hx-get="@BuildPageUrl(1)" hx-on:click="window.scrollTo({ top: 0, behavior: 'smooth' });" hx-target="#content" hx-push-url="true" class="internlist-page-btn">1</a>
+            <a href="@BuildPageUrl(1)" hx-get="@BuildPageUrl(1)" hx-on:click="window.scrollTo({ top: 0, behavior: 'smooth' });" hx-target="#content" hx-push-url="true" class="internlist-page-btn pagination-send">1</a>
             @if (startPage > 2)
             {
                 <span class="internlist-page-dots">...</span>
@@ -60,7 +60,7 @@
         {
             var isActive = i == pagination.CurrentPage;
             <a href="@BuildPageUrl(i)" hx-get="@BuildPageUrl(i)" hx-on:click="window.scrollTo({ top: 0, behavior: 'smooth' });" hx-target="#content" hx-push-url="true"
-               class="internlist-page-btn @(isActive ? "internlist-page-active" : "")">
+               class="internlist-page-btn @(isActive ? "internlist-page-active" : "") pagination-send">
                 @i
             </a>
         }
@@ -71,15 +71,15 @@
             {
                 <span class="internlist-page-dots">...</span>
             }
-            <a href="@BuildPageUrl(pagination.TotalPages)" hx-get="@BuildPageUrl(pagination.TotalPages)" hx-on:click="window.scrollTo({ top: 0, behavior: 'smooth' });" hx-target="#content" hx-push-url="true" class="internlist-page-btn">@pagination.TotalPages</a>
+            <a href="@BuildPageUrl(pagination.TotalPages)" hx-get="@BuildPageUrl(pagination.TotalPages)" hx-on:click="window.scrollTo({ top: 0, behavior: 'smooth' });" hx-target="#content" hx-push-url="true" class="internlist-page-btn pagination-send">@pagination.TotalPages</a>
         }
 
         @if (pagination.CurrentPage < pagination.TotalPages)
         {
-            <a href="@BuildPageUrl(pagination.CurrentPage + 1)" hx-get="@BuildPageUrl(pagination.CurrentPage + 1)" hx-on:click="window.scrollTo({ top: 0, behavior: 'smooth' });" hx-target="#content" hx-push-url="true" class="internlist-page-btn internlist-page-next">
+            <a href="@BuildPageUrl(pagination.CurrentPage + 1)" hx-get="@BuildPageUrl(pagination.CurrentPage + 1)" hx-on:click="window.scrollTo({ top: 0, behavior: 'smooth' });" hx-target="#content" hx-push-url="true" class="internlist-page-btn internlist-page-next pagination-send">
                 <i class="fa-solid fa-chevron-right"></i>
             </a>
-            <a href="@BuildPageUrl(pagination.TotalPages)" hx-get="@BuildPageUrl(pagination.TotalPages)" hx-on:click="window.scrollTo({ top: 0, behavior: 'smooth' });" hx-target="#content" hx-push-url="true" class="internlist-page-btn internlist-page-last">
+            <a href="@BuildPageUrl(pagination.TotalPages)" hx-get="@BuildPageUrl(pagination.TotalPages)" hx-on:click="window.scrollTo({ top: 0, behavior: 'smooth' });" hx-target="#content" hx-push-url="true" class="internlist-page-btn internlist-page-last pagination-send">
                 <i class="fa-solid fa-angles-right"></i>
             </a>
         }
@@ -88,7 +88,7 @@
     @if (pagination.TotalItems > 6)
     {
         <div class="internlist-pagesize-container">
-            <form method="get" asp-action="Index" hx-get="/Applications/Index" hx-target="#content" hx-push-url="true" class="internlist-pagesize-form">
+            <form method="get" asp-action="Index" hx-get="/Applications/Index" hx-target="#content" hx-push-url="true" class="internlist-pagesize-form pagination-send">
                 @foreach (var key in Context.Request.Query.Keys)
                 {
                     if (key != "PageSize" && key != "PageNumber")

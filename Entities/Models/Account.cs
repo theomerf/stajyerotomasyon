@@ -14,7 +14,10 @@ namespace Entities.Models
         public String? ProfilePictureUrl { get; set; }
         public int? SectionId { get; set; }
         public Section? Section { get; set; }
-        public List<Note?>? Notes { get; set; }
+        public ICollection<Note>? Notes { get; set; }
+        public ICollection<Work>? Works { get; set; }
+        public ICollection<Work>? SupervisedWorks { get; set; }
+        public ICollection<Report>? Reports { get; set; }
         public bool IsActive { get; set; } = true;
     }
 }

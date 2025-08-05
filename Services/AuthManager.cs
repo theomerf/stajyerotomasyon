@@ -272,7 +272,7 @@ namespace Services
             user.Email = userDtoForUpdate.Email;
             user.InternshipStartDate = userDtoForUpdate.InternshipStartDate;
             user.InternshipEndDate = userDtoForUpdate.InternshipEndDate;
-            user.SectionId = userDtoForUpdate.SectionId;
+            user.SectionId = userDtoForUpdate.SectionId ?? 1;
             user.Section!.DepartmentId = userDtoForUpdate.DepartmentId;
 
             var result = await _userManager.UpdateAsync(user);

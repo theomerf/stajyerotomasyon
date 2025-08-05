@@ -9,14 +9,18 @@ namespace Services
         private readonly IDepartmentService _departmentService;
         private readonly IApplicationService _applicationService;
         private readonly IEventService _eventService;
+        private readonly IReportService _reportService;
+        private readonly IWorkService _workService;
 
-        public ServiceManager(IAuthService authService, ISectionService sectionService, IDepartmentService departmentService, IApplicationService applicationService, IEventService eventService)
+        public ServiceManager(IAuthService authService, ISectionService sectionService, IDepartmentService departmentService, IApplicationService applicationService, IEventService eventService, IReportService reportService, IWorkService workService)
         {
             _authService = authService;
             _sectionService = sectionService;
             _departmentService = departmentService;
             _applicationService = applicationService;
             _eventService = eventService;
+            _reportService = reportService;
+            _workService = workService;
         }
 
         public IAuthService AuthService => _authService;
@@ -24,5 +28,7 @@ namespace Services
         public IDepartmentService DepartmentService => _departmentService;
         public IApplicationService ApplicationService => _applicationService;
         public IEventService EventService => _eventService;
+        public IReportService ReportService => _reportService;
+        public IWorkService WorkService => _workService;
     }
 }

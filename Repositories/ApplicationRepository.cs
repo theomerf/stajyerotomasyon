@@ -120,9 +120,10 @@ namespace Repositories
         public async Task<Application?> GetApplicationByIdAsync(int applicationId)
         {
             var application = await FindByCondition(a => a.ApplicationId == applicationId, true)
+                .AsQueryable()
                 .Include(a => a.Notes)
-                .Include(a => a.Section)
-                    .ThenInclude(s => s!.Department)
+                .Include(a => a!.Section)
+                    .ThenInclude(s => s!.Department)!
                 .FirstOrDefaultAsync();
 
             return application;

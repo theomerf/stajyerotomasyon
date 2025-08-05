@@ -37,9 +37,9 @@ namespace Stajyeryotom.Controllers
                 TotalItems = totalCount
             };
 
-            var model = new ApplicationListViewModel()
+            var model = new ListViewModel<ApplicationDto>()
             {
-                Applications = applications,
+                List = applications as List<ApplicationDto>,
                 Pagination = paginaton,
             };
             return PartialView("_Index", model);

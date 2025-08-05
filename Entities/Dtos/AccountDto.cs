@@ -38,11 +38,13 @@ namespace Entities.Dtos
         public String? ProfilePictureUrl { get; init; }
 
         [Required(ErrorMessage = "Bölüm seçimi gerekli.")]
-        public int SectionId { get; init; }
+        public int? SectionId { get; init; }
         public String? SectionName { get; init; }
         [Required(ErrorMessage = "Bölüm seçimi gerekli.")]
-        public int DepartmentId { get; init; }
+        public int? DepartmentId { get; init; }
         public List<Note>? Notes { get; init; }
+        public ICollection<Work>? Works { get; init; }
+        public ICollection<Work>? SupervisedWorks { get; init; }
         public String? DepartmentName { get; init; }
         public HashSet<String?> Roles { get; set; } = new HashSet<String?>();
         public bool IsActive { get; init; } = true;

@@ -15,3 +15,4 @@ C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Services\obj\Debug\net9.0\S
 C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Services\obj\Debug\net9.0\refint\Services.dll
 C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Services\obj\Debug\net9.0\Services.pdb
 C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Services\obj\Debug\net9.0\ref\Services.dll
+C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Services\obj\Debug\net9.0\Services.sourcelink.json

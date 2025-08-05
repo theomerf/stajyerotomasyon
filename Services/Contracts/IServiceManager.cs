@@ -7,5 +7,7 @@
         IDepartmentService DepartmentService { get; }
         IApplicationService ApplicationService { get; }
         IEventService EventService { get; }
+        IReportService ReportService { get; }
+        IWorkService WorkService { get; }
     }
 }

@@ -1,15 +1,15 @@
-﻿@{
+﻿@model AccountDtoForCreation
+
+@{
 
     Layout = Context.Request.Headers["HX-Request"] == "true" ? null : "_Layout";
     var applicationId = TempData["ApplicationId"];
-    if(Model.SectionId != null)
+    if(Model.SectionId != 0)
     {
         <div hx-on::load="loadSections(@Model.DepartmentId,@Model.SectionId)"></div>
     }
 }
 
-
-@model AccountDtoForCreation
 <div id="dataHolder" data-section="@(Model.SectionId)"></div>
 <div class="form-container">
     <div class="form-header">

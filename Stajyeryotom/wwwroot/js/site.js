@@ -115,6 +115,9 @@ document.body.addEventListener('htmx:configRequest', function (evt) {
     if (triggeredElement && triggeredElement.classList.contains("date-send")) {
         evt.detail.headers['Date-Send'] = 'true';
     }
+    if (triggeredElement && triggeredElement.classList.contains("pagination-send")) {
+        evt.detail.headers['Pagination-Send'] = 'true';
+    }
 });
 
 document.body.addEventListener("htmx:afterRequest", function (event) {
@@ -184,6 +187,13 @@ document.body.addEventListener("htmx:afterRequest", function (event) {
 
 
         }
+    }
+    else if (event.detail.requestConfig.headers["Pagination-Send"] == "true") {
+        console.log('sa');
+        document.querySelector('.scroll-target')?.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center'
+        });
     }
     else if (event.detail.requestConfig.headers["Filter-Send"] != "true" && event.detail.requestConfig.headers["Date-Send"] != "true") {
         window.scrollTo({ top: 0, behavior: 'smooth' });

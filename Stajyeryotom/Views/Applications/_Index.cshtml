@@ -1,4 +1,4 @@
-﻿@model ApplicationListViewModel
+﻿@model ListViewModel<ApplicationDto>
 
 @{
     Layout = Context.Request.Headers["HX-Request"] == "true" ? null : "_Layout";
@@ -37,7 +37,6 @@
     <div class="row mb-4">
         @await Component.InvokeAsync("ApplicationsStats")
     </div>
-
     <div class="row mb-4">
         <div class="card py-5 px-4 card-before">
             <div class="row mb-3 align-items-center g-2">
@@ -151,7 +150,7 @@
                     </div>
 
                     <div class="grid-sort-item">
-                        <span class="grid-sort-label">İsim</span>
+                        <span class="grid-sort-label">BAŞVURAN BİLGİLERİ</span>
                         <div class="sort-controls">
                             <div class="sort-buttons-row">
                                 <button hx-on:click="sortingButton(event);" class="sort-btn" data-sort="NAME_ASC" title="A-Z Sırala">
@@ -168,7 +167,7 @@
                     </div>
 
                     <div class="grid-sort-item">
-                        <span class="grid-sort-label">Departman</span>
+                        <span class="grid-sort-label">DEPARTMAN / BÖLÜM</span>
                         <div class="sort-controls">
                             <div class="sort-buttons-row">
                                 <button hx-on:click="sortingButton(event);" class="sort-btn" data-sort="DEPARTMENT_ASC" title="A-Z Sırala">
@@ -205,11 +204,11 @@
                         <span class="grid-sort-label">DURUM</span>
                         <div class="sort-controls">
                             <div class="sort-buttons-row">
-                                <button hx-on:click="sortingButton(event);" class="sort-btn" data-sort="APPROVED" title="Eskiden Yeniye">
-                                    <i class="fas fa-sort-numeric-down"></i>
+                                <button hx-on:click="sortingButton(event);" class="sort-btn" data-sort="APPROVED" title="Onaylananlar">
+                                    <i class="fa-solid fa-circle-check"></i>
                                 </button>
-                                <button hx-on:click="sortingButton(event);" class="sort-btn" data-sort="DENIED" title="Yeniden Eskiye">
-                                    <i class="fas fa-sort-numeric-up"></i>
+                                <button hx-on:click="sortingButton(event);" class="sort-btn" data-sort="DENIED" title="Reddedilenler">
+                                    <i class="fa-solid fa-circle-xmark"></i>
                                 </button>
                             </div>
                             <button hx-on:click="clearSortButtonForApplications(event);" class="clear-cell-sort-btn" data-category="STATUS" title="Sıralamayı Temizle">
@@ -240,6 +239,7 @@
     }
     else
     {
+        <div class="scroll-target"></div>
         <div class="row">
             <div class="view-content list-view @((activeView == "List" || activeView == "list") ? "active" : "")">
                 <partial name="Small/_ApplicationsListView" />

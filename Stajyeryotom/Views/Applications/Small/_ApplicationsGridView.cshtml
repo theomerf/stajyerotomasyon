@@ -1,7 +1,7 @@
 ﻿<div class="stajyer-grid">
     @{
         var dateTime = DateTime.Now;
-        foreach (var application in Model?.Applications ?? new List<ApplicationDto>())
+        foreach (var application in Model?.List ?? new List<ApplicationDto>())
         {
 
             <div class="stajyer-card">

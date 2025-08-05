@@ -53,10 +53,10 @@
             <div class="sort-controls">
                 <div class="sort-buttons-row">
                     <button hx-on:click="sortingButton(event);" class="sort-btn" data-sort="PROGRESS_ASC" title="Az İlerlemeden Çoka">
-                        <i class="fas fa-sort-amount-down"></i>
+                        <i class="fas fa-sort-amount-up"></i>
                     </button>
                     <button hx-on:click="sortingButton(event);" class="sort-btn" data-sort="PROGRESS_DESC" title="Çok İlerlemeden Aza">
-                        <i class="fas fa-sort-amount-up"></i>
+                        <i class="fas fa-sort-amount-down"></i>
                     </button>
                 </div>
                 <button hx-on:click="clearSortButton(event);" class="clear-cell-sort-btn" data-category="PROGRESS" title="Sıralamayı Temizle">
@@ -72,7 +72,7 @@
                         <i class="fas fa-check-circle"></i>
                     </button>
                     <button hx-on:click="sortingButton(event);" class="sort-btn" data-sort="NOTSTARTED" title="Başlamayanlar">
-                        <i class="fas fa-clock"></i>
+                        <i class="fa-solid fa-hourglass-start"></i>
                     </button>
                 </div>
                 <button hx-on:click="clearSortButton(event);" class="clear-cell-sort-btn" data-category="STATUS" title="Sıralamayı Temizle">
@@ -85,7 +85,7 @@
 
     @{
         var dateTime = DateTime.UtcNow;
-        foreach (var intern in Model?.Interns ?? new List<AccountDto>())
+        foreach (var intern in Model?.List ?? new List<AccountDto>())
         {
 
             <div class="table-row">

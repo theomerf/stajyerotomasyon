@@ -1,7 +1,255 @@
-﻿@model ApplicationDto
+﻿@model ListViewModel<ReportDto>
 
 @{
     Layout = Context.Request.Headers["HX-Request"] == "true" ? null : "_Layout";
+    var activeView = Context.Request.Cookies["View"] ?? "List";
+    var isCollapsed = Context.Request.Cookies["Collapsed"] ?? "true";
 }
 
-RAPORLAR
+<div class="container">
+    <div class="row">
+        <div class="page-header @((isCollapsed == "true") ? "collapsed" : "")">
+            <div class="header-main">
+                <div class="header-content">
+                    <h1><i class="fas fa-users"></i> Raporlar</h1>
+                    <p>Stajyer raporlarını görüntüleyin ve yönetin.</p>
+                </div>
+            </div>
+
+            <div class="header-toggle-wrapper">
+                <button class="btn-toggle-header" hx-on:click="toggleHeaderCollapse(event)" title="Küçült/Genişlet">
+                    <i class="fas fa-chevron-up"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-4">
+        @await Component.InvokeAsync("ReportsStats")
+    </div>
+    <div class="row mb-4">
+        <div class="card py-5 px-4 card-before">
+            <div class="row mb-3 align-items-center g-2">
+                <div class="col col-md-3">
+                    <div class="view-toggle d-inline-flex align-items-center gap-2 w-auto">
+                        <div class="toggle-slider"></div>
+                        <button hx-on:click="viewToggle(event);" class="toggle-btn @((activeView == "List" || activeView == "list") ? "active" : "")" data-view="list" data-viewType="List">
+                            <i class="fas fa-list"></i>
+                            Liste
+                        </button>
+                        <button hx-on:click="viewToggle(event);" class="toggle-btn @((activeView == "Grid" || activeView == "grid") ? "active" : "")" data-view="grid" data-viewType="Grid">
+                            <i class="fas fa-th-large"></i>
+                            Kart
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col col-md-3 d-flex align-items-center justify-content-center">
+
+                    <div class="filter-actions">
+                        @if (Context.Request.Query.ContainsKey("DepartmentId") || Context.Request.Query.ContainsKey("SearchTerm") || Context.Request.Query.ContainsKey("Status") || Context.Request.Query.ContainsKey("StartDate") || Context.Request.Query.ContainsKey("EndDate"))
+                        {
+                            <a href="/Applications/Index" class="clear-filters-btn ms-5" hx-get="/Applications/Index" hx-target="#content" hx-push-url="true">
+                                <i class="fa-solid fa-xmark"></i>
+                                Tüm Filtreleri Temizle
+                            </a>
+                        }
+                    </div>
+                </div>
+                <div class="col col-md-3">
+                    <div class="search-box d-flex align-items-center">
+                        <i class="fas fa-search"></i>
+                        <input hx-on:input="searchFilterForApplications();" type="text" placeholder="Başvuru ara...">
+                    </div>
+                </div>
+                <div class="col col-md-3">
+                    <select hx-on:change="filterApplications(event);" class="filter-select" id="departmentSelect">
+                        <option value="">Departman seçiniz...</option>
+                        @foreach (var department in ViewBag.Departments)
+                        {
+                            <option value="@department.DepartmentId">@department.DepartmentName</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="row controls-mid-row align-items-end">
+                <div class="col-md-4">
+                    <div class="date-filter">
+                        <div class="date-inputs-row d-flex gap-3 align-items-end">
+                            <div class="date-input-group">
+                                <label class="date-input-label">Başlangıç Tarihi</label>
+                                <input type="date" class="form-control form-control-custom dateFilterStart" hx-on:input="showDateFilterBtn();" id="dateFilterStart">
+                            </div>
+                            <div class="date-input-group">
+                                <label class="date-input-label">Bitiş Tarihi</label>
+                                <input type="date" class="form-control form-control-custom dateFilterEnd" hx-on:input="showDateFilterBtn();" id="dateFilterEnd">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="">
+                        <a hx-on:click="filterApplications();" id="dateFilterBtn" class="filter-date-btn mb-2 w-auto gap-2 d-inline-flex d-none" hx-target="#content" hx-push-url="true">
+                            <i class="fa-solid fa-filter"></i>
+                            Tarihi Filtrele
+                        </a>
+                        <a class="clear-filters-btn mb-2 d-none w-auto gap-2 d-inline-flex" hx-on:click="clearDate();" id="clearDateFilterBtn" hx-target="#content" hx-push-url="true">
+                            <i class="fa-solid fa-xmark"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="other-filters d-flex align-items-end">
+                        <div class="status-filter-wrapper">
+                            <label class="status-label">Durum Seçiniz:</label>
+                            <div class="status-grid">
+                                <button class="status-box approved" hx-on:click="statusFilterForApplications(event);" title="Onaylandı" value="Approved">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                                <button class="status-box interview" hx-on:click="statusFilterForApplications(event);" title="Mülakat" value="Interview">
+                                    <i class="fas fa-user-check"></i>
+                                </button>
+                                <button class="status-box onwait" hx-on:click="statusFilterForApplications(event);" title="Beklemede" value="OnWait">
+                                    <i class="fas fa-clock"></i>
+                                </button>
+                                <button class="status-box denied" hx-on:click="statusFilterForApplications(event);" title="Reddedildi" value="Denied">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="gridSort" class="row controls-bottom-row mt-4 @((activeView == "Grid" || activeView == "grid") ? "" : "d-none")">
+                <div class="grid-sorting-controls">
+                    <div class="grid-sort-item">
+                        <span class="grid-sort-label">ID</span>
+                        <div class="sort-controls">
+                            <div class="sort-buttons-row">
+                                <button hx-on:click="sortingButton(event);" class="sort-btn" data-sort="ID_ASC" title="Küçükten Büyüğe">
+                                    <i class="fas fa-sort-numeric-down"></i>
+                                </button>
+                                <button hx-on:click="sortingButton(event);" class="sort-btn" data-sort="ID_DESC" title="Büyükten Küçüğe">
+                                    <i class="fas fa-sort-numeric-up"></i>
+                                </button>
+                            </div>
+                            <button hx-on:click="clearSortButtonForApplications(event);" class="clear-cell-sort-btn" data-category="ID" title="Sıralamayı Temizle">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="grid-sort-item">
+                        <span class="grid-sort-label">BAŞVURAN BİLGİLERİ</span>
+                        <div class="sort-controls">
+                            <div class="sort-buttons-row">
+                                <button hx-on:click="sortingButton(event);" class="sort-btn" data-sort="NAME_ASC" title="A-Z Sırala">
+                                    <i class="fas fa-sort-alpha-down"></i>
+                                </button>
+                                <button hx-on:click="sortingButton(event);" class="sort-btn" data-sort="NAME_DESC" title="Z-A Sırala">
+                                    <i class="fas fa-sort-alpha-up"></i>
+                                </button>
+                            </div>
+                            <button hx-on:click="clearSortButtonForApplications(event);" class="clear-cell-sort-btn" data-category="NAME" title="Sıralamayı Temizle">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="grid-sort-item">
+                        <span class="grid-sort-label">DEPARTMAN / BÖLÜM</span>
+                        <div class="sort-controls">
+                            <div class="sort-buttons-row">
+                                <button hx-on:click="sortingButton(event);" class="sort-btn" data-sort="DEPARTMENT_ASC" title="A-Z Sırala">
+                                    <i class="fas fa-sort-alpha-down"></i>
+                                </button>
+                                <button hx-on:click="sortingButton(event);" class="sort-btn" data-sort="DEPARTMENT_DESC" title="Z-A Sırala">
+                                    <i class="fas fa-sort-alpha-up"></i>
+                                </button>
+                            </div>
+                            <button hx-on:click="clearSortButtonForApplications(event);" class="clear-cell-sort-btn" data-category="DEPARTMENT" title="Sıralamayı Temizle">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="grid-sort-item">
+                        <span class="grid-sort-label">BAŞVURU / SON İŞLEM TARİHİ</span>
+                        <div class="sort-controls">
+                            <div class="sort-buttons-row">
+                                <button hx-on:click="sortingButton(event);" class="sort-btn" data-sort="DATE_ASC" title="Eskiden Yeniye">
+                                    <i class="fas fa-sort-numeric-down"></i>
+                                </button>
+                                <button hx-on:click="sortingButton(event);" class="sort-btn" data-sort="DATE_DESC" title="Yeniden Eskiye">
+                                    <i class="fas fa-sort-numeric-up"></i>
+                                </button>
+                            </div>
+                            <button hx-on:click="clearSortButtonForApplications(event);" class="clear-cell-sort-btn" data-category="DATE" title="Sıralamayı Temizle">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="grid-sort-item">
+                        <span class="grid-sort-label">DURUM</span>
+                        <div class="sort-controls">
+                            <div class="sort-buttons-row">
+                                <button hx-on:click="sortingButton(event);" class="sort-btn" data-sort="APPROVED" title="Onaylananlar">
+                                    <i class="fa-solid fa-circle-check"></i>
+                                </button>
+                                <button hx-on:click="sortingButton(event);" class="sort-btn" data-sort="DENIED" title="Reddedilenler">
+                                    <i class="fa-solid fa-circle-xmark"></i>
+                                </button>
+                            </div>
+                            <button hx-on:click="clearSortButtonForApplications(event);" class="clear-cell-sort-btn" data-category="STATUS" title="Sıralamayı Temizle">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @if (Model?.TotalCount == 0)
+    {
+        <div class="row">
+            <div class="internlist-no-results">
+                <div class="internlist-no-results-icon">
+                    <i class="fa-solid fa-xmark"></i>
+                </div>
+                <h4 class="internlist-no-results-title">Başvuru Bulunamadı</h4>
+                <p class="internlist-no-results-text">Arama kriterlerinize uygun başvuru bulunamadı.</p>
+                <a href="@Url.Action("Index")" class="internlist-no-results-button">
+                    <i class="fa-solid fa-grid-2 me-2"></i>
+                    Tüm Başvuruları Göster
+                </a>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="scroll-target"></div>
+        <div class="row">
+            <div class="view-content list-view @((activeView == "List" || activeView == "list") ? "active" : "")">
+                <partial name="Small/_ApplicationsListView" />
+            </div>
+
+            <div class="view-content grid-view @((activeView == "Grid" || activeView == "grid") ? "active" : "")">
+                <partial name="Small/_ApplicationsGridView" />
+            </div>
+        </div>
+    }
+
+</div>
+
+
+
+<div id="loadingOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.3); z-index: 9999;">
+    <div class="d-flex justify-content-center align-items-center h-100">
+        <div class="bg-white rounded p-4 text-center">
+            <div class="spinner-border text-success" role="status">
+                <span class="visually-hidden">Yükleniyor...</span>
+            </div>
+            <div class="mt-2">Filtreler uygulanıyor...</div>
+        </div>
+    </div>
+</div>

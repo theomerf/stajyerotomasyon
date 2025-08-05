@@ -8,6 +8,8 @@
         IApplicationRepository Application { get; }
         INoteRepository Note { get; }
         IEventRepository Event { get; }
+        IReportRepository Report { get; }
+        IWorkRepository Work { get; }
         void Save();
         Task SaveAsync();
     }

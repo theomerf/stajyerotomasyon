@@ -1,0 +1,28 @@
+﻿@model IEnumerable<ReportDto>
+
+@{
+    Layout = Context.Request.Headers["HX-Request"] == "true" ? null : "_Layout";
+    var isCollapsed = Context.Request.Cookies["Collapsed"] ?? "true";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="page-header @((isCollapsed == "true") ? "collapsed" : "")">
+            <div class="header-main">
+                <div class="header-content">
+                    <h1><i class="fa-solid fa-briefcase"></i> Görevler</h1>
+                    <p>Stajyer görevlerini görüntüleyin ve yönetin.</p>
+                </div>
+            </div>
+
+            <div class="header-toggle-wrapper">
+                <button class="btn-toggle-header" hx-on:click="toggleHeaderCollapse(event)" title="Küçült/Genişlet">
+                    <i class="fas fa-chevron-up"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        görevler
+    </div>
+</div>

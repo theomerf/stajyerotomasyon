@@ -112,7 +112,7 @@ namespace Stajyeryotom.Controllers
         {
             if (!ModelState.IsValid)
             {
-                await PrepareDropdownsAsync(accountDto.DepartmentId, accountDto.SectionId);
+                await PrepareDropdownsAsync(accountDto.DepartmentId!.Value, accountDto.SectionId!.Value);
                 var html = await this.RenderViewAsync("_AddUser", accountDto, true);
                 return Json(new { success = false, html = $"<div id='content' hx-swap-oob='true'>{html}</div>", message = "Kullanıcı oluşturulurken form hatası oluştu.", type = "warning" });
             }
@@ -131,7 +131,7 @@ namespace Stajyeryotom.Controllers
             }
             else
             {
-                await PrepareDropdownsAsync(accountDto.DepartmentId, accountDto.SectionId);
+                await PrepareDropdownsAsync(accountDto.DepartmentId!.Value, accountDto.SectionId!.Value);
                 var html = await this.RenderViewAsync("_AddUser", accountDto, true);
                 return Json(new { success = false, html = $"<div id='content' hx-swap-oob='true'>{html}</div>", message = "Lütfen kurallara uygun şifre girin.", type = "danger" });
             }

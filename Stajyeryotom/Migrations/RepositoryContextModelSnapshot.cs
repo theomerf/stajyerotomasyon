@@ -22,6 +22,21 @@ namespace Stajyeryotom.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("AccountWork", b =>
+                {
+                    b.Property<string>("InternsId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("WorksWorkId")
+                        .HasColumnType("int");
+
+                    b.HasKey("InternsId", "WorksWorkId");
+
+                    b.HasIndex("WorksWorkId");
+
+                    b.ToTable("AccountWork");
+                });
+
             modelBuilder.Entity("Entities.Models.Account", b =>
                 {
                     b.Property<string>("Id")
@@ -207,13 +222,13 @@ namespace Stajyeryotom.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EventId"));
 
-                    b.Property<DateTime>("Date")
+                    b.Property<DateTime?>("Date")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<TimeSpan>("Time")
+                    b.Property<TimeSpan?>("Time")
                         .HasColumnType("time");
 
                     b.Property<string>("Title")
@@ -242,7 +257,7 @@ namespace Stajyeryotom.Migrations
                     b.Property<string>("AccountName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ApplicationId")
+                    b.Property<int?>("ApplicationId")
                         .HasColumnType("int");
 
                     b.Property<string>("Content")
@@ -265,6 +280,45 @@ namespace Stajyeryotom.Migrations
                     b.ToTable("Notes");
                 });
 
+            modelBuilder.Entity("Entities.Models.Report", b =>
+                {
+                    b.Property<int>("ReportId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReportId"));
+
+                    b.Property<string>("AccountId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ImageUrls")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReportContent")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReportTitle")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("WorkId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ReportId");
+
+                    b.HasIndex("AccountId");
+
+                    b.HasIndex("WorkId");
+
+                    b.ToTable("Reports");
+                });
+
             modelBuilder.Entity("Entities.Models.Section", b =>
                 {
                     b.Property<int>("SectionId")
@@ -273,7 +327,7 @@ namespace Stajyeryotom.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SectionId"));
 
-                    b.Property<int>("DepartmentId")
+                    b.Property<int?>("DepartmentId")
                         .HasColumnType("int");
 
                     b.Property<string>("SectionName")
@@ -286,6 +340,40 @@ namespace Stajyeryotom.Migrations
                     b.HasIndex("DepartmentId");
 
                     b.ToTable("Sections");
+                });
+
+            modelBuilder.Entity("Entities.Models.Work", b =>
+                {
+                    b.Property<int>("WorkId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("WorkId"));
+
+                    b.Property<string>("ImageUrls")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TaskMasterId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("WorkDescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("WorkEndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("WorkName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("WorkStartDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("WorkId");
+
+                    b.HasIndex("TaskMasterId");
+
+                    b.ToTable("Works");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -441,6 +529,21 @@ namespace Stajyeryotom.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("AccountWork", b =>
+                {
+                    b.HasOne("Entities.Models.Account", null)
+                        .WithMany()
+                        .HasForeignKey("InternsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entities.Models.Work", null)
+                        .WithMany()
+                        .HasForeignKey("WorksWorkId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Entities.Models.Account", b =>
                 {
                     b.HasOne("Entities.Models.Section", "Section")
@@ -471,12 +574,28 @@ namespace Stajyeryotom.Migrations
                     b.HasOne("Entities.Models.Application", "Application")
                         .WithMany("Notes")
                         .HasForeignKey("ApplicationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Account");
 
                     b.Navigation("Application");
+                });
+
+            modelBuilder.Entity("Entities.Models.Report", b =>
+                {
+                    b.HasOne("Entities.Models.Account", "Account")
+                        .WithMany("Reports")
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Entities.Models.Work", "Work")
+                        .WithMany("Reports")
+                        .HasForeignKey("WorkId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("Account");
+
+                    b.Navigation("Work");
                 });
 
             modelBuilder.Entity("Entities.Models.Section", b =>
@@ -484,10 +603,19 @@ namespace Stajyeryotom.Migrations
                     b.HasOne("Entities.Models.Department", "Department")
                         .WithMany("Sections")
                         .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Department");
+                });
+
+            modelBuilder.Entity("Entities.Models.Work", b =>
+                {
+                    b.HasOne("Entities.Models.Account", "TaskMaster")
+                        .WithMany("SupervisedWorks")
+                        .HasForeignKey("TaskMasterId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("TaskMaster");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -544,6 +672,10 @@ namespace Stajyeryotom.Migrations
             modelBuilder.Entity("Entities.Models.Account", b =>
                 {
                     b.Navigation("Notes");
+
+                    b.Navigation("Reports");
+
+                    b.Navigation("SupervisedWorks");
                 });
 
             modelBuilder.Entity("Entities.Models.Application", b =>
@@ -561,6 +693,11 @@ namespace Stajyeryotom.Migrations
                     b.Navigation("Applications");
 
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("Entities.Models.Work", b =>
+                {
+                    b.Navigation("Reports");
                 });
 #pragma warning restore 612, 618
         }

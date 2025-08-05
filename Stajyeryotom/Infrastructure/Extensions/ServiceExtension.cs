@@ -45,7 +45,7 @@ namespace Stajyeryotom.Infrastructure.Extensions
             services.AddSession(options =>
             {
                 options.Cookie.Name = "stajyeryotom.Session";
-                options.IdleTimeout = TimeSpan.FromMinutes(10);
+                options.IdleTimeout = TimeSpan.FromMinutes(15);
 
             });
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -60,6 +60,8 @@ namespace Stajyeryotom.Infrastructure.Extensions
             services.AddScoped<IApplicationRepository, ApplicationRepository>();
             services.AddScoped<INoteRepository, NoteRepository>();
             services.AddScoped<IEventRepository, EventRepository>();
+            services.AddScoped<IReportRepository, ReportRepository>();
+            services.AddScoped<IWorkRepository, WorkRepository>();
         }
 
         public static void ConfigureServiceRegistration(this IServiceCollection services)
@@ -70,6 +72,8 @@ namespace Stajyeryotom.Infrastructure.Extensions
             services.AddScoped<ISectionService, SectionManager>();
             services.AddScoped<IApplicationService,ApplicationManager>();
             services.AddScoped<IEventService, EventManager>();
+            services.AddScoped<IReportService, ReportManager>();
+            services.AddScoped<IWorkService, WorkManager>();
         }
 
         public static void ConfigureApplicationCookie(this IServiceCollection services)
@@ -79,7 +83,7 @@ namespace Stajyeryotom.Infrastructure.Extensions
                 options.LoginPath = "/Account/Login";
                 options.AccessDeniedPath = "/Account/AccessDenied";
 
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(10);
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(15);
                 options.SlidingExpiration = true;
 
                 options.Events.OnSigningIn = context =>

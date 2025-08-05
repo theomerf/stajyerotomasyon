@@ -13,3 +13,4 @@ C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Repositories\obj\Debug\net9
 C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Repositories\obj\Debug\net9.0\refint\Repositories.dll
 C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Repositories\obj\Debug\net9.0\Repositories.pdb
 C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Repositories\obj\Debug\net9.0\ref\Repositories.dll
+C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Repositories\obj\Debug\net9.0\Repositories.sourcelink.json

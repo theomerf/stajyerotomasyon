@@ -10,9 +10,9 @@ namespace Entities.Models
     {
         public int EventId { get; set; }
         public String? Title { get; set; }
-        public TimeSpan Time { get; set; }
+        public TimeSpan? Time { get; set; }
         public String? Type { get; set; }
         public String? Description { get; set; }
-        public DateTime Date { get; set; }
+        public DateTime? Date { get; set; }
     }
 }

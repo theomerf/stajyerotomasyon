@@ -27,6 +27,13 @@
 					</a>
 				</li>
 
+				<li class="sidebar-nav-item" data-target="Works">
+					<a hx-on:click="handleSidebarClick(event);" href="/Works/Index" hx-get="/Works/Index" hx-target="#content" hx-push-url="true" class="sidebar-nav-link">
+						<i class="fa-solid fa-briefcase"></i>
+						<span class="sidebar-nav-text">Görevler</span>
+					</a>
+				</li>
+
 				<li class="sidebar-nav-item" data-target="Reports">
 					<a hx-on:click="handleSidebarClick(event);" href="/Reports/Index" hx-get="/Reports/Index" hx-target="#content" hx-push-url="true" class="sidebar-nav-link">
 						<i class="fas fa-chart-bar"></i>
@@ -47,6 +54,13 @@
 					<a hx-on:click="handleSidebarClick(event);" href="/Home/Index" hx-get="/Home/Index" hx-target="#indexSection" hx-push-url="true" class="sidebar-nav-link">
 						<i class="fas fa-home"></i>
 						<span class="sidebar-nav-text">Ana Sayfa</span>
+					</a>
+				</li>
+
+				<li class="sidebar-nav-item" data-target="Works">
+					<a hx-on:click="handleSidebarClick(event);" href="/Works/Index" hx-get="/Works/Index" hx-target="#content" hx-push-url="true" class="sidebar-nav-link">
+						<i class="fa-solid fa-briefcase"></i>
+						<span class="sidebar-nav-text">Görevler</span>
 					</a>
 				</li>
 			}

@@ -380,7 +380,7 @@ namespace Services
                 Email = application.ApplicantEmail,
                 PhoneNumber = application.ApplicantPhoneNumber,
                 SectionId = application.SectionId!.Value,
-                DepartmentId = application.Section!.DepartmentId
+                DepartmentId = application.Section?.DepartmentId
             };
             return accountDto;
         }

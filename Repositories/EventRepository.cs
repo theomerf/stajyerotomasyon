@@ -26,7 +26,7 @@ namespace Repositories
 
         public async Task<IEnumerable<Event>> GetAllEventsOfOneDay(DateOnly date)
         {
-            var events = await FindAllByCondition(e => DateOnly.FromDateTime(e.Date) == date,false)
+            var events = await FindAllByCondition(e => DateOnly.FromDateTime(e.Date!.Value) == date,false)
                 .ToListAsync();
 
             return events;
@@ -34,7 +34,7 @@ namespace Repositories
 
         public async Task<IEnumerable<Event>> GetAllEventsOfOneMonth(int year, int month)
         {
-            var events = await FindAllByCondition(e => DateOnly.FromDateTime(e.Date).Month == month && DateOnly.FromDateTime(e.Date).Year == year, false)
+            var events = await FindAllByCondition(e => DateOnly.FromDateTime(e.Date!.Value).Month == month && DateOnly.FromDateTime(e.Date.Value).Year == year, false)
                 .ToListAsync();
 
             return events;

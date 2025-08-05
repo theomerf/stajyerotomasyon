@@ -11,9 +11,11 @@ namespace Repositories
         private readonly IApplicationRepository _applicationRepository;
         private readonly INoteRepository _noteRepository;
         private readonly IEventRepository _eventRepository;
+        private readonly IReportRepository _reportRepository;
+        private readonly IWorkRepository _workRepository;
 
 
-        public RepositoryManager(RepositoryContext context, IDepartmentRepository departmentRepository, ISectionRepository sectionRepository, IAccountRepository accountRepository, IApplicationRepository applicationRepository, INoteRepository noteRepository, IEventRepository eventRepository)
+        public RepositoryManager(RepositoryContext context, IDepartmentRepository departmentRepository, ISectionRepository sectionRepository, IAccountRepository accountRepository, IApplicationRepository applicationRepository, INoteRepository noteRepository, IEventRepository eventRepository, IReportRepository reportRepository, IWorkRepository workRepository)
         {
             _context = context;
             _departmentRepository = departmentRepository;
@@ -22,6 +24,8 @@ namespace Repositories
             _applicationRepository = applicationRepository;
             _noteRepository = noteRepository;
             _eventRepository = eventRepository;
+            _reportRepository = reportRepository;
+            _workRepository = workRepository;
         }
 
         public IDepartmentRepository Department => _departmentRepository;
@@ -30,6 +34,8 @@ namespace Repositories
         public IApplicationRepository Application => _applicationRepository;
         public INoteRepository Note => _noteRepository;
         public IEventRepository Event => _eventRepository;
+        public IReportRepository Report => _reportRepository;
+        public IWorkRepository Work => _workRepository;
 
         public void Save()
         {
