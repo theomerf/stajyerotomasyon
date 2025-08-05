@@ -1,0 +1,31 @@
+Status;Title;Description;ApplicantFirstName;ApplicantLastName;CvUrl;ApplicantEmail;CreatedDate;UpdatedDate;SectionId;SectionName
+Approved;Frontend Developer;HTML/CSS ile responsive tasarımlar yaptı.;Zeynep;Demirtaş;/cv/zeynep-demirtas.pdf;zeynep.d@example.com;2025-05-10T10:30:00;2025-05-29T19:45:00;1;Yazılım Geliştirme
+OnWait;Network Technician;Ağ yapılandırması ve IP yönetimi tecrübesi var.;Ali;Şimşek;/cv/ali-simsek.pdf;ali.s@example.com;2025-06-19T14:00:00;2025-06-19T19:45:00;2;Sistem ve Ağ Yönetimi
+Interview;Security Analyst;CTF yarışmalarına katılmış ve OWASP bilgisi mevcut.;Burcu;Koçak;/cv/burcu-kocak.pdf;burcu.k@example.com;2025-07-08T09:10:00;2025-07-18T19:45:00;3;Siber Güvenlik
+Denied;HR Assistant;İK süreçleri ve özlük dosyaları hakkında bilgili.;Eren;Çakır;/cv/eren-cakir.pdf;eren.c@example.com;2025-07-11T11:25:00;2025-07-19T19:45:00;4;İşe Alım ve Yerleştirme
+Approved;Eğitim Tasarımcısı;Çevrim içi eğitim içerikleri hazırladı.;Merve;Yıldırım;/cv/merve-yildirim.pdf;merve.y@example.com;2025-07-04T08:50:00;2025-07-16T19:45:00;5;Performans ve Eğitim
+OnWait;Ofis Asistanı;Ofis içi düzen ve dokümantasyon işlerini yönetti.;Hasan;Aksoy;/cv/hasan-aksoy.pdf;hasan.a@example.com;2025-07-15T13:40:00;2025-07-15T19:45:00;7;Ofis Yönetimi
+Interview;Pazarlama Stajyeri;Sosyal medya kampanyaları yönetti.;Dilara;Topal;/cv/dilara-topal.pdf;dilara.t@example.com;2025-07-14T15:10:00;2025-07-20T19:45:00;7;Dijital Pazarlama
+Approved;Ürün Yöneticisi Adayı;Yeni ürün fikirleri geliştirme üzerine projelerde yer aldı.;Okan;Baş;/cv/okan-bas.pdf;okan.b@example.com;2025-06-02T12:05:00;2025-06-20T19:45:00;13;Ürün Geliştirme
+OnWait;Test Uzmanı;Manuel ve otomasyon test süreçlerinde görev aldı.;Fatma;Eker;/cv/fatma-eker.pdf;fatma.e@example.com;2025-07-12T16:25:00;2025-07-12T19:45:00;17;Test ve Kalite Kontrol
+Denied;Proje Asistanı;Proje planlama ve takvimlendirme konularında deneyim sahibi.;Kemal;Yavuz;/cv/kemal-yavuz.pdf;kemal.y@example.com;2025-06-11T09:15:00;2025-06-18T19:45:00;18;Proje Yönetimi
+Approved;Backend Developer;RESTful API geliştirme ve .NET Core deneyimi.;Ahmet;Kurt;/cv/ahmet-kurt.pdf;ahmet.k@example.com;2025-06-10T11:00:00;2025-06-25T14:45:00;1;Yazılım Geliştirme
+Denied;Ağ Destek Uzmanı;Firewall yönetimi ve VPN kurulumu tecrübeli.;Can;Yılmaz;/cv/can-yilmaz.pdf;can.y@example.com;2025-05-22T10:45:00;2025-06-01T19:00:00;2;Sistem ve Ağ Yönetimi
+OnWait;SIEM Analisti;Log analizi ve güvenlik olay izleme çalışmaları yaptı.;Elif;Aydın;/cv/elif-aydin.pdf;elif.a@example.com;2025-07-21T09:30:00;2025-07-21T09:30:00;3;Siber Güvenlik
+Interview;IK Stajyeri;Personel özlük dosyaları hazırlama konusunda çalıştı.;Mehmet;Yüce;/cv/mehmet-yuce.pdf;mehmet.y@example.com;2025-07-10T14:50:00;2025-07-25T19:45:00;4;İşe Alım ve Yerleştirme
+Approved;Eğitim Planlayıcısı;Eğitim ihtiyaç analizi ve raporlama deneyimi var.;Zeliha;Öztürk;/cv/zeliha-ozturk.pdf;zeliha.o@example.com;2025-06-05T13:20:00;2025-06-28T19:45:00;5;Performans ve Eğitim
+OnWait;Çalışan Destek Uzmanı;Çalışan memnuniyeti anketleri yürüttü.;Murat;Kara;/cv/murat-kara.pdf;murat.k@example.com;2025-07-18T10:15:00;2025-07-18T10:15:00;6;Çalışan İlişkileri
+Approved;Yönetici Asistanı;Toplantı organizasyonu ve günlük planlama yaptı.;Nisa;Bal;/cv/nisa-bal.pdf;nisa.b@example.com;2025-06-07T08:40:00;2025-06-27T15:45:00;7;Ofis Yönetimi
+Denied;Satın Alma Stajyeri;Tedarikçi araştırması ve teklif toplama süreçlerinde görev aldı.;Berk;Gül;/cv/berk-gul.pdf;berk.g@example.com;2025-05-30T16:30:00;2025-06-05T19:45:00;8;Satın Alma
+Interview;Teknik Bakım Elemanı;Periyodik bakım ve arıza çözüm süreçlerinde çalıştı.;Seda;Türkmen;/cv/seda-turkmen.pdf;seda.t@example.com;2025-07-09T13:15:00;2025-07-20T19:45:00;9;Güvenlik ve Bakım
+Approved;Bütçe Analisti;Aylık harcama raporları hazırladı.;Tolga;Deniz;/cv/tolga-deniz.pdf;tolga.d@example.com;2025-06-03T12:00:00;2025-06-24T19:45:00;10;Bütçe Planlama
+OnWait;Finans Stajyeri;Muhasebe belgelerinin arşivlenmesi işlerinde bulundu.;Hale;Uzun;/cv/hale-uzun.pdf;hale.u@example.com;2025-07-22T11:45:00;2025-07-22T11:45:00;11;Mali Raporlama
+Denied;Mevzuat Uzmanı Adayı;Vergi kanunları hakkında temel bilgiye sahip.;Furkan;İnce;/cv/furkan-ince.pdf;furkan.i@example.com;2025-06-15T10:25:00;2025-06-30T19:45:00;12;Vergi ve Mevzuat Takibi
+Interview;Marka Stajyeri;Marka konumlandırma ve araştırma görevlerinde bulundu.;Buse;Esen;/cv/buse-esen.pdf;buse.e@example.com;2025-07-08T12:10:00;2025-07-20T19:45:00;14;Marka Yönetimi
+Approved;İletişim Uzmanı Adayı;Müşteri taleplerini analiz edip yönlendirme yaptı.;Serkan;Çetin;/cv/serkan-cetin.pdf;serkan.c@example.com;2025-06-01T09:40:00;2025-06-20T19:45:00;15;Müşteri İletişimi
+OnWait;Arayüz Geliştirici;UI bileşenleri oluşturma üzerine çalıştı.;Hilal;Akıncı;/cv/hilal-akinci.pdf;hilal.a@example.com;2025-07-23T14:20:00;2025-07-23T14:20:00;1;Yazılım Geliştirme
+Approved;Ürün Strateji Asistanı;Kullanıcı geri bildirimleriyle ürün yol haritası oluşturdu.;Barış;Efe;/cv/baris-efe.pdf;baris.e@example.com;2025-06-06T11:00:00;2025-06-26T19:45:00;16;Ürün Geliştirme
+Denied;Test Otomasyoncu Adayı;Selenium ile test senaryoları yazdı.;İlayda;Sert;/cv/ilayda-sert.pdf;ilayda.s@example.com;2025-05-28T09:30:00;2025-06-07T19:45:00;17;Test ve Kalite Kontrol
+OnWait;Proje Raporlama Asistanı;Projelerdeki ilerleme raporlarını hazırladı.;Kerem;Yıldız;/cv/kerem-yildiz.pdf;kerem.y@example.com;2025-07-25T08:55:00;2025-07-25T08:55:00;18;Proje Yönetimi
+Interview;Veritabanı Geliştiricisi;SQL ve Entity Framework kullanımı konusunda deneyimli.;Derya;Kılıç;/cv/derya-kilic.pdf;derya.k@example.com;2025-07-06T15:10:00;2025-07-20T19:45:00;1;Yazılım Geliştirme
+Approved;Görsel İletişim Uzmanı;Dijital reklam görselleri ve içerikleri oluşturdu.;Sinem;Bayar;/cv/sinem-bayar.pdf;sinem.b@example.com;2025-06-12T13:35:00;2025-06-29T19:45:00;13;Dijital Pazarlama

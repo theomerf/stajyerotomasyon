@@ -1,0 +1,225 @@
+﻿@model InternListViewModel
+
+@{
+    Layout = Context.Request.Headers["HX-Request"] == "true" ? null : "_Layout";
+    var activeView = Context.Request.Cookies["View"] ?? "List";
+    var isCollapsed = Context.Request.Cookies["Collapsed"] ?? "true";
+}
+
+
+
+<div class="container stajyer-container" hx-trigger="load" hx-on::load="initProgressCircles();initInternsScripts();">
+    <div class="row">
+        <div class="page-header @((isCollapsed == "true") ? "collapsed" : "")">
+            <div class="header-main">
+                <div class="header-content">
+                    <h1><i class="fas fa-users"></i> Stajyerler (@Model?.Pagination?.TotalItems)</h1>
+                    <p>Sistemdeki tüm stajyerleri görüntüleyin ve yönetin.</p>
+                </div>
+
+                <div class="header-actions">
+                    <a href="/Interns/AddIntern" hx-get="/Interns/AddIntern" hx-target="#content" hx-push-url="true" class="btn btn-user-add">
+                        <i class="fas fa-user-plus"></i>
+                        Yeni Stajyer Ekle
+                    </a>
+                    <a href="/Company/AddUser" hx-get="/Company/AddUser" hx-on:click="handleSidebarClickForComponents(event);" hx-target="#content" hx-push-url="true" class="btn btn-user-add" data-target="Company">
+                        <i class="fas fa-user-cog"></i>
+                        Yeni Kullanıcı Oluştur
+                    </a>
+                </div>
+            </div>
+
+            <div class="header-toggle-wrapper">
+                <button class="btn-toggle-header" hx-on:click="toggleHeaderCollapse(event)" title="Küçült/Genişlet">
+                    <i class="fas fa-chevron-up"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-4">
+        <div class="card py-5 px-4 card-before">
+            <div class="row mb-3 align-items-center g-2">
+                <div class="col col-md-3">
+                    <div class="view-toggle d-inline-flex align-items-center gap-2 w-auto">
+                        <div class="toggle-slider"></div>
+                        <button hx-on:click="viewToggle(event);" class="toggle-btn @((activeView == "List" || activeView == "list") ? "active" : "")" data-view="list" data-viewType="List">
+                            <i class="fas fa-list"></i>
+                            Liste
+                        </button>
+                        <button hx-on:click="viewToggle(event);" class="toggle-btn @((activeView == "Grid" || activeView == "grid") ? "active" : "")" data-view="grid" data-viewType="Grid">
+                            <i class="fas fa-th-large"></i>
+                            Kart
+                        </button>
+                    </div>
+                </div>
+                <div class="col col-md-3 d-flex align-items-center justify-content-center">
+                    <div class="w-auto gap-2 d-inline-flex">
+                        @if (Context.Request.Query.ContainsKey("DepartmentId") || Context.Request.Query.ContainsKey("SearchTerm"))
+                        {
+                            <a href="/Interns/Index" class="clear-filters-btn ms-5" hx-get="/Interns/Index" hx-target="#content" hx-push-url="true">
+                                <i class="fa-solid fa-xmark"></i>
+                                Filtreleri Temizle
+                            </a>
+                        }
+                    </div>
+                </div>
+                <div class="col col-md-3">
+                    <div class="search-box d-flex align-items-center">
+                        <i class="fas fa-search"></i>
+                        <input hx-on:input="searchFilter();" type="text" placeholder="Stajyer ara...">
+                    </div>
+                </div>
+                <div class="col col-md-3">
+                    <select hx-on:change="filterInterns(event);" class="filter-select">
+                        <option value="">Departman seçiniz...</option>
+                        @foreach (var department in ViewBag.Departments)
+                        {
+                            <option value="@department.DepartmentId">@department.DepartmentName</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div id="gridSort" class="row controls-bottom-row @((activeView == "Grid" || activeView == "grid") ? "" : "d-none")">
+                <div class="grid-sorting-controls">
+                    <div class="grid-sort-item">
+                        <span class="grid-sort-label">İsim</span>
+                        <div class="sort-controls">
+                            <div class="sort-buttons-row">
+                                <button hx-on:click="sortingButton(event);" class="sort-btn" data-sort="NAME_ASC" title="A-Z Sırala">
+                                    <i class="fas fa-sort-alpha-down"></i>
+                                </button>
+                                <button hx-on:click="sortingButton(event);" class="sort-btn" data-sort="NAME_DESC" title="Z-A Sırala">
+                                    <i class="fas fa-sort-alpha-up"></i>
+                                </button>
+                            </div>
+                            <button hx-on:click="clearSortButton(event);" class="clear-cell-sort-btn" data-category="NAME" title="Sıralamayı Temizle">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="grid-sort-item">
+                        <span class="grid-sort-label">Departman</span>
+                        <div class="sort-controls">
+                            <div class="sort-buttons-row">
+                                <button hx-on:click="sortingButton(event);" class="sort-btn" data-sort="DEPARTMENT_ASC" title="A-Z Sırala">
+                                    <i class="fas fa-sort-alpha-down"></i>
+                                </button>
+                                <button hx-on:click="sortingButton(event);" class="sort-btn" data-sort="DEPARTMENT_DESC" title="Z-A Sırala">
+                                    <i class="fas fa-sort-alpha-up"></i>
+                                </button>
+                            </div>
+                            <button hx-on:click="clearSortButton(event);" class="clear-cell-sort-btn" data-category="DEPARTMENT" title="Sıralamayı Temizle">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="grid-sort-item">
+                        <span class="grid-sort-label">Staj Tarihi</span>
+                        <div class="sort-controls">
+                            <div class="sort-buttons-row">
+                                <button hx-on:click="sortingButton(event);" class="sort-btn" data-sort="INTERNSHIPDATE_ASC" title="Eskiden Yeniye">
+                                    <i class="fas fa-sort-numeric-down"></i>
+                                </button>
+                                <button hx-on:click="sortingButton(event);" class="sort-btn" data-sort="INTERNSHIPDATE_DESC" title="Yeniden Eskiye">
+                                    <i class="fas fa-sort-numeric-up"></i>
+                                </button>
+                            </div>
+                            <button hx-on:click="clearSortButton(event);" class="clear-cell-sort-btn" data-category="INTERNSHIPDATE" title="Sıralamayı Temizle">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="grid-sort-item">
+                        <span class="grid-sort-label">İlerleme</span>
+                        <div class="sort-controls">
+                            <div class="sort-buttons-row">
+                                <button hx-on:click="sortingButton(event);" class="sort-btn" data-sort="PROGRESS_ASC" title="Az İlerlemeden Çoka">
+                                    <i class="fas fa-sort-amount-down"></i>
+                                </button>
+                                <button hx-on:click="sortingButton(event);" class="sort-btn" data-sort="PROGRESS_DESC" title="Çok İlerlemeden Aza">
+                                    <i class="fas fa-sort-amount-up"></i>
+                                </button>
+                            </div>
+                            <button hx-on:click="clearSortButton(event);" class="clear-cell-sort-btn" data-category="PROGRESS" title="Sıralamayı Temizle">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="grid-sort-item">
+                        <span class="grid-sort-label">Durum</span>
+                        <div class="sort-controls">
+                            <div class="sort-buttons-row">
+                                <button hx-on:click="sortingButton(event);" class="sort-btn" data-sort="FINISHED" title="Tamamlananlar">
+                                    <i class="fas fa-check-circle"></i>
+                                </button>
+                                <button hx-on:click="sortingButton(event);" class="sort-btn" data-sort="NOTSTARTED" title="Başlamayanlar">
+                                    <i class="fas fa-clock"></i>
+                                </button>
+                            </div>
+                            <button hx-on:click="clearSortButton(event);" class="clear-cell-sort-btn" data-category="STATUS" title="Sıralamayı Temizle">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (Model?.TotalCount == 0)
+    {
+        <div class="row">
+            <div class="internlist-no-results">
+                <div class="internlist-no-results-icon">
+                    <i class="fa-solid fa-xmark"></i>
+                </div>
+                <h4 class="internlist-no-results-title">Stajyer Bulunamadı</h4>
+                <p class="internlist-no-results-text">Arama kriterlerinize uygun stajyer bulunamadı.</p>
+                <a href="@Url.Action("Index")" class="internlist-no-results-button">
+                    <i class="fa-solid fa-grid-2 me-2"></i>
+                    Tüm Stajyerleri Göster
+                </a>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row" id="internsContent">
+            <div class="view-content list-view @((activeView == "List" || activeView == "list") ? "active" : "")">
+                <partial name="Small/_InternsListView" />
+            </div>
+
+            <div class="view-content grid-view @((activeView == "Grid" || activeView == "grid") ? "active" : "")">
+                <partial name="Small/_InternsGridView" />
+            </div>
+        </div>
+    }
+</div>
+
+<div id="loadingOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.3); z-index: 9999;">
+    <div class="d-flex justify-content-center align-items-center h-100">
+        <div class="bg-white rounded p-4 text-center">
+            <div class="spinner-border text-success" role="status">
+                <span class="visually-hidden">Yükleniyor...</span>
+            </div>
+            <div class="mt-2">Filtreler uygulanıyor...</div>
+        </div>
+    </div>
+</div>
+
+<svg width="0" height="0" style="position: absolute;">
+    <defs>
+        <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:rgba(42, 155, 91, 1);stop-opacity:1" />
+            <stop offset="63%" style="stop-color:rgba(87, 199, 133, 1);stop-opacity:1" />
+            <stop offset="100%" style="stop-color:rgba(83, 237, 114, 1);stop-opacity:1" />
+        </linearGradient>
+    </defs>
+</svg>
+
+<script asp-append-version="true" src="~/js/interns.js"></script>
+

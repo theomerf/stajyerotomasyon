@@ -1,0 +1,30 @@
+﻿.wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.navbar {
+    background-color: #16a34a;
+    height: 80px;
+    color: white;
+}
+
+.main {
+    display: flex;
+    flex: 1;
+}
+
+.sidebar {
+    width: 280px;
+    background-color: white;
+    border-right: 1px solid #e5e5e5;
+    max-height: 650px;
+}
+
+.content {
+    flex: 1;
+    padding: 20px;
+    background-color: #f8fafb;
+}
+

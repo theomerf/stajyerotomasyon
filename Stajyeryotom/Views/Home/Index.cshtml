@@ -1,0 +1,15 @@
+﻿@if (User.IsInRole("Admin"))
+{
+	<partial name="_AdminIndex" />
+	<script asp-append-version="true" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<script asp-append-version="true" src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
+	<script asp-append-version="true" src="~/js/charts.js"></script>
+}
+else
+{
+	<partial name="_InternIndex" />
+}
+
+@{
+    ViewData["Title"] = "Yönetim Paneli";
+}

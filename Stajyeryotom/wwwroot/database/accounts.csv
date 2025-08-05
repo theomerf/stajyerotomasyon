@@ -1,0 +1,17 @@
+UserName;Email;PhoneNumber;FirstName;LastName;InternshipStartDate;InternshipEndDate;SectionId;DepartmentId;Roles
+00001;omerfarukyalcin08@hotmail.com;05425946284;Ömer Faruk;Yalçın;2025-07-14;2025-08-25;1;1;Stajyer
+00002;aysegul.karakas@example.com;05301234567;Ayşegül;Karakas;2025-06-01;2025-07-15;5;2;Stajyer
+00003;mehmet.dogan@example.com;05441231234;Mehmet;Doğan;2025-07-10;2025-08-30;2;1;Stajyer
+00004;elif.kaya@example.com;05552349876;Elif;Kaya;2025-08-10;2025-09-20;12;4;Stajyer
+00005;yusuf.ozdemir@example.com;05001239876;Yusuf;Özdemir;2025-04-01;2025-05-15;16;6;Stajyer
+00006;hatice.celik@example.com;05339874521;Hatice;Çelik;2025-07-01;2025-08-15;9;3;Stajyer
+00007;mert.sahin@example.com;05559874523;Mert;Şahin;2025-05-20;2025-07-05;3;1;Stajyer
+00008;fatma.yildiz@example.com;05469874521;Fatma;Yıldız;2025-07-25;2025-09-01;6;2;Stajyer
+00009;burak.demir@example.com;05049874532;Burak;Demir;2025-08-20;2025-09-30;17;6;Stajyer
+00010;zeynep.aksoy@example.com;05329874562;Zeynep;Aksoy;2025-06-15;2025-07-20;10;4;Stajyer
+00011;emre.kurt@example.com;05439874512;Emre;Kurt;2025-07-18;2025-08-28;15;5;Stajyer
+00012;sema.ay@example.com;05519874566;Sema;Ay;2025-03-10;2025-04-20;7;3;Stajyer
+00013;ahmet.kilic@example.com;05079874521;Ahmet;Kılıç;2025-08-01;2025-09-10;1;1;Stajyer
+00014;melis.er@example.com;05379874533;Melis;Er;2025-06-25;2025-08-05;4;2;Stajyer
+00015;kaan.arslan@example.com;05489874599;Kaan;Arslan;2025-09-01;2025-10-10;14;5;Stajyer
+00016;bsahin6616@gmail.com;05442337453;Bilge Gülşah;Şahin;2025-06-30;2025-08-11;1;1;Stajyer

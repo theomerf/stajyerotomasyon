@@ -1,0 +1,176 @@
+﻿<div class="content-table">
+    <div class="table-header">
+        <div class="header-cell">
+            STAJYER BİLGİLERİ
+            <div class="sort-controls">
+                <div class="sort-buttons-row">
+                    <button hx-on:click="sortingButton(event);" class="sort-btn hxfilter" data-sort="NAME_ASC" title="A-Z Sırala">
+                        <i class="fas fa-sort-alpha-down"></i>
+                    </button>
+                    <button hx-on:click="sortingButton(event);" class="sort-btn" data-sort="NAME_DESC" title="Z-A Sırala">
+                        <i class="fas fa-sort-alpha-up"></i>
+                    </button>
+                </div>
+                <button hx-on:click="clearSortButton(event);" class="clear-cell-sort-btn" data-category="NAME" title="Sıralamayı Temizle">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="header-cell">
+            DEPARTMAN / BÖLÜM
+            <div class="sort-controls">
+                <div class="sort-buttons-row">
+                    <button hx-on:click="sortingButton(event);" class="sort-btn" data-sort="DEPARTMENT_ASC" title="A-Z Sırala">
+                        <i class="fas fa-sort-alpha-down"></i>
+                    </button>
+                    <button hx-on:click="sortingButton(event);" class="sort-btn" data-sort="DEPARTMENT_DESC" title="Z-A Sırala">
+                        <i class="fas fa-sort-alpha-up"></i>
+                    </button>
+                </div>
+                <button hx-on:click="clearSortButton(event);" class="clear-cell-sort-btn" data-category="DEPARTMENT" title="Sıralamayı Temizle">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="header-cell">
+            STAJ SÜRESİ
+            <div class="sort-controls">
+                <div class="sort-buttons-row">
+                    <button hx-on:click="sortingButton(event);" class="sort-btn" data-sort="DATE_ASC" title="Eskiden Yeniye">
+                        <i class="fas fa-sort-numeric-down"></i>
+                    </button>
+                    <button hx-on:click="sortingButton(event);" class="sort-btn" data-sort="DATE_DESC" title="Yeniden Eskiye">
+                        <i class="fas fa-sort-numeric-up"></i>
+                    </button>
+                </div>
+                <button hx-on:click="clearSortButton(event);" class="clear-cell-sort-btn" data-category="DATE" title="Sıralamayı Temizle">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="header-cell">
+            İLERLEME
+            <div class="sort-controls">
+                <div class="sort-buttons-row">
+                    <button hx-on:click="sortingButton(event);" class="sort-btn" data-sort="PROGRESS_ASC" title="Az İlerlemeden Çoka">
+                        <i class="fas fa-sort-amount-down"></i>
+                    </button>
+                    <button hx-on:click="sortingButton(event);" class="sort-btn" data-sort="PROGRESS_DESC" title="Çok İlerlemeden Aza">
+                        <i class="fas fa-sort-amount-up"></i>
+                    </button>
+                </div>
+                <button hx-on:click="clearSortButton(event);" class="clear-cell-sort-btn" data-category="PROGRESS" title="Sıralamayı Temizle">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="header-cell">
+            DURUM
+            <div class="sort-controls">
+                <div class="sort-buttons-row">
+                    <button hx-on:click="sortingButton(event);" class="sort-btn" data-sort="FINISHED" title="Tamamlananlar">
+                        <i class="fas fa-check-circle"></i>
+                    </button>
+                    <button hx-on:click="sortingButton(event);" class="sort-btn" data-sort="NOTSTARTED" title="Başlamayanlar">
+                        <i class="fas fa-clock"></i>
+                    </button>
+                </div>
+                <button hx-on:click="clearSortButton(event);" class="clear-cell-sort-btn" data-category="STATUS" title="Sıralamayı Temizle">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="header-cell">İŞLEMLER</div>
+    </div>
+
+    @{
+        var dateTime = DateTime.UtcNow;
+        foreach (var intern in Model?.Interns ?? new List<AccountDto>())
+        {
+
+            <div class="table-row">
+                <div class="cell student-info">
+                    <div class="student-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="student-details">
+                        <h4>@intern.FirstName @intern.LastName</h4>
+                        <span>@intern.Email</span>
+                    </div>
+                </div>
+                <div class="cell">
+                    <div class="department-info">
+                        <strong>@intern.DepartmentName</strong>
+                        <span>@intern.SectionName</span>
+                    </div>
+                </div>
+                <div class="cell">
+                    <div class="date-info">
+                        <div class="date-item">
+                            <i class="fas fa-play"></i>
+                            <span class="internshipStartDate" data-date="@intern.InternshipStartDate">@DateOnly.FromDateTime(intern.InternshipStartDate)</span>
+                        </div>
+                        <div class="date-item">
+                            <i class="fas fa-stop"></i>
+                            <span class="internshipEndDate" data-date="@intern.InternshipEndDate">@DateOnly.FromDateTime(intern.InternshipEndDate)</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="cell">
+                    <div class="progress-container">
+                        @{
+                            double rawProgress = (1 - (intern.InternshipEndDate - dateTime).TotalDays / (intern.InternshipEndDate - intern.InternshipStartDate).TotalDays) * 100;
+                            double clampedProgress = Math.Min(Math.Max(rawProgress, 0), 100);
+                            string progress = Math.Round(clampedProgress).ToString();
+                        }
+                        <div class="progress-circle" data-progress="@progress">
+                            <svg class="progress-ring" width="50" height="50">
+                                <circle class="progress-ring-bg" cx="25" cy="25" r="20"></circle>
+                                <circle class="progress-ring-fill" cx="25" cy="25" r="20"></circle>
+                            </svg>
+                            <span class="progress-text">%@progress</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="cell">
+                    @{
+                        string statusClass = "";
+                        string statusText = "";
+
+                        if (intern.InternshipStartDate > DateTime.Now)
+                        {
+                            statusClass = "notstarted";
+                            statusText = "BAŞLAMADI";
+                        }
+                        else if (intern.InternshipEndDate >= DateTime.Now)
+                        {
+                            statusClass = "active";
+                            statusText = "AKTİF";
+                        }
+                        else
+                        {
+                            statusClass = "completed";
+                            statusText = "TAMAMLANDI";
+                        }
+                    }
+                    <span class="status-badge @statusClass">@statusText</span>
+                </div>
+                <div class="cell">
+                    <div class="action-buttons">
+                        <a href="/Interns/UpdateIntern?userName=@(intern.UserName)" title="Düzenle" hx-get="/Interns/UpdateIntern?userName=@(intern.UserName)" hx-target="#content" hx-push-url="true" class="btn-action edit">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <form asp-action="DeleteIntern" asp-route-userName="@intern.UserName" class="hxform" hx-post="/Interns/DeleteIntern?userName=@(intern.UserName)" hx-target="#content" hx-push-url="true">
+                            <button type="submit" title="Sil" class="btn-action delete">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
+<div class="row">
+    <partial name="Small/_Pagination" />
+</div>

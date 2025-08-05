@@ -1,0 +1,295 @@
+﻿@model ApplicationDto
+
+@{
+    Layout = Context.Request.Headers["HX-Request"] == "true" ? null : "_Layout";
+}
+
+@{
+    var statusClass = "";
+    string status = "";
+
+    switch (Model.Status)
+    {
+        case "Approved":
+            statusClass = "status-approved";
+            status = "Onaylandı";
+            break;
+        case "OnWait":
+            statusClass = "status-onwait";
+            status = "Beklemede";
+            break;
+        case "Interview":
+            statusClass = "status-interview";
+            status = "Mülakat";
+            break;
+        case "Denied":
+            statusClass = "status-denied";
+            status = "Reddedildi";
+            break;
+    }
+}
+
+<div class="container">
+    <div class="row">
+        <div class="page-header">
+            <div class="header-main">
+                <div class="header-content">
+                    <h1>@Model.Title</h1>
+                    <p>Başvuran: @String.Concat(Model.ApplicantFirstName, " ", Model.ApplicantLastName) • @Model.ApplicantEmail</p>
+                </div>
+
+                <div class="header-actions">
+                    <a href="/Applications/Index" hx-get="/Applications/Index" hx-target="#content" hx-push-url="true" class="back-btn">
+                        <i class="fas fa-arrow-left"></i>Geri
+                    </a>
+                    <span class="applicationview-status-badge @statusClass">@status</span>
+                    <div class="application-id">Başvuru ID: #@Model.ApplicationId</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="card p-4 card-before">
+            <div class="card-body">
+                <div class="d-flex justify-content-center flex-wrap gap-3">
+                    @if (Model.Status == "Approved" && Model.IsExported != true)
+                    {
+                        <form asp-action="ExportToInterns" asp-route-applicationId="@Model.ApplicationId" class="hxform" hx-post="/Applications/ExportToInterns?applicationId=@(Model.ApplicationId)&status=Approved" hx-target="#content" hx-push-url="true">
+                            <button hx-on:click="handleSidebarClickForComponents(event);" data-target="Interns" class="application-btn btn-export-intern">
+                                <span><i class="fa-solid fa-file-export"></i></span> Stajyerlere Aktar
+                            </button>
+                        </form>
+                    }
+                    else if (Model.Status == "Approved" && Model.IsExported == true)
+                    {
+                        <button class="application-btn btn-export-intern" disabled>
+                            <span><i class="fa-solid fa-file-export"></i></span> Stajyerlere Aktarıldı
+                        </button>
+                    }
+                    @if (Model.Status != "Approved" && Model.Status != "Denied")
+                    {
+                        <form asp-action="ChangeStatus" asp-route-applicationId="@Model.ApplicationId" asp-route-status="Approved" class="hxform" hx-post="/Applications/ChangeStatus?applicationId=@(Model.ApplicationId)&status=Approved" hx-target="#content">
+                            <button class="application-btn btn-approve">
+                                <span><i class="fa-solid fa-check"></i></span> Onayla
+                            </button>
+                        </form>
+                        <form asp-action="ChangeStatus" asp-route-applicationId="@Model.ApplicationId" asp-route-status="Denied" class="hxform" hx-post="/Applications/ChangeStatus?applicationId=@(Model.ApplicationId)&status=Denied" hx-target="#content">
+                            <button class="application-btn btn-reject">
+                                <span><i class="fa-solid fa-x"></i></span> Reddet
+                            </button>
+                        </form>
+                    }
+                    @if (Model.Status != "Interview" && Model.Status != "Approved" && Model.Status != "Denied")
+                    {
+                        <form asp-action="ChangeStatus" asp-route-applicationId="@Model.ApplicationId" asp-route-status="Interview" class="hxform" hx-post="/Applications/ChangeStatus?applicationId=@(Model.ApplicationId)&status=Interview" hx-target="#content">
+                            <button type="submit" hx-on:click="openTeams()" class="application-btn btn-interview">
+                                <span><i class="fa-solid fa-handshake"></i></span> Mülakat Oluştur
+                            </button>
+                        </form>
+                    }
+                    <form asp-action="DeleteApplication" asp-route-applicationId="@Model.ApplicationId" class="hxform" hx-post="/Applications/DeleteApplication?applicationId=@(Model.ApplicationId)" hx-target="#content">
+                        <button type="submit" class="application-btn btn-delete">
+                            <span><i class="fas fa-trash"></i></span> Sil
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col col-md-7">
+            <div class="card">
+                <div class="card-header colored-header">
+                    <h3><i class="fa-solid fa-file" style="color: #ffffff;"></i> CV Dökümanı</h3>
+                    <div class="cv-url">dosya-adi.pdf</div>
+                    <button hx-on:click="openIframeFullscreen()" class="download-btn">Tam Ekran Yap</button>
+                </div>
+                <div class="cv-viewer">
+                    <iframe class="cv-pdf" src="~/images/cv/1.pdf" type="application/pdf"></iframe>
+                </div>
+            </div>
+        </div>
+        <div class="col col-md-5">
+
+
+            <div class="card">
+                <div class="card-header colored-header">
+                    <h3><i class="fa-solid fa-circle-info" style="color: #ffffff;"></i> Başvuru Detayları</h3>
+                </div>
+
+                <div class="card-body p-4">
+                    <div class="detail-group">
+                        <div class="detail-label">Pozisyon</div>
+                        <div class="detail-value">@Model.Title</div>
+                    </div>
+
+                    <div class="detail-group">
+                        <div class="detail-label">Başvuran</div>
+                        <div class="detail-value">@String.Concat(Model.ApplicantFirstName, " ", Model.ApplicantLastName)</div>
+                    </div>
+
+                    <div class="detail-group">
+                        <div class="detail-label">E-posta</div>
+                        <div class="detail-value">@Model.ApplicantEmail</div>
+                    </div>
+
+                    <div class="detail-group">
+                        <div class="detail-label">Departman / Bölüm</div>
+                        <div class="detail-value">@Model.DepartmentName • @Model.SectionName</div>
+                    </div>
+
+                    <div class="detail-group">
+                        <div class="detail-label">Başvuru Tarihi</div>
+                        <div class="detail-value">@Model.CreatedDate</div>
+                    </div>
+
+                    <div class="detail-group">
+                        <div class="detail-label">Son Güncelleme</div>
+                        <div class="detail-value">@Model.UpdatedDate</div>
+                    </div>
+
+                    <div class="detail-group">
+                        <div class="detail-label">Açıklama</div>
+                        <div class="detail-description">
+                            <p>@Model.Description</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header colored-header">
+                    <h3><i class="fa-solid fa-timeline" style="color: #ffffff;"></i>Başvuru Süreci</h3>
+                </div>
+                <div class="card-body p-4">
+                    @{
+                        int step = 0;
+                    }
+                    <div class="timeline-item">
+                        <div class="timeline-icon onwait">
+                            @{
+                                step++;
+                            }
+                            @step
+                        </div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Başvuru Alındı</div>
+                            <div class="timeline-date">@Model.CreatedDate.ToString("dd MMMM yyyy, HH:mm", new CultureInfo("tr-TR"))</div>
+                        </div>
+                    </div>
+
+
+                    @if (Model.SeenDate != null)
+                    {
+                        <div class="timeline-item">
+                            <div class="timeline-icon onreview">
+                                @{
+                                    step++;
+                                }
+                                @step
+                            </div>
+                            <div class="timeline-content">
+                                <div class="timeline-title">CV İncelemeye Alındı</div>
+                                <div class="timeline-date">@Model.SeenDate.Value.ToString("dd MMMM yyyy, HH:mm", new CultureInfo("tr-TR"))</div>
+                            </div>
+                        </div>
+                    }
+
+                    @if (Model.InterviewedDate != null)
+                    {
+                        <div class="timeline-item">
+                            <div class="timeline-icon interview">
+                                @{
+                                    step++;
+                                }
+                                @step
+                            </div>
+                            <div class="timeline-content">
+                                <div class="timeline-title">Mülakat Planlandı</div>
+                                <div class="timeline-date">@Model.InterviewedDate.Value.ToString("dd MMMM yyyy, HH:mm", new CultureInfo("tr-TR"))</div>
+                            </div>
+                        </div>
+                    }
+
+                    @if (Model.Status == "Approved")
+                    {
+                        <div class="timeline-item">
+                            <div class="timeline-icon approved">
+                                @{
+                                    step++;
+                                }
+                                @step
+                            </div>
+                            <div class="timeline-content">
+                                <div class="timeline-title">Başvuru Onaylandı</div>
+                                <div class="timeline-date">@Model.UpdatedDate.ToString("dd MMMM yyyy, HH:mm", new CultureInfo("tr-TR"))</div>
+                            </div>
+                        </div>
+                    }
+                    @if (Model.Status == "Denied" && Model.DeniedDate != null)
+                    {
+                        <div class="timeline-item">
+                            <div class="timeline-icon denied">
+                                @{
+                                    step++;
+                                }
+                                @step
+                            </div>
+                            <div class="timeline-content">
+                                <div class="timeline-title">Başvuru Reddedildi</div>
+                                <div class="timeline-date">@Model.DeniedDate.Value.ToString("dd MMMM yyyy, HH:mm", new CultureInfo("tr-TR"))</div>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header colored-header">
+                    <h3><i class="fa-solid fa-note-sticky" style="color: #ffffff;"></i>İnceleme Notları</h3>
+                </div>
+                <div class="card-body book-body notes-body">
+                    <div id="notes-section">
+                        @if (Model.Notes!.Any())
+                        {
+                            <partial name="Small/_Notes" model="@Model.Notes" />
+                        }
+                        else
+                        {
+                            <div class="row no-note-icon">
+                                <i class="fa-solid fa-circle-xmark"></i>
+                            </div>
+                            <div class="row no-note">
+                                Henüz not girilmemiş.
+                            </div>
+                        }
+                    </div>
+                    <div class="new-note-container mt-5">
+                        <form asp-action="AddNote" asp-route-applicationId="@Model.ApplicationId" class="hxform notes" hx-post="/Applications/AddNote?applicationId=@(Model.ApplicationId)" hx-target="#notes-section">
+                            @Html.AntiForgeryToken()
+                            <textarea class="notes-textarea new-note" name="note" placeholder="✨ Yeni notunuzu buraya yazın... (Başvuru ile ilgili düşüncelerinizi, değerlendirmelerinizi veya önemli notlarınızı girebilirsiniz)"></textarea>
+                            <button hx-on:click="removeText();" type="submit" class="save-notes-btn">
+                                <span><i class="fa-solid fa-floppy-disk fa-xl"></i> Notları Kaydet</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/viewapplication.js" asp-append-version="true"></script>
+
+

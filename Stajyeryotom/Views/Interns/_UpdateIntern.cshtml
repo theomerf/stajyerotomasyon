@@ -1,0 +1,125 @@
+﻿@{
+    Layout = Context.Request.Headers["HX-Request"] == "true" ? null : "_Layout";
+}
+
+@model AccountDtoForUpdate
+<div id="updateIntern-dataHolder" data-section="@Model.SectionId.ToString()"></div>
+<div class="form-container" hx-on::load="initUpdateInternScripts();">
+    <div class="form-header">
+        <a href="/Interns/Index" hx-get="/Interns/Index" hx-target="#content" hx-push-url="true" class="back-btn">
+            <i class="fas fa-arrow-left"></i>Geri
+        </a>
+        <h1><i class="fas fa-user-plus"></i> Stajyer Güncelleme</h1>
+        <p>Yeni stajyer bilgilerini eksiksiz olarak doldurunuz</p>
+    </div>
+
+    <div class="form-body">
+        <div id="login-errors" class="text-danger validation-summary-errors" asp-validation-summary="All"></div>
+        <form method="post" asp-action="UpdateIntern" id="userForm" class="hxform validation" hx-post="/Interns/UpdateIntern" hx-target="#content">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="Roles" value="Stajyer" />
+            <div class="form-group">
+                <label class="form-label" asp-for="UserName">
+                    <i class="fas fa-at"></i>Kullanıcı No
+                </label>
+                <input type="text" class="form-control" hx-on:focus="handleInputFocus(event);" hx-on:blur="handleInputBlur(event);" asp-for="UserName" value="@Model.UserName" readonly />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label" asp-for="FirstName">
+                        <i class="fas fa-user"></i>Ad
+                    </label>
+                    <input type="text" class="form-control" hx-on:focus="handleInputFocus(event);" hx-on:blur="handleInputBlur(event);" value="@Model.FirstName" asp-for="FirstName" placeholder="Adınızı giriniz" />
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" asp-for="LastName">
+                        <i class="fas fa-user"></i>Soyad
+                    </label>
+                    <input type="text" class="form-control" hx-on:focus="handleInputFocus(event);" hx-on:blur="handleInputBlur(event);" value="@Model.LastName" asp-for="LastName" placeholder="Soyadınızı giriniz" />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" asp-for="Email">
+                        <i class="fas fa-envelope"></i>E-Posta Adresi
+                    </label>
+                    <input type="email" class="form-control" hx-on:focus="handleInputFocus(event);" hx-on:blur="handleInputBlur(event);" value="@Model.Email" asp-for="Email" placeholder="ornek@email.com" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" asp-for="PhoneNumber">
+                        <i class="fas fa-phone"></i>Telefon Numarası
+                    </label>
+                    <input type="tel" class="form-control" hx-on:focus="handleInputFocus(event);" hx-on:blur="handleInputBlur(event);" value="@Model.PhoneNumber" asp-for="PhoneNumber" placeholder="0555 555 55 55" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group full-width">
+                <div class="date-group">
+                    <div class="form-group">
+                        <label class="form-label" asp-for="InternshipStartDate">
+                            <i class="fas fa-calendar-alt"></i>Staj Başlangıç Tarihi
+                        </label>
+                        <input type="date" class="form-control" hx-on:focus="handleInputFocus(event);" hx-on:blur="handleInputBlur(event);" value="@Model.InternshipStartDate.ToString("yyyy-MM-dd")" asp-for="InternshipStartDate" />
+                        <span asp-validation-for="InternshipStartDate" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" asp-for="InternshipEndDate">
+                            <i class="fas fa-calendar-check"></i>Staj Bitiş Tarihi
+                        </label>
+                        <input type="date" class="form-control" hx-on:focus="handleInputFocus(event);" hx-on:blur="handleInputBlur(event);" value="@Model.InternshipEndDate.ToString("yyyy-MM-dd")" asp-for="InternshipEndDate" />
+                        <span asp-validation-for="InternshipEndDate" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group full-width">
+                <label class="form-label">
+                    <i class="fas fa-building"></i>Departman ve Bölüm Seçimi
+                </label>
+
+                <div class="section-selection">
+                    <div class="department-section">
+                        <div class="section-title">
+                            <i class="fas fa-sitemap"></i>Departman Seçiniz
+                        </div>
+                        <select class="form-control" id="updateIntern-departmentSelect" hx-on:change="departmentSelectHandlerForUpdate(event);" asp-for="DepartmentId" asp-items="ViewBag.DepartmentList" required>
+                            <option value="">Departman seçiniz...</option>
+                        </select>
+                        <span asp-validation-for="DepartmentId" class="text-danger"></span>
+                    </div>
+
+                    <div id="updateIntern-sectionsContainer" style="display: none;">
+                        <div class="section-title">
+                            <i class="fas fa-users"></i>Bölüm Seçiniz
+                        </div>
+                        <div class="sections-grid" id="updateIntern-sectionsGrid">
+                        </div>
+                        <div class="helper-text">
+                            <i class="fas fa-info-circle"></i>Stajyerin staj yapacağı bölümü seçiniz.
+                        </div>
+                    </div>
+                </div>
+                <span asp-validation-for="SectionId" class="text-danger"></span>
+            </div>
+
+            <button type="submit" hx-on:click="handleFormSubmitForUpdate();" class="form-submit-btn" id="submitBtn">
+                <i class="fas fa-user-plus"></i> Stajyeri Güncelle
+            </button>
+        </form>
+    </div>
+</div>
+
+<script>
+    window.departmentSections = @Html.Raw(ViewBag.DepartmentSectionsJson ?? "{}");
+    window.selectedDepartmentIdForUpdate = @Html.Raw(ViewBag.SelectedDepartmentId ?? "null");
+    window.selectedSectionIdForUpdate = @Html.Raw(ViewBag.SelectedSectionId ?? "null");
+</script>
+
+<script asp-append-version="true" src="~/js/updateintern.js"></script>

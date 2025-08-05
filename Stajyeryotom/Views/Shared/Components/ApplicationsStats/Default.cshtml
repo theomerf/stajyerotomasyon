@@ -1,0 +1,44 @@
+﻿@model IEnumerable<StatsDto>
+
+<div class="applications-stats-grid">
+    @foreach (var stats in Model)
+    {
+
+        var title = "";
+        var iconClass = "";
+
+        switch (stats.Key)
+        {
+            case "Approved":
+                title = "Onaylanan";
+                iconClass = "fa-check";
+                break;
+            case "Interview":
+                title = "Mülakat";
+                iconClass = "fa-user-check";
+                break;
+            case "OnWait":
+                title = "Beklemede";
+                iconClass = "fa-clock";
+                break;
+            case "Denied":
+                title = "Reddedilen";
+                iconClass = "fa-times";
+                break;
+        }
+
+        <div class="stat-card">
+            <div class="stat-card-header">
+                <div class="stat-card-title">@title</div>
+                <div class="stat-card-icon">
+                    <i class="fas @iconClass"></i>
+                </div>
+            </div>
+            <div class="stat-card-value">@stats.TotalCount</div>
+            <div class="stat-card-change @(stats.SignedPercentage.Contains("+") ? "positive" : "negative")">
+                <i class="fas fa-arrow-up"></i>
+                <span>@stats.SignedPercentage% bu ay (@stats.SignedDifference)</span>
+            </div>
+        </div>
+    }
+</div>

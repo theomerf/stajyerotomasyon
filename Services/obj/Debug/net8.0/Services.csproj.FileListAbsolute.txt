@@ -1,0 +1,5 @@
+C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Services\obj\Debug\net8.0\Services.csproj.AssemblyReference.cache
+C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Services\obj\Debug\net8.0\Services.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Services\obj\Debug\net8.0\Services.AssemblyInfoInputs.cache
+C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Services\obj\Debug\net8.0\Services.AssemblyInfo.cs
+C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Services\obj\Debug\net8.0\Services.csproj.CoreCompileInputs.cache

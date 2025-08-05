@@ -1,0 +1,143 @@
+﻿@{
+    var isCollapsed = Context.Request.Cookies["Collapsed"] ?? "true";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="page-header @((isCollapsed == "true") ? "collapsed" : "")">
+            <div class="header-main">
+                <div class="header-content">
+                    <h1><i class="fas fa-graduation-cap"></i> Anasayfa</h1>
+                    <p>Hoş geldiniz, @User.FindFirst("FullName")?.Value! Staj süreçlerinizi kolayca yönetin ve takip edin.</p>
+                </div>
+            </div>
+
+            <div class="header-toggle-wrapper">
+                <button class="btn-toggle-header" hx-on:click="toggleHeaderCollapse(event)" title="Küçült/Genişlet">
+                    <i class="fas fa-chevron-up"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="row g-4 mb-4">
+        <div class="col col-md-4">
+            @await Component.InvokeAsync("InternsSummary")
+        </div>
+        <div class="col col-md-4">
+            @await Component.InvokeAsync("EndedInternshipStats")
+        </div>
+        <div class="col col-md-4">
+            @await Component.InvokeAsync("ApplicationsOnWaitStats")
+        </div>
+    </div>
+    <div class="row g-3 mb-4">
+        <div class="col col-md-3">
+            <a href="/Interns/AddIntern" hx-get="/Interns/AddIntern" hx-on:click="handleSidebarClickForComponents(event);" hx-target="#content" hx-push-url="true" data-target="Interns">
+                <div class="card action-card">
+                    <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
+                        <div class="card-icon">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <h3 class="action-card-title mt-4">Yeni Stajyer Ekle</h3>
+                        <p class="action-card-p">Sisteme yeni stajyer kaydı oluşturun</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col col-md-3">
+            <a href="/Applications/Index?Status=OnWait" hx-get="/Applications/Index?Status=OnWait" hx-on:click="handleSidebarClickForComponents(event);" hx-target="#content" hx-push-url="true" data-target="Applications">
+                <div class="card action-card">
+                    <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
+                        <div class="card-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <h3 class="action-card-title mt-4">Başvuru Değerlendir</h3>
+                        <p class="action-card-p">Bekleyen staj başvurularını inceleyin</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col col-md-3">
+            <div class="card action-card">
+                <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
+                    <div class="card-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="action-card-title mt-4">Rapor Oluştur</h3>
+                    <p class="action-card-p">Staj performans raporları hazırlayın</p>
+                </div>
+            </div>
+        </div>
+        <div class="col col-md-3">
+            <div class="card action-card">
+                <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
+                    <div class="card-icon">
+                        <i class="fas fa-cog"></i>
+                    </div>
+                    <h3 class="action-card-title mt-4">Sistem Ayarları</h3>
+                    <p class="action-card-p">Staj yönetim ayarlarını düzenleyin</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row g-3 mb-4">
+        @await Component.InvokeAsync("DashboardCharts")
+    </div>
+    <div class="row">
+        <div class="card card-before">
+            <div class="card-body">
+                <h4><i class="fas fa-history"></i>Son Aktiviteler</h4>
+
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-title">Ahmet Yılmaz - Yeni stajyer kaydı</div>
+                        <div class="activity-time">2 saat önce</div>
+                    </div>
+                </div>
+
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-title">Elif Demir - Staj başvurusu onaylandı</div>
+                        <div class="activity-time">5 saat önce</div>
+                    </div>
+                </div>
+
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-title">TechSoft A.Ş. - Yeni şirket ortaklığı</div>
+                        <div class="activity-time">1 gün önce</div>
+                    </div>
+                </div>
+
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-title">Mehmet Kaya - Staj tamamlandı</div>
+                        <div class="activity-time">2 gün önce</div>
+                    </div>
+                </div>
+
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-title">Zeynep Öztürk - Staj raporu yüklendi</div>
+                        <div class="activity-time">3 gün önce</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

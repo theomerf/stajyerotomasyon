@@ -1,0 +1,25 @@
+﻿@model List<Note>
+<div >
+    @foreach (var note in Model)
+    {
+        <div class="paper-note">
+            <form asp-action="RemoveNote" asp-route-applicationId="@note.ApplicationId"
+                  class="hxform notes"
+                  hx-post="/Applications/RemoveNote?applicationId=@note.ApplicationId"
+                  hx-target="#notes-section">
+                <input type="hidden" name="noteId" value="@note.NoteId" />
+                @Html.AntiForgeryToken()
+                <button class="note-remove-btn">X</button>
+            </form>
+
+            <div class="note-meta">@note.CreatedAt.ToString("dd MMMM yyyy, HH:mm", new CultureInfo("tr-TR"))</div>
+            <div class="note-meta author">@note.AccountName</div>
+            <div class="paper-note-content">@note.Content</div>
+        </div>
+    }
+</div>
+
+
+
+
+

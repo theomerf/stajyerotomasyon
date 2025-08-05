@@ -1,0 +1,25 @@
+﻿@model StatsDto
+
+<div class="card p-4 card-before card-hover">
+    <div class="card-body">
+        <div class="row stat-card-header">
+            <div class="col col-md-9">
+                <div class="card-title stat-card-title">Bekleyen Başvurular</div>
+            </div>
+            <div class="col col-md-3">
+                <div class="card-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="card-text stat-card-value">@Model.TotalCount.ToString()</div>
+        </div>
+        <div class="row">
+            <div class="card-text stat-card-change @(Model.SignedPercentage.Contains("+") ? "positive" : "negative")">
+                <i class="fas @(Model.SignedPercentage.Contains("+") ? "fa-arrow-up" : "fa-arrow-down")"></i>
+                <span>@Model.Percentage% bu ay (@Model.SignedDifference)</span>
+            </div>
+        </div>
+    </div>
+</div>

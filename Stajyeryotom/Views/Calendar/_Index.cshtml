@@ -1,0 +1,150 @@
+﻿@model CalendarViewModel
+@{
+    Layout = Context.Request.Headers["HX-Request"] == "true" ? null : "_Layout";
+    var isCollapsed = Context.Request.Cookies["Collapsed"] ?? "true";
+    var monthNames = new[] { "Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", 
+                            "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık" };
+}
+
+
+<div class="container">
+    <div class="row">
+        <div class="page-header @((isCollapsed == "true") ? "collapsed" : "")">
+            <div class="header-main">
+                <div class="header-content">
+                    <h1><i class="fas fa-calendar-alt"></i> Takvim</h1>
+                    <p>Eğitimleri ve etkinlikleri görüntüleyin ve yönetin.</p>
+                </div>
+            </div>
+
+            <div class="header-toggle-wrapper">
+                <button class="btn-toggle-header" hx-on:click="toggleHeaderCollapse(event)" title="Küçült/Genişlet">
+                    <i class="fas fa-chevron-up"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="calendar-header">
+                    <div class="calendar-header-content">
+                        <!-- Sol taraf - Renk rehberi -->
+                        <div class="color-guide">
+                            <div class="guide-item">
+                                <div class="event-color event"></div>
+                                <span>Etkinlik</span>
+                            </div>
+                            <div class="guide-item">
+                                <div class="event-color education"></div>
+                                <span>Eğitim</span>
+                            </div>
+                            <div class="guide-item">
+                                <div class="event-color orientation"></div>
+                                <span>Oryantasyon</span>
+                            </div>
+                            <div class="guide-item">
+                                <div class="event-color other"></div>
+                                <span>Diğer</span>
+                            </div>
+                        </div>
+
+                        <!-- Orta kısım - Kontroller -->
+                        <div class="calendar-controls">
+                            <a hx-on:click="updatePrevButtonUrl();"
+                               class="nav-button date-send"
+                               id="prevButton"
+                               hx-target="#calendarContainer">‹</a>
+
+                            <div class="control-group">
+                                <label>YIL:</label>
+                                <select id="yearSelect" hx-get="@Url.Action("Index")" class="date-send" hx-target="#calendarContainer" hx-include="#monthSelect" asp-for="Year" name="year">
+                                    @for (int year = Model.Year - 5; year <= Model.Year + 5; year++)
+                                    {
+                                        <option value="@year">@year</option>
+                                    }
+                                </select>
+                            </div>
+
+                            <div class="control-group">
+                                <label>AY:</label>
+                                <select id="monthSelect" hx-get="@Url.Action("Index")" hx-target="#calendarContainer" class="date-send" hx-include="#yearSelect" asp-for="Month" name="month">
+                                    @for (int i = 1; i <= 12; i++)
+                                    {
+                                        <option value="@i">@monthNames[i - 1]</option>
+                                    }
+                                </select>
+                            </div>
+
+                            <a hx-on:click="updateNextButtonUrl();"
+                               class="nav-button date-send"
+                               hx-target="#calendarContainer"
+                               id="nextButton">›</a>
+                        </div>
+
+                        <!-- Sağ taraf boş (gelecekte başka özellikler için) -->
+                        <div class="header-right">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="calendar-body" id="calendarContainer">
+                    @await Html.PartialAsync("Small/_CalendarGrid", Model)
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="eventModal" class="event-modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id="modalTitle">Etkinlik Oluştur</h2>
+        </div>
+        <form method="post" asp-action="AddEvent" id="eventForm" class="hxform validation date-send"
+              hx-post="@Url.Action("AddEvent")" hx-target="#calendarContainer">
+            @Html.AntiForgeryToken()
+            <input type="hidden" id="selectedDate" name="selectedDate" />
+            
+            <div class="form-group">
+                <label asp-for="Event.Title">Etkinlik Başlığı:</label>
+                <input asp-for="Event.Title" type="text" id="eventTitle" required>
+                <span asp-validation-for="Event.Title" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="Event.Time">Saat:</label>
+                <input asp-for="Event.Time" type="time" id="eventTime" required>
+                <span asp-validation-for="Event.Time" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                <label for="eventType">Etkinlik Türü:</label>
+                <select asp-for="Event.Type" id="eventType">
+                    <option>Lütfen etkinlik türü seçiniz...</option>
+                    <option value="Event">Etkinlik</option>
+                    <option value="Education">Eğitim</option>
+                    <option value="Orientation">Oryantasyon</option>
+                    <option value="Other">Diğer</option>
+                </select>
+                <span asp-validation-for="Event.Type" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="Event.Description">Açıklama:</label>
+                <textarea asp-for="Event.Description" id="eventDescription" rows="3"></textarea>
+                <span asp-validation-for="Event.Description" class="text-danger"></span>
+            </div>
+            
+            <div class="button-group">
+                <button type="button" class="btn btn-cancel" onclick="closeModal()">İptal</button>
+                <button type="submit" onclick="closeModal()" class="btn btn-save">Kaydet</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="tooltip" class="tooltip"></div>
+
+<script src="/js/calendar.js" asp-append-version="true"></script>

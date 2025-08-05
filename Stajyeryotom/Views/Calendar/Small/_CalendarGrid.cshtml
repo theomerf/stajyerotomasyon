@@ -1,0 +1,54 @@
+﻿@model CalendarViewModel
+<div id="modelMonth" data-month="@Model.Month"></div>
+<div id="modelYear" data-year="@Model.Year"></div>
+<div class="calendar-grid" id="calendarGrid" hx-on::load="changeSelects();">
+    <div class="day-header">Pzt</div>
+    <div class="day-header">Sal</div>
+    <div class="day-header">Çar</div>
+    <div class="day-header">Per</div>
+    <div class="day-header">Cum</div>
+    <div class="day-header">Cmt</div>
+    <div class="day-header">Paz</div>
+    @foreach (var day in Model.Days)
+    {
+        <div class="day-cell @(day.IsOtherMonth ? "other-month" : "") @(day.IsToday ? "today" : "")"
+             @if (!day.IsOtherMonth)
+             {
+                 @:onclick="openModal('@day.Date.ToString("yyyy-MM-dd")')"
+             }
+             @if (day.Events.Any())
+             {
+                 @:onmouseenter='showTooltip(event, "@day.Date.ToString("yyyy-MM-dd")", @Html.Raw(Json.Serialize(day.Events.Select(e => new { time = e.Time.ToString(@"hh\:mm"), title = e.Title }))))'
+                 @:onmouseleave="hideTooltip()"
+             }
+    >
+            <div class="day-number">@day.Day</div>
+            <div class="events-container">
+                @{
+                    var visibleEvents = day.Events.Take(3);
+                }
+                @foreach (var eventItem in visibleEvents)
+                {
+                    <div class="event-indicator @eventItem.Type">
+                        <div class="event-icon"></div>
+                        @eventItem.Time.ToString(@"hh\:mm")
+                        <span class="eventTitle">@eventItem.Title</span>
+                        <form asp-action="RemoveEvent" class="hxform date-send"
+                              hx-post="/Calendar/RemoveEvent?eventId=@(eventItem.EventId)&selectedDateForRemove=@day.Date.ToString("yyyy-MM-dd")"
+                              hx-target="#calendarContainer">
+                            <button type="submit" title="Etkinliği Sil" hx-on:click="deleteEvent(event)" class="event-delete-btn">
+                                <span class="delete-icon">×</span>
+                            </button>
+                        </form>
+                    </div>
+                }
+                @if (day.HasMoreEvents)
+                {
+                    <div class="event-indicator">
+                        +@day.MoreEventsCount daha
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>

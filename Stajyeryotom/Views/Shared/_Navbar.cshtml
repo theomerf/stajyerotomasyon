@@ -1,0 +1,130 @@
+﻿<nav class="navbar navbar-expand-lg navbar-dark custom-navbar shadow-sm sticky-top">
+	<div class="container-fluid">
+		<a class="ps-4 navbar-brand ajax-link fw-bold text-white d-flex align-items-center" asp-action="Index">
+			<div class="brand-logo">
+				<i class="fas fa-graduation-cap"></i>
+
+			</div>
+			<h4 class="mx-2">Stajyer Portal</h4>
+		</a>
+
+		<div class="d-flex align-items-center pe-5">
+			@if (User?.Identity?.IsAuthenticated == true)
+			{
+				<a asp-controller="Account" asp-action="Notifications" class="nav-link ajax-link text-white nav-icon-link position-relative me-2" title="Bildirimler">
+					<i class="fa-regular fa-bell"></i>
+					<span class="position-absolute start-100 translate-middle badge rounded-pill bg-danger notification-badge">2</span>
+				</a>
+			}
+
+			<div class="nav-item">
+				<div class="dropdown user-dropdown">
+					<a class="nav-link dropdown-toggle text-white fw-semibold d-flex align-items-center" id="navbarDropdown"
+					   role="button" data-bs-toggle="dropdown" aria-expanded="false">
+						<div class="avatar-wrapper mx-2">
+							<img src="/images/profile_pictures/default.png"
+								 alt="Avatar" class="rounded-circle" width="32" height="32">
+						</div>
+						<span class="d-none d-lg-inline">@User?.FindFirst("FullName")?.Value</span>
+					</a>
+					<div class="dropdown-menu user-dropdown-menu" aria-labelledby="navbarDropdown">
+						<div class="user-info p-3 text-center">
+							<div class="avatar-lg mx-auto mb-3">
+								<img src="/images/profile_pictures/default.png" alt="Avatar" class="rounded-circle img-thumbnail">
+							</div>
+							<h6 class="mb-0">Kullanıcı No: @User?.Identity?.Name</h6>
+							<small class="text-muted">@(User!.IsInRole("Admin") ? "Admin" : "Stajyer")</small>
+						</div>
+						<div class="dropdown-divider"></div>
+						<div class="dropdown-items-wrapper">
+							<a asp-controller="Account" asp-action="Profile" class="ajax-link dropdown-item">
+								<i class="fa-solid fa-user me-2"></i> Profilim
+							</a>
+							<a class="dropdown-item" href="#">
+								<i class="fa-solid fa-gear me-2"></i> Ayarlar
+							</a>
+							@if (User.IsInRole("Admin"))
+							{
+								<a class="dropdown-item" asp-controller="Admin" asp-action="Index">
+									<i class="fa-solid fa-gauge-high me-2"></i> Admin Paneli
+								</a>
+							}
+							else
+							{
+								<a class="dropdown-item" href="#">
+									<i class="fa-solid fa-info me-2"></i> Destek
+								</a>
+							}
+							<div class="dropdown-divider"></div>
+							<a class="dropdown-item logout-item" asp-controller="Account" asp-action="Logout">
+								<i class="fa-solid fa-right-from-bracket me-2"></i> Çıkış Yap
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<button class="navbar-toggler border-0 d-lg-none ms-2" type="button" data-bs-toggle="collapse"
+					data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+					aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+		</div>
+	</div>
+</nav>
+
+<script>
+			document.addEventListener('DOMContentLoaded', function () {
+					initNavbar();
+			});
+		 function initNavbar() {
+			var topNavbar = document.querySelector('.custom-navbar');
+
+			var dropdownElementList = [].slice.call(document.querySelectorAll('.user-dropdown .dropdown-toggle'));
+
+			dropdownElementList.forEach(function (dropdownToggleEl) {
+				var dropdownMenu = dropdownToggleEl.nextElementSibling;
+
+				if (dropdownMenu) {
+					dropdownMenu.classList.add('animate__animated');
+				}
+
+				dropdownToggleEl.addEventListener('shown.bs.dropdown', function () {
+					dropdownMenu.classList.remove('animate__fadeOutDown');
+					dropdownMenu.classList.add('animate__fadeInUp');
+				});
+
+				dropdownToggleEl.addEventListener('hide.bs.dropdown', function (e) {
+					if (!dropdownMenu.classList.contains('animate__fadeOutDown')) {
+						e.preventDefault();
+
+						dropdownMenu.classList.remove('animate__fadeInUp');
+						dropdownMenu.classList.add('animate__fadeOutDown');
+
+						setTimeout(function () {
+							dropdownToggleEl.click();
+							dropdownMenu.classList.remove('animate__fadeOutDown');
+						}, 300);
+					}
+				});
+			});
+
+			if (window.innerWidth < 992) {
+				var mobileMenu = document.querySelector('#navbarNav .navbar-nav');
+			}
+
+			window.addEventListener('scroll', function() {
+				var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+
+				if (scrollTop > 50) {
+					topNavbar.classList.add('scrolled');
+				} else {
+					topNavbar.classList.remove('scrolled');
+				}
+
+				lastScrollTop = scrollTop;
+			});
+
+	};
+
+</script>

@@ -1,0 +1,76 @@
+﻿<div class="stajyer-grid">
+    @{
+        var dateTime = DateTime.Now;
+        foreach (var application in Model?.Applications ?? new List<ApplicationDto>())
+        {
+
+            <div class="stajyer-card">
+                <div class="card-header">
+                    <div class="student-avatar-large">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </div>
+
+                <div class="card-content">
+                    <h3>@application.ApplicantFirstName @application.ApplicantLastName</h3>
+                    <p class="email">@application.ApplicantEmail</p>
+
+                    <div class="card-info">
+                        <div class="info-item">
+                            <i class="fas fa-building"></i>
+                            <span><strong>@application.DepartmentName</strong><br>@application.SectionName</span>
+                        </div>
+
+                        <div class="info-item">
+                            <i class="fas fa-calendar"></i>
+                            <span>@DateOnly.FromDateTime(application.CreatedDate) - @DateOnly.FromDateTime(application.UpdatedDate)</span>
+                        </div>
+                    </div>
+
+                    <div class="card-status">
+                        @{
+                            string status = "";
+
+                            switch (@application.Status)
+                            {
+                                case "Approved":
+                                    status = "Onaylandı";
+                                    break;
+                                case "Interview":
+                                    status = "Mülakat";
+                                    break;
+                                case "OnWait":
+                                    status = "Beklemede";
+                                    break;
+                                case "Denied":
+                                    status = "Reddedildi";
+                                    break;
+                                default:
+                                    status = "";
+                                    break;
+                            }
+                        }
+                        <span class="status-badge @application.Status">@status</span>
+                    </div>
+                </div>
+
+                <div class="card-actions">
+                    <a href="/Applications/View/@(application.ApplicationId)" hx-get="/Applications/View/@(application.ApplicationId)" hx-target="#content" hx-push-url="true" class="btn-action btn-view" title="Görüntüle">
+                        <i class="fas fa-eye"></i>
+                        Görüntüle
+                    </a>
+                    <form asp-action="DeleteApplication" asp-route-applicationId="@application.ApplicationId" class="hxform" hx-post="/Applications/DeleteApplication?applicationId=@(application.ApplicationId)" hx-target="#content" hx-push-url="true">
+                        <button type="submit" class="btn-action delete">
+                            <i class="fas fa-trash"></i>Sil
+                        </button>
+                    </form>
+                </div>
+            </div>
+        }
+    }
+</div>
+<div class="row">
+    <div>
+        <partial name="Small/_Pagination" />
+    </div>
+</div>

@@ -1,0 +1,58 @@
+﻿@model IEnumerable<DepartmentDto>
+
+<div class="cork-board">
+    <div class="title-note">
+        <div class="pushpin pushpin-yellow"></div>
+        <div class="note-content title-text">
+            ŞİRKET ORGANİZASYONU
+        </div>
+    </div>
+    <div class="departments-container">
+        @{
+            var i = 0;
+        }
+        @foreach (var department in Model)
+        {
+            <div class="department-wrapper" style="animation-delay: @(i* 0.1)s;">
+                <div class="department-note">
+                    <div class="pushpin pushpin-blue"></div>
+                    <div class="note-content department-title">
+                        @department.DepartmentName
+                    </div>
+                </div>
+                
+                <div class="sections-note">
+                    <div class="pushpin pushpin-red"></div>
+                    <div class="note-content sections-list">
+                        @foreach (var section in department.Sections)
+                        {
+                            <div class="section-line">@(section.SectionName)</div>
+                        }
+                    </div>
+                </div>
+            </div>
+            i++;
+        }
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const departmentNotes = document.querySelectorAll('.department-note');
+
+        departmentNotes.forEach(note => {
+            note.addEventListener('click', function() {
+                const wrapper = this.closest('.department-wrapper');
+                const sectionsNote = wrapper.querySelector('.sections-note');
+
+                sectionsNote.style.transform = 'rotate(0deg) scale(1.05)';
+                sectionsNote.style.boxShadow = '0 8px 25px rgba(52, 152, 219, 0.3)';
+
+                setTimeout(() => {
+                    sectionsNote.style.transform = 'rotate(1deg) scale(1)';
+                    sectionsNote.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)';
+                }, 1200);
+            });
+        });
+    });
+</script>

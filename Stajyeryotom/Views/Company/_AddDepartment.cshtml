@@ -1,0 +1,45 @@
+﻿@{
+    Layout = Context.Request.Headers["HX-Request"] == "true" ? null : "_Layout";
+}
+
+@model DepartmentDto
+
+<div class="form-container">
+    <div class="form-header">
+        <a href="/Company/Index" hx-get="/Company/Index" hx-target="#content" hx-push-url="true" class="back-btn">
+            <i class="fas fa-arrow-left"></i>Geri
+        </a>
+        <h1><i class="fas fa-user-plus"></i> Departman Oluştur</h1>
+        <p>Yeni departman bilgilerini eksiksiz olarak doldurunuz</p>
+    </div>
+
+    <div class="form-body">
+        <div id="login-errors" class="text-danger validation-summary-errors" asp-validation-summary="All"></div>
+        <form method="post" asp-action="AddDepartment" id="departmentForm" class="hxform validation" hx-post="/Company/AddDepartment" hx-target="#content">
+            @Html.AntiForgeryToken()
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label" asp-for="DepartmentName">
+                        <i class="fas fa-user"></i>Ad
+                    </label>
+                    <input type="text" class="form-control" hx-on:focus="handleInputFocus(event);" hx-on:blur="handleInputBlur(event);" asp-for="DepartmentName" placeholder="Departman adını giriniz" />
+                    <span asp-validation-for="DepartmentName" class="text-danger"></span>
+                </div>
+            </div>
+
+            <button type="submit" class="form-submit-btn" id="submitBtn">
+                <i class="fas fa-user-plus"></i> Departman Oluştur
+            </button>
+        </form>
+    </div>
+</div>
+
+<script>
+    const departmentSections = @Html.Raw(Json.Serialize(ViewBag.DepartmentSections))
+
+    document.getElementById('departmentForm').addEventListener('submit', function() {
+        const submitBtn = document.getElementById('submitBtn');
+        submitBtn.classList.add('loading');
+        submitBtn.innerHTML = '<span style="opacity: 0;">Departman Oluştur</span>';
+    });
+</script>

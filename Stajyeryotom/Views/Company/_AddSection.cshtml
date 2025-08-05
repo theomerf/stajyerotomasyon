@@ -1,0 +1,80 @@
+﻿@model SectionCreateModel
+
+@{
+	Layout = Context.Request.Headers["HX-Request"] == "true" ? null : "_Layout";
+}
+
+<div class="form-container" hx-on::load="initSectionScripts();">
+	<div class="form-header">
+		<a href="/Company/Index" hx-get="/Company/Index" hx-target="#content" hx-push-url="true" class="back-btn">
+			<i class="fas fa-arrow-left"></i>Geri
+		</a>
+		<h1><i class="fas fa-sitemap"></i> Bölüm Oluştur</h1>
+		<p>Yeni bölüm bilgilerini eksiksiz olarak doldurunuz</p>
+	</div>
+
+	<div class="form-body">
+		<div id="login-errors" class="text-danger validation-summary-errors" asp-validation-summary="All"></div>
+		<form method="post" asp-action="AddSection" id="departmentForm" class="hxform validation" hx-post="/Company/AddSection" hx-target="#content" hx-headers='{"SuccessMessage": "Bölüm oluşturma başarılı.","FailMessage": "Bölüm oluşturma sırasında hata oluştu."}'>
+			@Html.AntiForgeryToken()
+
+			<div class="form-group full-width">
+				<label class="form-label">
+					<i class="fas fa-building"></i>Departman Seçimi
+				</label>
+
+				<div class="section-selection">
+					<div class="department-section">
+						<div class="section-title">
+							<i class="fas fa-sitemap"></i>Departman Seçiniz
+						</div>
+						<select class="form-control" id="departmentSelect" name="departmentId" required>
+							<option value="">Departman seçiniz...</option>
+							@foreach (var department in ViewBag.Departments)
+							{
+								<option value="@department.DepartmentId">@department.DepartmentName</option>
+							}
+						</select>
+					</div>
+				</div>
+				<span class="text-danger" id="departmentError" style="display: none;"></span>
+			</div>
+
+			<div class="form-group full-width">
+				<label class="form-label">
+					<i class="fas fa-plus-circle"></i>Bölüm Ekleme
+				</label>
+
+				<div class="section-selection">
+					<div class="section-title">
+						<i class="fas fa-layer-group"></i>Bölüm İsimlerini Ekleyin
+					</div>
+
+					<div class="addsection-input-container">
+						<div class="addsection-input-wrapper">
+							<input type="text" class="form-control" hx-on:focus="handleInputFocus(event);" hx-on:blur="handleInputBlur(event);" id="sectionNameInput" placeholder="Bölüm adını giriniz..." />
+						</div>
+						<button type="button" hx-on:click="addSection();" class="addsection-add-btn" id="addSectionBtn">
+							<i class="fas fa-plus"></i>
+						</button>
+					</div>
+
+					<div class="addsection-list" id="sectionsList">
+						<div class="addsection-empty-state" id="emptyState">
+							<i class="fas fa-layer-group"></i>
+							<p>Henüz bölüm eklenmemiş. Yukarıdaki alana bölüm adını yazıp + butonuna basın.</p>
+						</div>
+					</div>
+				</div>
+				<span class="text-danger" id="sectionsError" style="display: none;"></span>
+			</div>
+
+			<button type="submit" hx-on:click="departmentFormSubmitHandler();" class="form-submit-btn" id="submitBtn">
+				<i class="fas fa-save"></i> Bölümleri Oluştur
+			</button>
+		</form>
+	</div>
+</div>
+
+<script asp-append-version="true" src="~/js/addsection.js"></script>
+
