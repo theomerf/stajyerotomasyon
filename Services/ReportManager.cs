@@ -2,6 +2,7 @@
 using Entities.Dtos;
 using Entities.Models;
 using Entities.RequestParameters;
+using Microsoft.Extensions.Caching.Memory;
 using Repositories.Contracts;
 using Services.Contracts;
 using System.Threading.Tasks;
@@ -12,11 +13,13 @@ namespace Services
     {
         private readonly IRepositoryManager _manager;
         private readonly IMapper _mapper;
+        private readonly IMemoryCache _cache;
 
-        public ReportManager(IRepositoryManager manager, IMapper mapper)
+        public ReportManager(IRepositoryManager manager, IMapper mapper, IMemoryCache cache)
         {
             _manager = manager;
             _mapper = mapper;
+            _cache = cache;
         }
 
         public async Task<ResultDto> CreateReportAsync(ReportDto reportDto)
@@ -53,15 +56,39 @@ namespace Services
 
         public async Task<IEnumerable<ReportDto?>> GetAllReportsAsync(ReportRequestParameters p)
         {
-            var reports = await _manager.Report.GetAllReportsAsync(p);
-            var reportsDto = _mapper.Map<IEnumerable<ReportDto>>(reports);
+            var reportsDto = await _manager.Report.GetAllReportsAsync(p);
 
             return reportsDto;
         }
 
-        public Task<int> GetAllReportsCountAsync(ReportRequestParameters p)
+        public async Task<IEnumerable<StatsDto>> GetReportsStatusStatsAsync()
         {
-            var count = _manager.Report.GetAllReportsCountAsync(p);
+            string cacheKey = "reportsStats";
+
+            if (_cache.TryGetValue(cacheKey, out IEnumerable<StatsDto>? cachedData))
+            {
+                return cachedData!;
+            }
+
+            var stats = await _manager.Report.GetReportsStatusStatsAsync();
+            var statsDto = _mapper.Map<IEnumerable<StatsDto>>(stats);
+
+            var cacheOptions = new MemoryCacheEntryOptions()
+                 .SetSlidingExpiration(TimeSpan.FromMinutes(30));
+
+            _cache.Set(cacheKey, statsDto, cacheOptions);
+            return statsDto;
+        }
+
+        public Task<int> GetAllReportsCountAsync()
+        {
+            var count = _manager.Report.GetAllReportsCountAsync();
+            return count;
+        }
+
+        public Task<int> GetReportsCountAsync(ReportRequestParameters p)
+        {
+            var count = _manager.Report.GetReportsCountAsync(p);
             return count;
         }
 

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Stajyeryotom.Migrations
 {
     /// <inheritdoc />
-    public partial class Reports : Migration
+    public partial class Report : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

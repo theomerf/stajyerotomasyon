@@ -14,15 +14,12 @@ namespace Entities.Dtos
         [DataType(DataType.Text)]
         [Required(ErrorMessage = "Rapor adı gerekli.")]
         public String? ReportTitle { get; init; }
-        [DataType(DataType.Text)]
-        [Required(ErrorMessage = "Rapor içeriği gerekli.")]
-        public String? ReportContent { get; init; }
+        public String? DepartmentName { get; init; }
+        public String? SectionName { get; init; }
         public String? Status { get; init; }
-        public List<String>? ImageUrls { get; init; }
         public DateTime CreatedAt { get; init; } = DateTime.Now;
-        public Account? Account { get; init; }
-        public String? AccountId { get; init; }
-        public Work? Work { get; init; }
-        public int? WorkId { get; init; }
+        public String? AccountFirstName { get; init; }
+        public String? AccountLastName { get; init; }
+        public String? WorkName{ get; init; }
     }
 }

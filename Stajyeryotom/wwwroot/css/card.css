@@ -62,17 +62,30 @@
 .card-header {
     background: #fff!important;
     color: #333!important;
+    padding: 30px;
 }
 
 .colored-header {
     width: 100%;
     box-sizing: border-box;
     background: linear-gradient(90deg, rgba(42, 155, 91, 1) 0%, rgba(87, 199, 133, 1) 50%, rgba(83, 237, 114, 1) 100%) !important;
-    padding: 25px;
-    border-bottom: 1px solid var(--glass-border);
+    padding: 30px;
+    border-bottom: 1px solid lightgreen;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    gap: 0.3rem;
+}
+
+.colored-header-row {
+    width: 100%;
+    box-sizing: border-box;
+    background: linear-gradient(90deg, rgba(42, 155, 91, 1) 0%, rgba(87, 199, 133, 1) 50%, rgba(83, 237, 114, 1) 100%) !important;
+    padding: 25px 25px 10px 25px!important;
+    border-bottom: 1px solid lightgreen;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
     gap: 0.3rem;
 }
 

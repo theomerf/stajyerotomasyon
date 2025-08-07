@@ -1,0 +1,85 @@
+﻿@foreach (var work in Model?.List ?? new List<WorkDto>())
+{
+
+    var percentage = 100;
+
+    <div class="col col-6">
+        <div class="card card-hover">
+            <div class="card-header colored-header-row">
+                <p class="work-card-title">@work.WorkName</p>
+                <div class="work-circle" data-progress="@percentage">
+                    <svg class="work-progress-circle" width="60" height="60">
+                        <circle class="work-progress-bg" cx="30" cy="30" r="26"></circle>
+                        <circle class="work-progress-fill" cx="30" cy="30" r="26"
+                                stroke-dasharray="163.36"
+                                stroke-dashoffset="65.34"></circle>
+                    </svg>
+                    <span class="work-circle-text">%@percentage</span>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-8">
+                        <p class="work-content">
+                            @work.WorkDescription
+                        </p>
+                    </div>
+                    <div class="col-4 text-end">
+                        <div class="work-stats">
+                            <span>RAPORLAR: @work.ReportsCount.ToString() / @work.InternsCount.ToString() </span>
+                            <p>@work.InternsCount.ToString() kişiye görev verildi</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-8">
+                        <div class="work-images-section">
+                            <p class="work-images-label">Görev görselleri:</p>
+
+                            <div class="work-images">
+                                @foreach (var images in work.ImageUrls ?? new List<String>())
+                                {
+
+                                    <div class="thumbnail-container">
+                                        <img src="@images"
+                                             alt="Görev görseli"
+                                             class="image-thumbnail"
+                                             onclick="openModal(this.src)">
+                                    </div>
+                                }
+                                @if (work.ImageUrls?.Count > 3)
+                                {
+                                    <div class="image-count">@(work.ImageUrls?.Count - 3)</div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="work-card-actions mt-5 justify-content-end">
+                            <a href="/Reports/View/@(work.WorkId)" hx-get="/Applications/View/@(work.WorkId)" hx-target="#content" hx-push-url="true" class="btn-action btn-view ms-1" title="Görüntüle">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                            <a href="/Interns/UpdateIntern?userName=@(work.WorkId)" title="Düzenle" hx-get="/Interns/UpdateIntern?userName=@(work.WorkId)" hx-target="#content" hx-push-url="true" class="btn-action edit ms-1">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <form method="post" asp-action="DeleteApplication" asp-route-applicationId="@work.WorkId" class="hxform" hx-post="/Applications/DeleteApplication?applicationId=@(work.WorkId)" hx-target="#content" hx-push-url="true">
+                                <button type="submit" title="Sil" class="btn-action delete ms-1">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="work-info">
+                    <span><strong>Görevi Veren: @work.TaskMasterName</strong></span>
+                    <div class="work-date-info">
+                        <span><i class="fas fa-calendar" style="color:forestgreen;"></i>@work.WorkStartDate</span>
+                        <span><i class="fas fa-calendar" style="color:darkred"></i>@work.WorkEndDate</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

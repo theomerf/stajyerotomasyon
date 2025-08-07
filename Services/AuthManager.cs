@@ -352,5 +352,12 @@ namespace Services
             var name = await _manager.Account.GetOneUsersNameAsync(userId);
             return name;
         }
+
+        public async Task<IEnumerable<AccountDtoForSearch>> SearchInterns(string userName)
+        {
+            var interns = await _manager.Account.SearchInterns(userName);
+
+            return interns;
+        }
     }
 }

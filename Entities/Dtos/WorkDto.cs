@@ -15,7 +15,7 @@ namespace Entities.Dtos
         [Required(ErrorMessage = "Görev adı gerekli.")]
         public String? WorkName { get; init; }
         [DataType(DataType.Text)]
-        [Required(ErrorMessage = "Rapor tanımı gerekli.")]
+        [Required(ErrorMessage = "Görev içeriği gerekli.")]
         public String? WorkDescription { get; init; }
         public List<String>? ImageUrls { get; init; }
         [DataType(DataType.DateTime)]
@@ -24,10 +24,9 @@ namespace Entities.Dtos
         [DataType(DataType.DateTime)]
         [Required(ErrorMessage = "Görev bitiş tarihi gerekli.")]
         public DateTime WorkEndDate { get; init; }
-        public Account? TaskMaster { get; init; }
-        public String? TaskMasterId { get; init; }
-        [Required(ErrorMessage = "Görev verilecek kişiler gerekli.")]
-        public ICollection<Account>? Interns { get; init; }
-        public ICollection<Report>? Reports { get; init; }
+        public String? TaskMasterName { get; init; }
+        public int InternsCount { get; init; }
+        public int ReportsCount { get; init; }
+
     }
 }

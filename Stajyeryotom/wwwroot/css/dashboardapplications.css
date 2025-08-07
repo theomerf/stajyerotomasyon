@@ -4,15 +4,15 @@
 }
 
 .btn-action.btn-view {
-    background: linear-gradient(90deg,rgba(35, 149, 184, 1) 0%, rgba(20, 192, 201, 1) 100%);
+    background: linear-gradient(90deg, rgba(35, 149, 184, 1) 0%, rgba(20, 192, 201, 1) 100%);
     text-decoration: none;
     color: white;
-    box-shadow: 0 6px 20px rgba(220, 38, 38, 0.3);
+    box-shadow: 0 6px 20px rgba(20, 192, 201, 0.3);
 }
 
     .btn-action.btn-view:hover {
         transform: translateY(-4px) scale(1.1);
-        box-shadow: 0 12px 35px rgba(220, 38, 38, 0.4);
+        box-shadow: 0 12px 35px rgba(20, 192, 201, 0.4);
     }
 
 .filter-date-btn {
@@ -82,8 +82,8 @@
 .status-label {
     font-weight: bold;
     font-size: 1rem;
-    margin: 5px 0 10px 0;
     min-width: 120px;
+    margin-bottom: 10px;
 }
 
 .status-grid {
@@ -325,7 +325,7 @@
     gap: 2rem;
     align-items: center;
     justify-content: flex-end;
-    margin-left: auto;
+    margin-top: 10px;
 }
 
 .applications-table-header {

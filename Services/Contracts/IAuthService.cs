@@ -21,6 +21,7 @@ namespace Services.Contracts
         Task<string> GenerateNewUserNumberAsync();
         Task<int> GetAllInternsCountAsync(AccountRequestParameters p);
         Task<string> GetInternsCountAsync();
+        Task<IEnumerable<AccountDtoForSearch>> SearchInterns(string userName);
         Task<String?> GetOneUsersNameAsync(string userId);
         Task<Dictionary<string, int>> GetInternsDepartmentAsync();
         Task<IEnumerable<AccountDto>> GetAllInternsAsync(AccountRequestParameters p);

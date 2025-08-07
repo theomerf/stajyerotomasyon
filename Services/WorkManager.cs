@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Entities.Dtos;
 using Entities.Models;
+using Entities.RequestParameters;
 using Repositories.Contracts;
 using Services.Contracts;
 
@@ -49,9 +50,9 @@ namespace Services
             return result;
         }
 
-        public async Task<IEnumerable<WorkDto?>> GetAllWorksAsync()
+        public async Task<IEnumerable<WorkDto?>> GetAllWorksAsync(WorkRequestParameters p)
         {
-            var works = await _manager.Work.GetAllWorksAsync();
+            var works = await _manager.Work.GetAllWorksAsync(p);
             var worksDto = _mapper.Map<IEnumerable<WorkDto>>(works);
 
             return worksDto;
@@ -60,6 +61,11 @@ namespace Services
         public async Task<int> GetAllWorksCountAsync()
         {
             var count = await _manager.Work.GetAllWorksCountAsync();
+            return count;
+        }
+        public async Task<int> GetWorksCountAsync(WorkRequestParameters p)
+        {
+            var count = await _manager.Work.GetWorksCountAsync(p);
             return count;
         }
 

@@ -1,0 +1,199 @@
+﻿@model WorkDtoForCreation
+
+@{
+
+    Layout = Context.Request.Headers["HX-Request"] == "true" ? null : "_Layout";
+    var applicationId = TempData["ApplicationId"];
+}
+
+<div class="form-container" hx-on::load="initAddWorkScripts();">
+    <div class="form-header">
+        <a href="/Interns/Index" hx-get="/Interns/Index" hx-target="#content" hx-push-url="true" class="back-btn">
+            <i class="fas fa-arrow-left"></i>Geri
+        </a>
+        <h1><i class="fas fa-user-plus"></i> Stajyer Ekleme</h1>
+        <p>Yeni stajyer bilgilerini eksiksiz olarak doldurunuz</p>
+    </div>
+    <div class="form-body">
+        <div id="login-errors" class="text-danger validation-summary-errors" asp-validation-summary="All"></div>
+        <form method="post" asp-action="AddWork" id="internForm" class="hxform validation" hx-post="/Works/AddWork" hx-target="#content">
+            @Html.AntiForgeryToken()
+
+            <div class="form-grid">
+                <div class="form-group full-width">
+                    <label class="form-label" asp-for="WorkName">
+                        <i class="fas fa-user"></i>Görev Başlığı
+                    </label>
+                    <input type="text" class="form-control" hx-on:focus="handleInputFocus(event);" hx-on:blur="handleInputBlur(event);" asp-for="WorkName" placeholder="Görev başlığını giriniz" />
+                    <span asp-validation-for="WorkName" class="text-danger"></span>
+                </div>
+
+                <div class="form-group full-width">
+                    <label class="form-label" asp-for="WorkDescription">
+                        <i class="fas fa-user"></i>Görev Açıklaması
+                    </label>
+                    <textarea class="form-control description" hx-on:focus="handleInputFocus(event);" hx-on:blur="handleInputBlur(event);" asp-for="WorkDescription" style="resize:none;" placeholder="Görev açıklamasını giriniz"></textarea>
+                    <span asp-validation-for="WorkDescription" class="text-danger"></span>
+                </div>
+
+            </div>
+
+            <div class="form-group full-width">
+                <div class="date-group">
+                    <div class="form-group">
+                        <label class="form-label" asp-for="WorkStartDate">
+                            <i class="fas fa-calendar-alt"></i>Görev Başlangıç Tarihi
+                        </label>
+                        <input type="datetime-local" class="form-control" hx-on:focus="handleInputFocus(event);" hx-on:blur="handleInputBlur(event);" asp-for="WorkStartDate" />
+                        <span asp-validation-for="WorkStartDate" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" asp-for="WorkEndDate">
+                            <i class="fas fa-calendar-check"></i>Görev Bitiş Tarihi
+                        </label>
+                        <input type="datetime-local" class="form-control" hx-on:focus="handleInputFocus(event);" hx-on:blur="handleInputBlur(event);" asp-for="WorkEndDate" />
+                        <span asp-validation-for="WorkEndDate" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="photo-upload-section">
+                <div class="photo-upload-title">
+                    <i class="fas fa-camera"></i>
+                    Fotoğraf Ekle
+                </div>
+
+                <div class="photo-upload-area" onclick="document.getElementById('photo-input').click()">
+                    <div class="upload-icon">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                    </div>
+                    <div class="upload-text">Fotoğrafları buraya sürükleyin veya tıklayın</div>
+                    <div class="upload-subtext">PNG, JPG, GIF formatları desteklenir (Maks. 5MB)</div>
+                    <input type="file" id="photo-input" class="photo-input" multiple accept="image/*">
+                </div>
+
+                <div class="photo-preview-section">
+                    <div class="photo-thumbnails" id="photo-thumbnails">
+                    </div>
+                </div>
+            </div>
+
+            <div class="broadcast-section">
+                <div class="broadcast-title">
+                    <i class="fas fa-bullhorn"></i>
+                    Gönderim Seçenekleri
+                </div>
+
+                <div class="broadcast-options">
+                    <div class="broadcast-option">
+                        <input type="radio" id="broadcast-all" name="broadcast" class="broadcast-radio" value="all">
+                        <label for="broadcast-all" class="broadcast-label">
+                            <div class="radio-icon"></div>
+                            <div class="broadcast-label-text">
+                                <div class="broadcast-label-title">Herkese Gönder</div>
+                                <div class="broadcast-label-desc">Tüm kullanıcılara gönderilir</div>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div class="broadcast-option">
+                        <input type="radio" id="broadcast-users" name="broadcast" class="broadcast-radio" value="users">
+                        <label for="broadcast-users" class="broadcast-label">
+                            <div class="radio-icon"></div>
+                            <div class="broadcast-label-text">
+                                <div class="broadcast-label-title">Seçili Kullanıcılar</div>
+                                <div class="broadcast-label-desc">Sadece seçilen kişilere gönderilir</div>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div class="broadcast-option">
+                        <input type="radio" id="broadcast-department" name="broadcast" class="broadcast-radio" value="department">
+                        <label for="broadcast-department" class="broadcast-label">
+                            <div class="radio-icon"></div>
+                            <div class="broadcast-label-text">
+                                <div class="broadcast-label-title">Seçili Departman</div>
+                                <div class="broadcast-label-desc">Sadece seçilen departmandakilere gönderilir</div>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div class="broadcast-option">
+                        <input type="radio" id="broadcast-section" name="broadcast" class="broadcast-radio" value="section">
+                        <label for="broadcast-section" class="broadcast-label">
+                            <div class="radio-icon"></div>
+                            <div class="broadcast-label-text">
+                                <div class="broadcast-label-title">Seçili Bölüm</div>
+                                <div class="broadcast-label-desc">Sadece seçilen bölümdekilere gönderilir</div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="user-search-section">
+                <div class="user-search-title">
+                    <i class="fas fa-users"></i>
+                    Kullanıcı Ara
+                </div>
+
+                <div class="user-search-container">
+                    <input type="text" class="user-search-input" placeholder="Kullanıcı adı veya e-posta ile ara..." id="user-search">
+                    <i class="fas fa-search search-icon"></i>
+
+                    <div class="user-search-results" id="search-results">
+                    </div>
+
+                    <div class="selected-users" id="selected-users">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group full-width select-section">
+                <label class="form-label">
+                    <i class="fas fa-building"></i>Departman ve Bölüm Seçimi
+                </label>
+
+                <div class="section-selection">
+                    <div class="department-section">
+                        <div class="section-title">
+                            <i class="fas fa-sitemap"></i>Departman Seçiniz
+                        </div>
+                        <select hx-on:change="departmentSelectHandler(event);"  class="form-control" id="departmentSelect" name="DepartmentId">
+                            <option value="">Departman seçiniz...</option>
+                            @foreach (var department in ViewBag.Departments)
+                            {
+                                <option value="@department.DepartmentId">@department.DepartmentName</option>
+                            }
+                        </select>
+                        <span  class="text-danger"></span>
+                    </div>
+
+                    <div id="sectionsContainer" style="display: none;">
+                        <div class="section-title">
+                            <i class="fas fa-users"></i>Bölüm Seçiniz
+                        </div>
+                        <div class="sections-grid" id="sectionsGrid">
+                        </div>
+                        <div class="helper-text">
+                            <i class="fas fa-info-circle"></i>Kullanıcının bölümünü seçiniz.
+                        </div>
+                    </div>
+                </div>
+                <span  class="text-danger"></span>
+            </div>
+
+
+            <button type="submit" hx-on:click="handleFormSubmit();" class="form-submit-btn" id="submitBtn">
+                <i class="fas fa-user-plus"></i> Görev Oluştur
+            </button>
+        </form>
+    </div>
+</div>
+
+<script>
+    window.departmentSections = @Html.Raw(ViewBag.DepartmentSectionsJson ?? "{}");
+</script>
+<script asp-append-version="true" src="~/js/addwork.js"></script>
+

@@ -17,11 +17,11 @@
 
                 <div class="header-actions">
                     <a href="/Applications/AddApplication" hx-get="/Applications/AddApplication" hx-target="#content" hx-push-url="true" class="btn btn-user-add">
-                        <i class="fas fa-user-plus"></i>
+                        <i class="fa-solid fa-plus"></i>
                         Yeni Başvuru Ekle
                     </a>
                     <a href="/Applications/ExportApplications" hx-get="/Applications/ExportApplications" hx-on:click="handleSidebarClickForComponents(event);" hx-target="#content" hx-push-url="true" class="btn btn-user-add" data-target="Company">
-                        <i class="fas fa-user-cog"></i>
+                        <i class="fa-solid fa-file-export"></i>
                         Dışa Aktar
                     </a>
                 </div>
@@ -224,16 +224,17 @@
     @if (Model?.TotalCount == 0)
     {
         <div class="row">
-            <div class="internlist-no-results">
-                <div class="internlist-no-results-icon">
-                    <i class="fa-solid fa-xmark"></i>
+            <div class="card card-before d-flex text-center py-5">
+                <div class="card-body">
+                    <div class="no-results-icon"><i class="fa-solid fa-xmark"></i></div>
+                    <h2 class="no-results-title">Başvuru Bulunamadı</h2>
+                    <p class="no-results-text">Arama kriterlerinize uygun başvuru bulunamadı.</p>
+                    <a href="@Url.Action("Index")" class="no-results-button">
+                        <i class="fa-solid fa-grid-2 me-2"></i>
+                        Tüm Başvuruları Göster
+                    </a>
                 </div>
-                <h4 class="internlist-no-results-title">Başvuru Bulunamadı</h4>
-                <p class="internlist-no-results-text">Arama kriterlerinize uygun başvuru bulunamadı.</p>
-                <a href="@Url.Action("Index")" class="internlist-no-results-button">
-                    <i class="fa-solid fa-grid-2 me-2"></i>
-                    Tüm Başvuruları Göster
-                </a>
+
             </div>
         </div>
     }

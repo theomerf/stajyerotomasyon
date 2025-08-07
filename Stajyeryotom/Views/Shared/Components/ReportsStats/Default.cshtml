@@ -1,1 +1,53 @@
-﻿İSTATİSTİKLER
+﻿@model IEnumerable<StatsDto>
+
+@{
+    var totalCount = 0;
+    foreach(var stats in Model)
+    {
+        totalCount += stats.TotalCount;
+    }
+}
+
+<div class="reports-stats-grid">
+    <div class="stat-card">
+        <div class="stat-card-header">
+            <div class="stat-card-title">Toplam</div>
+            <div class="stat-card-icon">
+                <i class="fas fa-chart-bar"></i>
+            </div>
+        </div>
+        <div class="stat-card-value">@totalCount </div>
+    </div>
+    @foreach (var stats in Model)
+    {
+
+        var title = "";
+        var iconClass = "";
+
+        switch (stats.Key)
+        {
+            case "Read":
+                title = "Okunan";
+                iconClass = "fa-check";
+                break;
+            case "NotRead":
+                title = "Okunmayan";
+                iconClass = "fa-times";
+                break;
+        }
+
+        <div class="stat-card">
+            <div class="stat-card-header">
+                <div class="stat-card-title">@title</div>
+                <div class="stat-card-icon">
+                    <i class="fas @iconClass"></i>
+                </div>
+            </div>
+            <div class="stat-card-value">@stats.TotalCount</div>
+            <div class="stat-card-change @(stats.SignedPercentage.Contains("+") ? "positive" : "negative")">
+                <i class="fas fa-arrow-up"></i>
+                <span>@stats.SignedPercentage% bu ay (@stats.SignedDifference)</span>
+            </div>
+        </div>
+    }
+</div>

@@ -1,0 +1,213 @@
+﻿.work-circle {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.work-progress-circle {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: rotate(-90deg);
+}
+
+    .work-progress-circle circle {
+        fill: transparent;
+        stroke-width: 4;
+    }
+
+.work-progress-bg {
+    stroke: rgba(255,255,255,0.3);
+}
+
+.work-progress-fill {
+    stroke: white;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.work-circle-text {
+    position: relative;
+    z-index: 1;
+    color: white;
+    font-size: 0.9rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+
+.work-card-title{
+    font-weight: 700;
+    font-size: 1.6rem;
+    color: white;
+    margin-bottom: 0;
+}
+
+.work-content {
+    font-weight: 800;
+    font-size: 1rem;
+    color: #64748b;
+}
+
+.work-stats{
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+}
+
+    .work-stats span {
+        font-size: 1rem;
+        color: white;
+        font-weight: 700;
+        background: linear-gradient(90deg, rgba(42, 155, 91, 1) 0%, rgba(87, 199, 133, 1) 63%, rgba(83, 237, 114, 1) 100%);
+        border-radius: 14px;
+        padding: 12px;
+    }
+
+    .work-stats p {
+        font-size: 0.9rem;
+        margin-top: 8px;
+        font-weight: 700;
+        color: white;
+        background: linear-gradient(90deg, rgba(42, 155, 91, 1) 0%, rgba(87, 199, 133, 1) 63%, rgba(83, 237, 114, 1) 100%);
+        border-radius: 14px;
+        padding: 12px;
+    }
+
+.work-info{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 30px 20px 30px;
+    border-top: 1px solid lightgreen;
+}
+.work-info i{
+    margin-right: 10px;
+}
+
+    .work-info span {
+        font-size: 1rem;
+        color: #64748b;
+        font-weight: 700;
+    }
+
+.work-date-info{
+    display: flex;
+    flex-direction: column;
+}
+
+.work-images-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.work-images-label {
+    font-size: 1rem;
+    font-weight: 700;
+    color: white;
+    background: linear-gradient(90deg, rgba(42, 155, 91, 1) 0%, rgba(87, 199, 133, 1) 63%, rgba(83, 237, 114, 1) 100%);
+    border-radius: 14px;
+    padding: 8px;
+    width: 40%;
+}
+
+.work-images {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.image-thumbnail {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    object-fit: cover;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid #e0e0e0;
+}
+
+    .image-thumbnail:hover {
+        transform: scale(1.05);
+        border-color: #667eea;
+        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+    }
+
+.image-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.8);
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-content-img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+}
+
+.close-modal {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: white;
+    font-size: 30px;
+    cursor: pointer;
+    z-index: 1001;
+    transition: color 0.3s ease;
+}
+
+    .close-modal:hover {
+        color: #667eea;
+    }
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.image-count {
+    background: rgba(102, 126, 234, 0.9);
+    color: white;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: bold;
+    position: absolute;
+    top: -8px;
+    right: -8px;
+}
+
+.thumbnail-container {
+    position: relative;
+}
+
+.work-card-actions{
+    display: flex;
+    flex-direction: row;
+    
+}

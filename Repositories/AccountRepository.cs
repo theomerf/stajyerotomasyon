@@ -202,5 +202,22 @@ namespace Repositories
             return intern;
         }
 
+        public async Task<IEnumerable<AccountDtoForSearch>> SearchInterns(string userName)
+        {
+            var interns = await FindAll(false)
+                  .FilteredBySearchTerm(userName ?? "", a => a.FirstName!)
+                  .Select(i => new AccountDtoForSearch()
+                  {
+                      Id = i.Id,
+                      FirstName = i.FirstName,
+                      LastName = i.LastName,
+                      Email = i.Email,
+                      UserName = i.UserName,
+                  })
+                  .ToListAsync();
+
+            return interns;
+        }
+
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Entities.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Repositories;
 using System.Text;
@@ -22,7 +23,7 @@ public class CsvImporter
         _roleManager = roleManager;
     }
 
-    public async Task ImportAsync(string departmentsPath, string sectionsPath, string accountsPath, string applicationsPath)
+    public async Task ImportAsync(string departmentsPath, string sectionsPath, string accountsPath, string applicationsPath, string reportsPath)
     {
         var departmentLines = File.ReadAllLines(departmentsPath, Encoding.UTF8);
         var departments = new List<Department>();
@@ -102,6 +103,30 @@ public class CsvImporter
         }
 
         await _context.Applications.AddRangeAsync(applications);
+        await _context.SaveChangesAsync();
+
+        Random rnd = new Random();
+
+        List<string> accountIds = await _context.Users.Select(a => a.Id).ToListAsync();
+
+        var reportsLines = File.ReadAllLines(reportsPath, Encoding.UTF8);
+        var reports = new List<Report>();
+        for (int i = 1; i < reportsLines.Length; i++)
+        {
+            var columns = reportsLines[i].Split(';');
+            reports.Add(new Report
+            {
+                ReportTitle = columns[0].Trim(),
+                ReportContent = columns[1].Trim(),
+                ImageUrls = columns[2]
+                    .Split(',', StringSplitOptions.RemoveEmptyEntries)
+                    .Select(url => url.Trim())
+                    .ToList(),
+                AccountId = accountIds[rnd.Next(accountIds.Count)]
+            });
+        }
+
+        await _context.Reports.AddRangeAsync(reports);
         await _context.SaveChangesAsync();
     }
 }

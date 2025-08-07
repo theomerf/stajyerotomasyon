@@ -23,7 +23,7 @@ namespace Stajyeryotom.Controllers
 
             ViewBag.Departments = await _manager.DepartmentService.GetAllDepartmentsAsync();
             var reports = await _manager.ReportService.GetAllReportsAsync(query);
-            var totalCount = await _manager.ReportService.GetAllReportsCountAsync(query);
+            var totalCount = await _manager.ReportService.GetReportsCountAsync(query);
 
             var paginaton = new Pagination()
             {

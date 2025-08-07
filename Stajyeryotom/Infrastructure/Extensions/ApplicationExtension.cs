@@ -90,7 +90,8 @@ namespace Stajyeryotom.Infrastructure.Extensions
                 "wwwroot/database/departments.csv",
                 "wwwroot/database/sections.csv",
                 "wwwroot/database/accounts.csv",
-                "wwwroot/database/applications.csv"
+                "wwwroot/database/applications.csv",
+                "wwwroot/database/reports.csv"
             );
         }
 

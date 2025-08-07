@@ -323,11 +323,10 @@ document.addEventListener('DOMContentLoaded', function loadFromUrl() {
     if (currentEndDate) showDateFilterBtn(); newEndDateInput.value = currentEndDate;
 
     if (currentSort) {
-        const activeBtn = document.querySelector(`[data-sort="${currentSort}"]`);
-        if (activeBtn) {
-            activeBtn.classList.add('active');
-            updateClearButtons();
-        }
+        document.querySelectorAll(`[data-sort="${currentSort}"]`).forEach(btn => {
+            btn.classList.add('active');
+        });
+        updateClearButtons();
     }
 
 }); 

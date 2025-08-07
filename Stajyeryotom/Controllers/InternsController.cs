@@ -222,5 +222,11 @@ namespace Stajyeryotom.Controllers
                 });
             }
         }
+
+        public async Task<IActionResult> SearchInterns([FromQuery] string userName)
+        {
+            var users = await _manager.AuthService.SearchInterns(userName);
+            return Json(users);
+        }
     }
 }

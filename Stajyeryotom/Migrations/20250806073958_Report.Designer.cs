@@ -12,8 +12,8 @@ using Repositories;
 namespace Stajyeryotom.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    [Migration("20250805140007_Reports")]
-    partial class Reports
+    [Migration("20250806073958_Report")]
+    partial class Report
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

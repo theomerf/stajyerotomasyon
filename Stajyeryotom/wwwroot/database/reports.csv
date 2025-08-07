@@ -1,0 +1,31 @@
+ReportTitle;ReportContent;ImageUrls
+Veritabanı Bağlantısı Kuruldu;Bugün SQL Server'da veri tabanı bağlantısını başarıyla kurdum ve Entity Framework ile ilk migration işlemini gerçekleştirdim.;https://example.com/db1.png,https://example.com/db2.png
+Login Sistemi Tasarımı;Kullanıcı giriş sayfasını HTML ve CSS ile tasarladım. Ayrıca input validasyonlarını ekledim.;https://example.com/login1.png
+API Entegrasyonu;Rest API'den veri çekmeyi öğrendim. Postman ile denemeler yaptım.;https://example.com/api1.png,https://example.com/api2.png
+HTMX ile Dinamik İçerik;Sayfada butona tıklanınca içerik yükleyen bir HTMX örneği geliştirdim.;https://example.com/htmx1.png
+Grafik Gösterimi;Chart.js kullanarak haftalık ziyaretçi sayısını gösteren bir grafik oluşturdum.;https://example.com/chart1.png
+Mobil Uyumlu Navbar;Bootstrap ile mobil uyumlu bir menü tasarladım ve collapse özelliğini kullandım.;https://example.com/navbar1.png
+Yorum Sistemi;Kullanıcıların ürünlere yorum bırakabileceği bir sistem geliştirdim. Yorumlar anlık görüntüleniyor.;https://example.com/comments1.png
+Kategori Filtreleme;AJAX ile ana kategoriye göre alt kategorileri filtreleyen bir sistem kurdum.;https://example.com/filter1.png
+JWT Authentication;JWT token oluşturmayı ve doğrulamayı öğrendim. Token ile korunan route'ları test ettim.;https://example.com/jwt1.png
+Dosya Yükleme;Kullanıcının profil fotoğrafını yüklemesine izin veren bir yapı kurdum. Dosya sunucuya başarıyla gidiyor.;https://example.com/upload1.png
+PDF Rapor Oluşturma;Rapor verilerini PDF formatında dışa aktarmak için iTextSharp kullandım.;https://example.com/pdf1.png
+Dark Mode Özelliği;Siteye karanlık mod özelliği ekledim. Kullanıcının tercihi localStorage'da tutuluyor.;https://example.com/darkmode1.png
+Slider Galeri;Ürünler için görsel slider oluşturuldu. Swiper.js eklentisini kullandım.;https://example.com/slider1.png
+Blog Post Ekleme;Admin panelinden yeni blog yazısı eklenmesini sağlayan formu tasarladım.;https://example.com/blog1.png
+Sayfa Performansı Analizi;Lighthouse ile sayfanın performansını test ettim, performansı artırmak için önerileri uyguladım.;https://example.com/perf1.png
+Responsive Dashboard;Admin paneli için responsive bir dashboard sayfası tasarladım.;https://example.com/dashboard1.png
+Anlık Bildirim Sistemi;SignalR kullanarak gerçek zamanlı bildirim sistemi kurdum.;https://example.com/notif1.png
+Dropdown Menü Geliştirme;Kategoriler için dinamik olarak veritabanından gelen dropdown menü oluşturuldu.;https://example.com/dropdown1.png
+Yedekleme Otomasyonu;Veritabanı günlük yedekleme işlemini Powershell scripti ile otomatikleştirdim.;https://example.com/backup1.png
+CRUD Operasyonları;Entity Framework ile CRUD işlemlerini gerçekleştiren bir sayfa tamamladım.;https://example.com/crud1.png
+Pagination Yapısı;Sayfalama işlemleri için bir yapı kurdum. Sayfa başına 10 veri gösteriliyor.;https://example.com/pagination1.png
+Harita Entegrasyonu;Google Maps API ile kullanıcıların adreslerini haritada gösterdim.;https://example.com/map1.png
+Unit Test Yazımı;xUnit ile yazılım testlerine başladım. Repository katmanını test ettim.;https://example.com/test1.png
+Kullanıcı Rolleri;Yetkilendirme sistemi kurarak Admin ve User rollerine göre yetkileri ayırdım.;https://example.com/roles1.png
+Excel İçe Aktarma;Kullanıcıların Excel dosyasından toplu veri yüklemesi için bir özellik geliştirdim.;https://example.com/excel1.png
+Animasyonlu Sidebar;CSS ile açılır/kapanır animasyonlu bir yan menü tasarladım.;https://example.com/sidebar1.png
+Stajyer Yönetimi;Admin paneline stajyerlerin bilgilerini yönetebilecek bir modül ekledim.;https://example.com/interns1.png
+Şifre Sıfırlama Sistemi;Email ile kullanıcıya şifre sıfırlama linki gönderen bir yapı kurdum.;https://example.com/reset1.png
+Proje Dokümantasyonu;Tüm modüllerin nasıl çalıştığını anlatan teknik dokümantasyonu hazırladım.;https://example.com/docs1.png
+Çok Dilli Destek;Siteye İngilizce ve Türkçe dil desteği ekledim. Kullanıcının tercihi çerezde tutuluyor.;https://example.com/lang1.png

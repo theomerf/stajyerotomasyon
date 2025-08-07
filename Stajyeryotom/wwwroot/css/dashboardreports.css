@@ -1,2 +1,173 @@
-﻿body {
+﻿.controls-mid-row-reports {
+    position: relative;
+    margin-bottom: -15px;
+}
+
+.status-badge.Read {
+    background: linear-gradient(135deg, rgba(42, 155, 91, 1) 0%, rgba(87, 199, 133, 1) 50%, rgba(83, 237, 114, 1) 100%);
+    color: white;
+    box-shadow: 0 8px 25px rgba(42, 155, 91, 0.3);
+}
+
+.status-badge.NotRead {
+    background: linear-gradient(135deg, rgba(220, 38, 38, 1) 0%, rgba(248, 113, 113, 1) 100%);
+    color: white;
+    box-shadow: 0 8px 25px rgba(42, 155, 91, 0.3);
+}
+
+.reports-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+    margin-bottom: 40px;
+    animation: fadeInUp 0.6s ease-out;
+    max-height: 250px;
+}
+
+.type-label {
+    font-weight: bold;
+    font-size: 1rem;
+    min-width: 120px;
+    margin-top: 8px;
+    margin-bottom: 10px;
+}
+
+.type-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 40px);
+    grid-template-rows: repeat(2, 40px);
+    gap: 0.8rem;
+}
+
+.type-box {
+    background: linear-gradient(135deg, rgba(42, 155, 91, 1) 0%, rgba(87, 199, 133, 1) 50%, rgba(83, 237, 114, 1) 100%);
+    text-decoration: none;
+    color: white;
+    box-shadow: 0 6px 20px rgba(42, 155, 91, 0.3);
+    width: 45px;
+    height: 45px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: 1rem;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+}
+
+    .type-box::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        transition: left 0.5s;
+    }
+
+    .type-box:hover {
+        transform: scale(1.1);
+        box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+
+    .type-box.active {
+        transform: scale(1.20);
+        background-color: #007bff;
+        color: white;
+        border: 2px solid black;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+.reports-table-header {
+    display: grid;
+    grid-template-columns: 2fr 2.5fr 2fr 1.5fr 1fr;
+    gap: 1rem;
+    background: linear-gradient(135deg, rgba(42, 155, 91, 0.05) 0%, rgba(87, 199, 133, 0.05) 50%, rgba(83, 237, 114, 0.05) 100%);
+    padding: 2rem 1.5rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    font-weight: 700;
+    color: #374151;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+}
+
+.reports-table-row {
+    display: grid;
+    grid-template-columns: 2fr 2.5fr 2fr 1.5fr 1fr;
+    gap: 1rem;
+    padding: 2rem 1.5rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    align-items: center;
+    position: relative;
+}
+
+.reports-table-row::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(42, 155, 91, 0.1) 0%, rgba(83, 237, 114, 0.1) 100%);
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reports-table-row:hover::before {
+    width: 100%;
+}
+
+.reports-table-row:hover {
+    background: transparent;
+    transform: translateX(8px);
+    box-shadow: 0 8px 30px rgba(42, 155, 91, 0.1);
+}
+
+.reports-table-row:last-child {
+    border-bottom: none;
+}
+
+@media (max-width: 968px) {
+    .reports-table-header,
+    .reports-table-row {
+        grid-template-columns: 1fr;
+        gap: 0.8rem;
+    }
+
+    .reports-table-header {
+        display: none;
+    }
+
+    .reports-table-row {
+        display: block;
+        padding: 2rem;
+        border-radius: 16px;
+        margin-bottom: 1.5rem;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+        position: relative;
+    }
+
+        .reports-table-row::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, rgba(42, 155, 91, 1) 0%, rgba(87, 199, 133, 1) 50%, rgba(83, 237, 114, 1) 100%);
+        }
+
+        .reports-table-row:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        }
 }

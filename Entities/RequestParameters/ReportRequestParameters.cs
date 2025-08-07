@@ -13,7 +13,7 @@ namespace Entities.RequestParameters
         public String? StartDate { get; set; }
         public String? EndDate { get; set; }
         public String? Status { get; set; }
-        public bool? IsWorkReport { get; set; }
+        public String? Type { get; set; }
         public int PageNumber { get; set; }
         public int PageSize { get; set; }
         public ReportRequestParameters() : this(1, 6)

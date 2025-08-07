@@ -1,6 +1,7 @@
 ﻿using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Repositories.Extensions
 {
@@ -47,7 +48,7 @@ namespace Repositories.Extensions
             if (string.IsNullOrWhiteSpace(status))
                 return query;
 
-            if (status != "OnWait" && status != "Interview" && status != "Denied" && status != "Approved")
+            if (status != "OnWait" && status != "Interview" && status != "Denied" && status != "Approved" && status != "Read" && status != "NotRead")
                 return query;
 
             var parameter = propertySelector.Parameters[0];
@@ -56,6 +57,24 @@ namespace Repositories.Extensions
             var lambda = Expression.Lambda<Func<T, bool>>(equalsCall, parameter);
 
             return query.Where(lambda);
+        }
+
+        public static IQueryable<Report> FilteredByType(this IQueryable<Report> report, string type)
+        {
+            if(type == "Daily")
+            {
+                return report
+                    .Where(r => r.Work == null);
+            }
+            else if(type == "Work")
+            {
+                return report
+                    .Where(r => r.Work != null);
+            }
+            else
+            {
+                return report;
+            }
         }
 
         public static IQueryable<T> FilteredByDate<T>(
@@ -135,6 +154,24 @@ namespace Repositories.Extensions
             }
         }
 
+        public static IQueryable<T> SortBy<T>(this IQueryable<T> source, string propertyName, bool ascending = true)
+        {
+            if (string.IsNullOrWhiteSpace(propertyName))
+                return source;
+
+            var parameter = Expression.Parameter(typeof(T), "x");
+            Expression propertyAccess = parameter;
+
+            foreach (var member in propertyName.Split('.'))
+            {
+                propertyAccess = Expression.PropertyOrField(propertyAccess, member);
+            }
+
+            var converted = Expression.Convert(propertyAccess, typeof(object));
+            var lambda = Expression.Lambda<Func<T, object>>(converted, parameter);
+
+            return ascending ? source.OrderBy(lambda) : source.OrderByDescending(lambda);
+        }
 
         public static IQueryable<T> SortExtensionForApplications<T>(this IQueryable<T> query, string parameter)
         {
@@ -189,61 +226,87 @@ namespace Repositories.Extensions
 
         public static IQueryable<T> SortExtensionForInterns<T>(this IQueryable<T> query, string parameter)
         {
-                var accountQuery = query as IQueryable<Account>;
+            var accountQuery = query as IQueryable<Account>;
 
-                // Özel parametreler
-                switch (parameter)
-                {
-                    case "PROGRESS_ASC":
-                    case "PROGRESS_DESC":
-                    case "FINISHED":
-                    case "NOTSTARTED":
-                        return (accountQuery!.Sort(parameter) as IQueryable<T>)!;
-                }
-
-                // Genel parametreler
-                switch (parameter)
-                {
-                    case "NAME_ASC":
-                        return query.SortBy("FirstName", true);
-
-                    case "NAME_DESC":
-                        return query.SortBy("FirstName", false);
-
-                    case "DEPARTMENT_ASC":
-                        return query.SortBy("Section.Department.DepartmentName", true);
-
-                    case "DEPARTMENT_DESC":
-                        return query.SortBy("Section.Department.DepartmentName", false);
-
-                    case "DATE_ASC":
-                        return query.SortBy("InternshipStartDate", true);
-
-                    case "DATE_DESC":
-                        return query.SortBy("InternshipStartDate", false);
-
-                    default:
-                        return (accountQuery!.Sort("DEFAULT") as IQueryable<T>)!;
-                }
-        }
-
-        public static IQueryable<T> SortBy<T>(this IQueryable<T> source, string propertyName, bool ascending = true)
-        {
-            if (string.IsNullOrWhiteSpace(propertyName))
-                return source;
-
-            var parameter = Expression.Parameter(typeof(T), "x");
-            Expression propertyAccess = parameter;
-
-            foreach (var member in propertyName.Split('.'))
+            // Özel parametreler
+            switch (parameter)
             {
-                propertyAccess = Expression.PropertyOrField(propertyAccess, member);
+                case "PROGRESS_ASC":
+                case "PROGRESS_DESC":
+                case "FINISHED":
+                case "NOTSTARTED":
+                    return (accountQuery!.Sort(parameter) as IQueryable<T>)!;
             }
 
-            var converted = Expression.Convert(propertyAccess, typeof(object));
-            var lambda = Expression.Lambda<Func<T, object>>(converted, parameter);
+            // Genel parametreler
+            switch (parameter)
+            {
+                case "NAME_ASC":
+                    return query.SortBy("FirstName", true);
 
-            return ascending ? source.OrderBy(lambda) : source.OrderByDescending(lambda);
+                case "NAME_DESC":
+                    return query.SortBy("FirstName", false);
+
+                case "DEPARTMENT_ASC":
+                    return query.SortBy("Section.Department.DepartmentName", true);
+
+                case "DEPARTMENT_DESC":
+                    return query.SortBy("Section.Department.DepartmentName", false);
+
+                case "DATE_ASC":
+                    return query.SortBy("InternshipStartDate", true);
+
+                case "DATE_DESC":
+                    return query.SortBy("InternshipStartDate", false);
+
+                default:
+                    return (accountQuery!.Sort("DEFAULT") as IQueryable<T>)!;
+            }
+        }
+
+        public static IQueryable<T> SortExtensionForReports<T>(this IQueryable<T> query, string parameter)
+        {
+            if (typeof(T).Name == nameof(Report))
+            {
+                var reportQuery = query as IQueryable<Report>;
+
+                switch (parameter)
+                {
+
+                    case "NAME_ASC":
+                        return query.SortBy("Account.FirstName", true);
+
+                    case "NAME_DESC":
+                        return query.SortBy("Account.FirstName", false);
+
+                    case "REPORT_ASC":
+                        return query.SortBy("ReportTitle", true);
+
+                    case "REPORT_DESC":
+                        return query.SortBy("ReportTitle", false);
+
+                    case "DATE_ASC":
+                        return query.SortBy("CreatedAt", true);
+
+                    case "DATE_DESC":
+                        return query.SortBy("CreatedAt", false);
+
+                    case "READ":
+                        return (reportQuery!
+                            .Where(r => r.Status == "Read")
+                            .OrderByDescending(a => a.CreatedAt) as IQueryable<T>)!;
+
+                    case "NOTREAD":
+                        return (reportQuery!
+                            .Where(a => a.Status == "NotRead")
+                            .OrderByDescending(a => a.CreatedAt) as IQueryable<T>)!;
+                    default:
+                        return (reportQuery!
+                            .OrderByDescending(a => a.CreatedAt) as IQueryable<T>)!;
+                }
+            }
+
+            return query;
         }
     }
 }

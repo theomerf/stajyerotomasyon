@@ -11,7 +11,8 @@ public static class ImportFromCsvExtension
         string departmentsPath,
         string sectionsPath,
         string accountsPath,
-        string applicationsPath)
+        string applicationsPath,
+        string reportsPath)
     {
         bool imported = true;
 
@@ -19,7 +20,7 @@ public static class ImportFromCsvExtension
         {
             using var scope = app.ApplicationServices.CreateScope();
             var importer = scope.ServiceProvider.GetRequiredService<CsvImporter>();
-            await importer.ImportAsync(departmentsPath, sectionsPath, accountsPath, applicationsPath);
+            await importer.ImportAsync(departmentsPath, sectionsPath, accountsPath, applicationsPath, reportsPath);
             imported = true;
         }
 
