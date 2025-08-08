@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Stajyeryotom.Migrations
 {
     /// <inheritdoc />
-    public partial class Report : Migration
+    public partial class Enum : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -103,7 +103,7 @@ namespace Stajyeryotom.Migrations
                 {
                     ApplicationId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ApplicantFirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -308,30 +308,6 @@ namespace Stajyeryotom.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AccountWork",
-                columns: table => new
-                {
-                    InternsId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    WorksWorkId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AccountWork", x => new { x.InternsId, x.WorksWorkId });
-                    table.ForeignKey(
-                        name: "FK_AccountWork_AspNetUsers_InternsId",
-                        column: x => x.InternsId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_AccountWork_Works_WorksWorkId",
-                        column: x => x.WorksWorkId,
-                        principalTable: "Works",
-                        principalColumn: "WorkId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Reports",
                 columns: table => new
                 {
@@ -340,7 +316,7 @@ namespace Stajyeryotom.Migrations
                     ReportTitle = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ReportContent = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ImageUrls = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     AccountId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     WorkId = table.Column<int>(type: "int", nullable: true)
@@ -361,6 +337,30 @@ namespace Stajyeryotom.Migrations
                         principalColumn: "WorkId");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "WorkInterns",
+                columns: table => new
+                {
+                    InternsId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    WorksWorkId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WorkInterns", x => new { x.InternsId, x.WorksWorkId });
+                    table.ForeignKey(
+                        name: "FK_WorkInterns_AspNetUsers_InternsId",
+                        column: x => x.InternsId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_WorkInterns_Works_WorksWorkId",
+                        column: x => x.WorksWorkId,
+                        principalTable: "Works",
+                        principalColumn: "WorkId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
@@ -370,11 +370,6 @@ namespace Stajyeryotom.Migrations
                     { "d5f89a4c-2e3d-4f7e-9f5a-c4d8c1e7b5d2", null, "Stajyer", "STAJYER" },
                     { "e2b6c7d8-3a9b-4e1f-8c5d-a7f3d2b4c9e6", null, "Editör", "EDITOR" }
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AccountWork_WorksWorkId",
-                table: "AccountWork",
-                column: "WorksWorkId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Applications_SectionId",
@@ -451,6 +446,11 @@ namespace Stajyeryotom.Migrations
                 column: "DepartmentId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_WorkInterns_WorksWorkId",
+                table: "WorkInterns",
+                column: "WorksWorkId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Works_TaskMasterId",
                 table: "Works",
                 column: "TaskMasterId");
@@ -459,9 +459,6 @@ namespace Stajyeryotom.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "AccountWork");
-
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -485,6 +482,9 @@ namespace Stajyeryotom.Migrations
 
             migrationBuilder.DropTable(
                 name: "Reports");
+
+            migrationBuilder.DropTable(
+                name: "WorkInterns");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

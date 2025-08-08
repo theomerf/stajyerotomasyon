@@ -35,6 +35,12 @@ namespace Services
 
         public IEnumerable<IdentityRole> Roles => _roleManager.Roles;
 
+        public async Task<List<String>> GetAllInternsId()
+        {
+            var internsId = await _manager.Account.GetAllInternsId();
+            return internsId;
+        }
+
         public async Task<string> GetAllUsersCountAsync()
         {
             string cacheKey = "usersCount";
@@ -52,7 +58,19 @@ namespace Services
             _cache.Set(cacheKey, count, cacheOptions);
 
             return count.ToString();
-        } 
+        }
+
+        public async Task<List<string?>> GelAllInternsOfSection(int sectionId)
+        {
+            var internsId = await _manager.Account.GelAllInternsOfSection(sectionId);
+            return internsId;
+        }
+
+        public async Task<List<string?>> GelAllInternsOfDepartment(int departmentId)
+        {
+            var internsId = await _manager.Account.GelAllInternsOfDepartment(departmentId);
+            return internsId!;
+        }
 
         public async Task<IdentityResult> CreateUserAsync(AccountDtoForCreation userDto)
         {

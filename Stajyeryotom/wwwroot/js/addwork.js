@@ -129,7 +129,7 @@ function updateVisibility() {
         return;
     }
 
-    const value = selectedBroadcast.value;
+    window.value = selectedBroadcast.value;
 
     switch (value) {
         case 'all':
@@ -270,32 +270,88 @@ function removeSelectedUser(userId) {
 }
 
 // Form gönderme handler'ı
-function handleFormSubmit() {
-    // Fotoğrafları forma ekle (FormData kullanarak)
-    const form = document.getElementById('internForm');
+function handleFormSubmit(e) {
+    e.preventDefault();
+    const form = document.getElementById('workForm');
 
-    // Seçili kullanıcıları hidden input olarak ekle
-    if (selectedUsers.length > 0) {
-        selectedUsers.forEach((user, index) => {
-            const hiddenInput = document.createElement('input');
-            hiddenInput.type = 'hidden';
-            hiddenInput.name = `InternsId`;
-            hiddenInput.value = user.id;
-            form.appendChild(hiddenInput);
+    const hiddenContainer = document.getElementById('hidden-inputs-container');
+    const selectedBroadcast = document.querySelector('input[name="broadcast"]:checked');
+    var value = selectedBroadcast.value;
+    hiddenContainer.innerHTML = ''; 
+
+    if (value == 'all') {
+        var hiddenInput = document.createElement('input');
+        hiddenInput.type = 'hidden';
+        hiddenInput.name = `BroadcastType`;
+        hiddenInput.value = 'All';
+        hiddenContainer.appendChild(hiddenInput);
+    }
+    else if (value == 'users') {
+        if (selectedUsers.length > 0) {
+            selectedUsers.forEach((user, index) => {
+                var hiddenInput = document.createElement('input');
+                hiddenInput.type = 'hidden';
+                hiddenInput.name = `InternsId[${index}]`;
+                hiddenInput.value = user.id;
+                hiddenContainer.appendChild(hiddenInput);
+            });
+
+            var hiddenInput2 = document.createElement('input');
+            hiddenInput2.type = 'hidden';
+            hiddenInput2.name = `BroadcastType`;
+            hiddenInput2.value = 'Users';
+            hiddenContainer.appendChild(hiddenInput2);
+        }
+    }
+    else if (value == 'department') {
+        var departmentId = document.getElementById('departmentSelect');
+
+        var hiddenInput = document.createElement('input');
+        hiddenInput.type = 'hidden';
+        hiddenInput.name = `BroadcastType`;
+        hiddenInput.value = 'Department';
+        hiddenContainer.appendChild(hiddenInput);
+
+        var hiddenInput2 = document.createElement('input');
+        hiddenInput2.type = 'hidden';
+        hiddenInput2.name = `DepartmentId`;
+        hiddenInput2.value = departmentId.value;
+        hiddenContainer.appendChild(hiddenInput2);
+    }
+    else if (value == 'section') {
+        var selectedSection = document.querySelector('input[name="SectionId"]:checked');
+        var hiddenInput = document.createElement('input');
+        hiddenInput.type = 'hidden';
+        hiddenInput.name = `BroadcastType`;
+        hiddenInput.value = 'Section';
+        hiddenContainer.appendChild(hiddenInput);
+
+        var hiddenInput2 = document.createElement('input');
+        hiddenInput2.type = 'hidden';
+        hiddenInput2.name = `SectionId`;
+        hiddenInput2.value = selectedSection.value;
+        hiddenContainer.appendChild(hiddenInput2);
+    }
+
+    const formData = new FormData(form);
+
+    if (uploadedFiles.length > 0) {
+        uploadedFiles.forEach(fileObj => {
+            formData.append('files', fileObj.file);
         });
     }
 
-    // Fotoğrafları ekle (Bu kısmı backend'inizin dosya upload yapısına göre düzenleyin)
-    if (uploadedFiles.length > 0) {
-        const fileInput = document.createElement('input');
-        fileInput.type = 'hidden';
-        fileInput.name = 'HasPhotos';
-        fileInput.value = 'true';
-        form.appendChild(fileInput);
-
-        // Dosyaları ayrı bir FormData ile göndermeniz gerekebilir
-        // veya base64 olarak encode edip gönderebilirsiniz
-    }
+    fetch('/Works/AddWork', {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Başarılı:', data);
+        })
+        .catch(error => {
+            console.error('Hata:', error);
+        });
 }
 
 // Bölüm ve departman seçme kodları

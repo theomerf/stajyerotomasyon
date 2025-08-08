@@ -12,7 +12,7 @@ namespace Services.Contracts
         Task<int> GetAllWorksCountAsync();
         Task<int> GetWorksCountAsync(WorkRequestParameters p);
         Task<int> GetAllWorksCountOfOneUser(string userId);
-        Task<ResultDto> CreateWorkAsync(WorkDto workDto);
+        Task<ResultDto> CreateWorkAsync(WorkDtoForCreation workDto);
         Task<ResultDto> DeleteWorkAsync(int workId);
         Task<ResultDto> UpdateWorkAsync(WorkDto workDto);
     }

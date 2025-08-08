@@ -27,7 +27,7 @@ namespace Services
         {
             var application = await GetOneApplicationForService(applicationId);
 
-            if (application.Status == "OnWait")
+            if (application.Status.ToString() == "OnWait")
             {
                 _cache.Remove("applicationsOnWaitStats");
             }
@@ -50,7 +50,7 @@ namespace Services
         public async Task<ApplicationDto> ChangeApplicationSeenAsync(int applicationId)
         {
             var application = await GetOneApplicationForService(applicationId);
-            if (application.SeenDate == null && application.Status == "OnWait")
+            if (application.SeenDate == null && application.Status.ToString() == "OnWait")
             {
                 application.SeenDate = DateTime.Now;
                 _manager.Application.Update(application);
@@ -175,15 +175,15 @@ namespace Services
             var application = await GetOneApplicationForService(applicationId);
             if (status == "Approved")
             {
-                if ((application.Status != "Approved") && (application.Status != "Denied"))
+                if ((application.Status.ToString() != "Approved") && (application.Status.ToString() != "Denied"))
                 {
-                    if (application.Status == "OnWait")
+                    if (application.Status.ToString() == "OnWait")
                     {
                         _cache.Remove("applicationsOnWaitStats");
                     }
                     _cache.Remove("applicationsStats");
 
-                    application.Status = "Approved";
+                    application.Status = ApplicationStatus.Approved;
                     application.UpdatedDate = DateTime.Now;
                     _manager.Application.Update(application);
                     await _manager.SaveAsync();
@@ -210,15 +210,15 @@ namespace Services
             }
             else if (status == "Interview")
             {
-                if ((application.Status != "Interview") && (application.Status != "Denied") && (application.Status != "Approved"))
+                if ((application.Status.ToString() != "Interview") && (application.Status.ToString() != "Denied") && (application.Status.ToString() != "Approved"))
                 {
-                    if (application.Status == "OnWait")
+                    if (application.Status.ToString() == "OnWait")
                     {
                         _cache.Remove("applicationsOnWaitStats");
                     }
                     _cache.Remove("applicationsStats");
 
-                    application.Status = "Interview";
+                    application.Status = ApplicationStatus.Interview;
                     application.InterviewedDate = DateTime.Now;
                     application.UpdatedDate = DateTime.Now;
                     _manager.Application.Update(application);
@@ -246,15 +246,15 @@ namespace Services
             }
             else if (status == "Denied")
             {
-                if ((application.Status != "Denied") && (application.Status != "Approved"))
+                if ((application.Status.ToString() != "Denied") && (application.Status.ToString() != "Approved"))
                 {
-                    if (application.Status == "OnWait")
+                    if (application.Status.ToString() == "OnWait")
                     {
                         _cache.Remove("applicationsOnWaitStats");
                     }
                     _cache.Remove("applicationsStats");
 
-                    application.Status = "Denied";
+                    application.Status = ApplicationStatus.Denied;
                     application.DeniedDate = DateTime.Now;
                     application.UpdatedDate = DateTime.Now;
                     _manager.Application.Update(application);

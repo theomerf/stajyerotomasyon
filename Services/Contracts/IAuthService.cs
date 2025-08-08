@@ -8,6 +8,9 @@ namespace Services.Contracts
     {
         IEnumerable<IdentityRole> Roles { get; }
         Task<IEnumerable<AccountDto>> GetAllUsersAsync();
+        Task<List<String>> GetAllInternsId();
+        Task<List<string?>> GelAllInternsOfSection(int sectionId);
+        Task<List<string?>> GelAllInternsOfDepartment(int departmentId);
         Task<StatsDto> GetEndedInternshipStatsAsync();
         Task<StatsDto> GetInternshipStatsAsync();
         Task<string> GetAllUsersCountAsync();

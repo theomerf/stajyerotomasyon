@@ -34,7 +34,7 @@ namespace Stajyeryotom.Migrations
 
                     b.HasIndex("WorksWorkId");
 
-                    b.ToTable("AccountWork");
+                    b.ToTable("WorkInterns", (string)null);
                 });
 
             modelBuilder.Entity("Entities.Models.Account", b =>
@@ -178,8 +178,8 @@ namespace Stajyeryotom.Migrations
                     b.Property<DateTime?>("SeenDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -304,8 +304,8 @@ namespace Stajyeryotom.Migrations
                     b.Property<string>("ReportTitle")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<int?>("WorkId")
                         .HasColumnType("int");

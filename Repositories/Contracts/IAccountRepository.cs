@@ -12,7 +12,10 @@ namespace Repositories.Contracts
     public interface IAccountRepository : IRepositoryBase<Account>
     {
         Task<int> GetInternsCountAsync();
+        Task<List<String>> GetAllInternsId();
         Task<IEnumerable<AccountDtoForSearch>> SearchInterns(string userName);
+        Task<List<string?>> GelAllInternsOfSection(int sectionId);
+        Task<List<string>> GelAllInternsOfDepartment(int departmentId);
         Task<Stats> GetEndedInternshipStatsAsync();
         Task<int> GetUsersCountAsync();
         Task<Stats> GetInternshipStatsAsync();

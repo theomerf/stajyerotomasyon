@@ -2,6 +2,8 @@
 using Entities.Dtos;
 using Entities.Models;
 using Entities.RequestParameters;
+using Microsoft.EntityFrameworkCore;
+using Repositories;
 using Repositories.Contracts;
 using Services.Contracts;
 
@@ -11,17 +13,45 @@ namespace Services
     {
         private readonly IRepositoryManager _manager;
         private readonly IMapper _mapper;
+        private readonly RepositoryContext _context;
 
-        public WorkManager(IRepositoryManager manager, IMapper mapper)
+        public WorkManager(IRepositoryManager manager, IMapper mapper, RepositoryContext context)
         {
             _manager = manager;
             _mapper = mapper;
+            _context = context;
         }
 
-        public async Task<ResultDto> CreateWorkAsync(WorkDto workDto)
+        public async Task<ResultDto> CreateWorkAsync(WorkDtoForCreation workDto)
         {
             var work = _mapper.Map<Work>(workDto);
-            _manager.Work.Create(work);
+            if (workDto.BroadcastType == "All")
+            {
+                var internsId = await _manager.Account.GetAllInternsId();
+                var interns = internsId.Select(id => new Account { Id = id }).ToList();
+                _manager.Account.AttachRange(interns);
+                work.Interns = interns;
+            }
+            else if (workDto.BroadcastType == "Users") 
+            {
+                var interns = workDto.InternsId!.Select(id => new Account { Id = id }).ToList();
+            }
+            else if (workDto.BroadcastType == "Department")
+            {
+                var internsId = await _manager.Account.GelAllInternsOfDepartment(workDto.DepartmentId!.Value);
+                var interns = internsId.Select(id => new Account { Id = id }).ToList();
+                _manager.Account.AttachRange(interns);
+                work.Interns = interns;
+            }
+            else if (workDto.BroadcastType == "Section")
+            {
+                var internsId = await _manager.Account.GelAllInternsOfSection(workDto.SectionId!.Value);
+                var interns = internsId.Select(id => new Account { Id = id! }).ToList();
+                _manager.Account.AttachRange(interns);
+                work.Interns = interns;
+            }
+
+            _manager.Work.CreateWork(work);
             await _manager.SaveAsync();
 
             var result = new ResultDto()

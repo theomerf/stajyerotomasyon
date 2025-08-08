@@ -22,5 +22,6 @@ namespace Repositories.Contracts
         void Update(T entity);
 
         Task<int> Count(bool trackChanges);
+        void AttachRange(IEnumerable<T> entities);
     }
 }

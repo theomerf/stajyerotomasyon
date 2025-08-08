@@ -47,7 +47,6 @@ namespace Repositories
                 : _context.Set<T>().Where(expression).AsNoTracking();
         }
 
-
         public void Remove(T entity)
         {
             _context.Set<T>().Remove(entity);
@@ -56,6 +55,21 @@ namespace Repositories
         public void Update(T entity)
         {
             _context.Set<T>().Update(entity);
+        }
+
+        public void RemoveRange(IEnumerable<T> entities)
+        {
+            _context.Set<T>().RemoveRange(entities);
+        }
+
+        public void UpdateRange(IEnumerable<T> entities)
+        {
+            _context.Set<T>().UpdateRange(entities);
+        }
+
+        public void AttachRange(IEnumerable<T> entities)
+        {
+            _context.Set<T>().AttachRange(entities);
         }
     }
 }

@@ -39,7 +39,8 @@ namespace Repositories.Config
                 .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasMany(w => w.Interns)
-                .WithMany(a => a.Works);
+                .WithMany(a => a.Works)
+                .UsingEntity(j => j.ToTable("WorkInterns"));
         }
     }
 }

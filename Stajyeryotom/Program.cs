@@ -4,10 +4,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Stajyeryotom.Infrastructure.Extensions;
 using Stajyeryotom.Infrastructure.Mapper;
 using System.Reflection;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
+
 builder.Services.AddRazorPages();
 
 builder.Services.ConfigureDbContext(builder.Configuration);

@@ -87,9 +87,13 @@ public class CsvImporter
         for (int i = 1; i < applicationsLines.Length; i++)
         {
             var columns = applicationsLines[i].Split(';');
+
+            string statusText = columns[0].Trim();
+            ApplicationStatus status = Enum.Parse<ApplicationStatus>(statusText);
+
             applications.Add(new Application
             {
-                Status = columns[0].Trim(),
+                Status = status,
                 Title = columns[1].Trim(),
                 Description = columns[2].Trim(),
                 ApplicantFirstName = columns[3].Trim(),

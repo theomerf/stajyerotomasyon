@@ -14,12 +14,12 @@ namespace Repositories
 
         public void CreateWork(Work work)
         {
-            CreateWork(work);
+            Create(work);
         }
 
         public void DeleteWork(Work work)
         {
-            DeleteWork(work);
+            Remove(work);
         }
 
         public async Task<IEnumerable<WorkDto>> GetAllWorksAsync(WorkRequestParameters p)
@@ -87,7 +87,7 @@ namespace Repositories
 
         public void UpdateWork(Work work)
         {
-            UpdateWork(work);
+            Update(work);
         }
     }
 }

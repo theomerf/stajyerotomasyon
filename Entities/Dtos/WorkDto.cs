@@ -17,7 +17,7 @@ namespace Entities.Dtos
         [DataType(DataType.Text)]
         [Required(ErrorMessage = "Görev içeriği gerekli.")]
         public String? WorkDescription { get; init; }
-        public List<String>? ImageUrls { get; init; }
+        public List<String>? ImageUrls { get; set; }
         [DataType(DataType.DateTime)]
         [Required(ErrorMessage = "Görev başlangıç tarihi gerekli.")]
         public DateTime WorkStartDate { get; init; }

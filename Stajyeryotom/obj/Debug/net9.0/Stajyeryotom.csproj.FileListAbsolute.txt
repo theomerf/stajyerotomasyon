@@ -359,5 +359,4 @@ C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Stajyeryotom\obj\Debug\net9
 C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Stajyeryotom\obj\Debug\net9.0\compressed\2kpv99un7k-03sl5rosq3.gz
 C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Stajyeryotom\obj\Debug\net9.0\compressed\g2s3vz5m0f-yu2146gyx0.gz
 C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Stajyeryotom\obj\Debug\net9.0\compressed\2o56dib60u-4xx8cziofr.gz
-C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Stajyeryotom\obj\Debug\net9.0\compressed\910kplkn9w-mpkjnf50cv.gz
-C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Stajyeryotom\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
+C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Stajyeryotom\obj\Debug\net9.0\compressed\910kplkn9w-9az36ezzki.gz

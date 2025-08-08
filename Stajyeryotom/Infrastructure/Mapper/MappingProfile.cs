@@ -28,6 +28,7 @@ namespace Stajyeryotom.Infrastructure.Mapper
             CreateMap<Event, EventDto>().ReverseMap();
             CreateMap<Report, ReportDto>().ReverseMap();
             CreateMap<Work, WorkDto>().ReverseMap();
+            CreateMap<WorkDtoForCreation, Work>();
         }
     }
 }

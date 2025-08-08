@@ -1,22 +1,20 @@
 ﻿@model WorkDtoForCreation
 
 @{
-
     Layout = Context.Request.Headers["HX-Request"] == "true" ? null : "_Layout";
-    var applicationId = TempData["ApplicationId"];
 }
 
 <div class="form-container" hx-on::load="initAddWorkScripts();">
     <div class="form-header">
-        <a href="/Interns/Index" hx-get="/Interns/Index" hx-target="#content" hx-push-url="true" class="back-btn">
+        <a href="/Works/Index" hx-get="/Works/Index" hx-target="#content" hx-push-url="true" class="back-btn">
             <i class="fas fa-arrow-left"></i>Geri
         </a>
-        <h1><i class="fas fa-user-plus"></i> Stajyer Ekleme</h1>
-        <p>Yeni stajyer bilgilerini eksiksiz olarak doldurunuz</p>
+        <h1><i class="fas fa-user-plus"></i> Görev Ekleme</h1>
+        <p>Yeni görev bilgilerini eksiksiz olarak doldurunuz</p>
     </div>
     <div class="form-body">
         <div id="login-errors" class="text-danger validation-summary-errors" asp-validation-summary="All"></div>
-        <form method="post" asp-action="AddWork" id="internForm" class="hxform validation" hx-post="/Works/AddWork" hx-target="#content">
+        <form method="post" asp-action="AddWork" id="workForm" class="hxform validation" hx-post="/Works/AddWork" hx-target="#content" enctype="multipart/form-data">
             @Html.AntiForgeryToken()
 
             <div class="form-grid">
@@ -184,8 +182,9 @@
                 <span  class="text-danger"></span>
             </div>
 
+            <div id="hidden-inputs-container"></div>
 
-            <button type="submit" hx-on:click="handleFormSubmit();" class="form-submit-btn" id="submitBtn">
+            <button type="submit" hx-on:click="handleFormSubmit(event);" class="form-submit-btn" id="submitBtn">
                 <i class="fas fa-user-plus"></i> Görev Oluştur
             </button>
         </form>

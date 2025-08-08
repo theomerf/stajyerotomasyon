@@ -207,12 +207,12 @@ namespace Repositories.Extensions
 
                     case "APPROVED":
                         return (applicationQuery!
-                            .Where(a => a.Status == "Approved")
+                            .Where(a => a.Status.ToString() == "Approved")
                             .OrderByDescending(a => a.CreatedDate) as IQueryable<T>)!;
 
                     case "DENIED":
                         return (applicationQuery!
-                            .Where(a => a.Status == "Denied")
+                            .Where(a => a.Status.ToString() == "Denied")
                             .OrderByDescending(a => a.CreatedDate) as IQueryable<T>)!;
 
                     default:
@@ -293,12 +293,12 @@ namespace Repositories.Extensions
 
                     case "READ":
                         return (reportQuery!
-                            .Where(r => r.Status == "Read")
+                            .Where(r => r.Status.ToString() == "Read")
                             .OrderByDescending(a => a.CreatedAt) as IQueryable<T>)!;
 
                     case "NOTREAD":
                         return (reportQuery!
-                            .Where(a => a.Status == "NotRead")
+                            .Where(a => a.Status.ToString() == "NotRead")
                             .OrderByDescending(a => a.CreatedAt) as IQueryable<T>)!;
                     default:
                         return (reportQuery!

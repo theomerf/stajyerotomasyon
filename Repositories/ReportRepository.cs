@@ -15,12 +15,12 @@ namespace Repositories
 
         public void CreateReport(Report report)
         {
-            CreateReport(report);
+            Create(report);
         }
 
         public void DeleteReport(Report report)
         {
-            DeleteReport(report);
+            Remove(report);
         }
 
         public async Task<IEnumerable<ReportDto>> GetAllReportsAsync(ReportRequestParameters p)
@@ -33,7 +33,7 @@ namespace Repositories
                 .FilteredByDepartmentId(p.DepartmentId, r => r.Account!.Section!.DepartmentId)
                 .FilteredBySearchTerm(p.SearchTerm ?? "", r => r.Account!.FirstName!)
                 .FilteredByDate(p.StartDate ?? "", p.EndDate ?? "", r => r.CreatedAt)
-                .FilteredByStatus(p.Status ?? "", r => r.Status!)
+                .FilteredByStatus(p.Status ?? "", r => r.Status.ToString()!)
                 .FilteredByType(p.Type ?? "")
                 .SortExtensionForReports(p.SortBy ?? "")
                 .ToPaginate(p.PageNumber, p.PageSize)
@@ -43,7 +43,7 @@ namespace Repositories
                     ReportTitle = r.ReportTitle,
                     DepartmentName = r.Account!.Section!.Department!.DepartmentName,
                     SectionName = r.Account.Section.SectionName,
-                    Status = r.Status,
+                    Status = r.Status.ToString(),
                     CreatedAt = r.CreatedAt,
                     AccountFirstName = r.Account!.FirstName,
                     AccountLastName = r.Account.LastName,
@@ -64,14 +64,28 @@ namespace Repositories
                 .GroupBy(r => r.Status)
                 .Select(g => new Stats()
                 {
-                    Key = g.Key,
+                    Key = g.Key.ToString(),
                     TotalCount = g.Count(),
                     ThisMonthsCount = g.Count(r => r.CreatedAt >= lastMonth && r.CreatedAt <= now),
                     LastMonthsCount = g.Count(r => r.CreatedAt <= lastMonth && r.CreatedAt >= lastMonth2)
                 })
                 .ToListAsync();
 
-            return stats;
+            var allStatuses = Enum.GetValues(typeof(ReportStatus))
+                      .Cast<ReportStatus>();
+
+            var finalStats = allStatuses
+                .Select(status => stats.FirstOrDefault(s => s.Key == status.ToString())
+            ?? new Stats
+            {
+                Key = status.ToString(),
+                TotalCount = 0,
+                ThisMonthsCount = 0,
+                LastMonthsCount = 0
+            })
+            .ToList();
+
+            return finalStats;
         }
 
         public async Task<int> GetReportsCountAsync(ReportRequestParameters p)
@@ -80,7 +94,7 @@ namespace Repositories
                 .FilteredByDepartmentId(p.DepartmentId, r => r.Account!.Section!.DepartmentId)
                 .FilteredBySearchTerm(p.SearchTerm ?? "", r => r.Account!.FirstName!)
                 .FilteredByDate(p.StartDate ?? "", p.EndDate ?? "", r => r.CreatedAt)
-                .FilteredByStatus(p.Status ?? "", r => r.Status!)
+                .FilteredByStatus(p.Status ?? "", r => r.Status.ToString()!)
                 .FilteredByType(p.Type ?? "")
                 .CountAsync();
 
@@ -129,7 +143,7 @@ namespace Repositories
 
         public void UpdateReport(Report report)
         {
-            UpdateReport(report);
+            Update(report);
         }
     }
 }

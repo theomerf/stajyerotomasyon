@@ -1,7 +1,6 @@
 ﻿@model AccountDtoForCreation
 
 @{
-
     Layout = Context.Request.Headers["HX-Request"] == "true" ? null : "_Layout";
     var applicationId = TempData["ApplicationId"];
     if(Model.SectionId != 0)

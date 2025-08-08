@@ -1,9 +1,11 @@
-﻿namespace Entities.Models
+﻿using System.Text.Json.Serialization;
+
+namespace Entities.Models
 {
     public class Application
     {
         public int ApplicationId { get; set; }
-        public String? Status { get; set; }
+        public ApplicationStatus Status { get; set; } = ApplicationStatus.OnWait;
         public String? Title { get; set; }
         public String? Description { get; set; }
         public String? ApplicantFirstName { get; set; }
@@ -21,5 +23,13 @@
         public int? SectionId { get; set; }
         public Section? Section { get; set; }
     
+    }
+
+    public enum ApplicationStatus
+    {
+        OnWait = 0,
+        Interview = 1,
+        Denied = 2,
+        Approved = 3,
     }
 }

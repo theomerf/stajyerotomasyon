@@ -12,8 +12,9 @@ namespace Entities.Dtos
     {
         [Required(ErrorMessage = "Görev verilecek kişiler gerekli.")]
         public List<String>? InternsId { get; init; }
-        public ICollection<Account>? Interns { get; init; }
-        public String? TaskMasterId { get; init; }
-        public Account? TaskMaster { get; init; }
+        public String? TaskMasterId { get; set; }
+        public String? BroadcastType { get; init; }
+        public int? DepartmentId { get; init; }
+        public int? SectionId { get; init; }
     }
 }

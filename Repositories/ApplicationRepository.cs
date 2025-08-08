@@ -40,7 +40,7 @@ namespace Repositories
                 .Include(a => a.Section)
                     .ThenInclude(s => s!.Department)
                 .FilteredByDate(p.StartDate ?? "", p.EndDate ?? "", a => a.CreatedDate)
-                .FilteredByStatus(p.Status ?? "", a => a.Status!)
+                .FilteredByStatus(p.Status ?? "", a => a.Status.ToString()!)
                 .FilteredBySearchTerm(p.SearchTerm ?? "", a => a.ApplicantFirstName!)
                 .FilteredByDepartmentId(p.DepartmentId, a => a.Section!.DepartmentId)
                 .SortExtensionForApplications(p.SortBy ?? "")
@@ -54,7 +54,7 @@ namespace Repositories
         {
             var count = await FindAll(false)
                 .FilteredByDate(p.StartDate ?? "", p.EndDate ?? "", a => a.CreatedDate)
-                .FilteredByStatus(p.Status ?? "", a => a.Status!)
+                .FilteredByStatus(p.Status ?? "", a => a.Status.ToString()!)
                 .FilteredBySearchTerm(p.SearchTerm ?? "", a => a.ApplicantFirstName!)
                 .FilteredByDepartmentId(p.DepartmentId, a => a.Section!.DepartmentId)
                 .CountAsync();
@@ -88,14 +88,28 @@ namespace Repositories
                 .GroupBy(a => a.Status)
                 .Select(g => new Stats()
                 {
-                    Key = g.Key,
+                    Key = g.Key.ToString(),
                     TotalCount = g.Count(),
                     ThisMonthsCount = g.Count(a => a.UpdatedDate >= lastMonth && a.UpdatedDate <= now),
                     LastMonthsCount = g.Count(a => a.UpdatedDate <= lastMonth && a.UpdatedDate >= lastMonth2)
                 })
                 .ToListAsync();
 
-            return stats;
+            var allStatuses = Enum.GetValues(typeof(ApplicationStatus))
+            .Cast<ApplicationStatus>();
+
+            var finalStats = allStatuses
+                .Select(status => stats.FirstOrDefault(s => s.Key == status.ToString())
+            ?? new Stats
+            {
+                Key = status.ToString(),
+                TotalCount = 0,
+                ThisMonthsCount = 0,
+                LastMonthsCount = 0
+            })
+            .ToList();
+
+            return finalStats;
         }
 
         public async Task<Stats> GetApplicationsOnWaitStatsAsync()
@@ -104,7 +118,7 @@ namespace Repositories
             DateTime lastMonth = DateTime.UtcNow.AddDays(-30);
             DateTime lastMonth2 = DateTime.UtcNow.AddDays(-60);
 
-            var stats = await FindAllByCondition(a => a.Status == "OnWait", false)
+            var stats = await FindAllByCondition(a => a.Status.ToString() == "OnWait", false)
                 .GroupBy(_ => 1)
                 .Select(g => new Stats()
                 {

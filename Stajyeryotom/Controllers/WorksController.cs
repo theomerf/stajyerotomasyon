@@ -3,6 +3,7 @@ using Entities.RequestParameters;
 using Microsoft.AspNetCore.Mvc;
 using Services.Contracts;
 using Stajyeryotom.Models;
+using System.Security.Claims;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Stajyeryotom.Controllers
@@ -57,9 +58,30 @@ namespace Stajyeryotom.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddWork(WorkDtoForCreation workDto)
+        public async Task<IActionResult> AddWork([FromForm]WorkDtoForCreation workDto, [FromForm]List<IFormFile> files)
         {
+            if (workDto.ImageUrls == null)
+            {
+                workDto.ImageUrls = new List<string>();
+            }
+
+            foreach (var file in files) 
+            {
+                string fileName = $"{Guid.NewGuid().ToString()}.png";
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/works", fileName);
+
+                using (var stream = new FileStream(path, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+
+                workDto.ImageUrls.Add(fileName);
+            }
+
+            workDto.TaskMasterId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
             var result = await _manager.WorkService.CreateWorkAsync(workDto);
+
             return Json(new
             {
                 success = result.Success,

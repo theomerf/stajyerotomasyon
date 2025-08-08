@@ -18,6 +18,47 @@ namespace Repositories
         {
         }
 
+        public async Task<List<String>> GetAllInternsId() 
+        {
+            var internRoleId = await _context.Roles
+                .Where(r => r.Name == "Stajyer")
+                .Select(r => r.Id)
+                .FirstOrDefaultAsync();
+
+            var internsId = await FindAllByCondition(u => _context.UserRoles.Any(ur => ur.UserId == u.Id && ur.RoleId == internRoleId), true)
+                .Select(i => i.Id)
+                .ToListAsync();
+
+            return internsId;
+        }
+        public async Task<List<string>> GelAllInternsOfDepartment(int departmentId)
+        {
+            var internRoleId = await _context.Roles
+                .Where(r => r.Name == "Stajyer")
+                .Select(r => r.Id)
+                .FirstOrDefaultAsync();
+
+            var interns = await FindAllByCondition(u => _context.UserRoles.Any(ur => ur.UserId == u.Id && ur.RoleId == internRoleId) & u.Section!.DepartmentId == departmentId, false)
+                .Select(i => i.Id)
+                .ToListAsync();
+
+            return interns;
+        }
+
+        public async Task<List<string?>> GelAllInternsOfSection(int sectionId)
+        {
+            var internRoleId = await _context.Roles
+                .Where(r => r.Name == "Stajyer")
+                .Select(r => r.Id)
+                .FirstOrDefaultAsync();
+
+            var interns = await FindAllByCondition(u => _context.UserRoles.Any(ur => ur.UserId == u.Id && ur.RoleId == internRoleId) & u.SectionId == sectionId, false)
+                .Select(i => i.Id)
+                .ToListAsync();
+
+            return interns!;
+        }
+
         public async Task<int> GetInternsCountAsync()
         {
             var internRoleId = await _context.Roles

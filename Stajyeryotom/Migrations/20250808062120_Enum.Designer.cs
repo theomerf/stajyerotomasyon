@@ -12,8 +12,8 @@ using Repositories;
 namespace Stajyeryotom.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    [Migration("20250806073958_Report")]
-    partial class Report
+    [Migration("20250808062120_Enum")]
+    partial class Enum
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,7 +37,7 @@ namespace Stajyeryotom.Migrations
 
                     b.HasIndex("WorksWorkId");
 
-                    b.ToTable("AccountWork");
+                    b.ToTable("WorkInterns", (string)null);
                 });
 
             modelBuilder.Entity("Entities.Models.Account", b =>
@@ -181,8 +181,8 @@ namespace Stajyeryotom.Migrations
                     b.Property<DateTime?>("SeenDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -307,8 +307,8 @@ namespace Stajyeryotom.Migrations
                     b.Property<string>("ReportTitle")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<int?>("WorkId")
                         .HasColumnType("int");
