@@ -9,7 +9,7 @@ using System.Security.Claims;
 
 namespace Stajyeryotom.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    
     public class AccountController : Controller
     {
         private readonly UserManager<Account> _userManager;
@@ -25,6 +25,10 @@ namespace Stajyeryotom.Controllers
 
         public IActionResult Login()
         {
+            if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             var login = new LoginModel();
             return View(login);
         }
@@ -141,6 +145,26 @@ namespace Stajyeryotom.Controllers
             }
 
             return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+
+            bool isAjaxRequest = Request.Headers["X-Requested-With"] == "XMLHttpRequest";
+
+            if (isAjaxRequest)
+            {
+                return Json(new
+                {
+                    success = true,
+                    message = "Başarıyla çıkış yapıldı."
+                });
+            }
+
+            return RedirectToAction("Login");
         }
 
         public IActionResult AccessDenied()

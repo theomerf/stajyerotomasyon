@@ -8,12 +8,13 @@ namespace Services.Contracts
     {
         Task<IEnumerable<WorkDto?>> GetAllWorksAsync(WorkRequestParameters p);
         Task<WorkDto?> GetWorkByIdAsync(int workId);
+        Task<WorkDtoForUpdate?> GetWorkForUpdateByIdAsync(int workId);
         Task<IEnumerable<WorkDto?>> GetAllWorksOfOneUserAsync(string userId);
         Task<int> GetAllWorksCountAsync();
         Task<int> GetWorksCountAsync(WorkRequestParameters p);
         Task<int> GetAllWorksCountOfOneUser(string userId);
         Task<ResultDto> CreateWorkAsync(WorkDtoForCreation workDto);
         Task<ResultDto> DeleteWorkAsync(int workId);
-        Task<ResultDto> UpdateWorkAsync(WorkDto workDto);
+        Task<ResultDto> UpdateWorkAsync(WorkDtoForUpdate workDto);
     }
 }

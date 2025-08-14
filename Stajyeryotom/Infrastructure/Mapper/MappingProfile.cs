@@ -29,6 +29,9 @@ namespace Stajyeryotom.Infrastructure.Mapper
             CreateMap<Report, ReportDto>().ReverseMap();
             CreateMap<Work, WorkDto>().ReverseMap();
             CreateMap<WorkDtoForCreation, Work>();
+            CreateMap<Work, WorkDtoForUpdate>()
+                .ForMember(dest => dest.InternsId, opt => opt.MapFrom(src => src.Interns.Select(i => i.Id).ToList()));
+            CreateMap<WorkDtoForUpdate, Work>();
         }
     }
 }

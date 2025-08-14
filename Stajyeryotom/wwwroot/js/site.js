@@ -1,29 +1,4 @@
-﻿// Sidebar htmx içerik yükleme işlevi
-
-window.handleSidebarClick = function (event) {
-    document.querySelectorAll('.sidebar-nav-item.active').forEach(item => item.classList.remove('active'));
-    const li = event.target.closest('li.sidebar-nav-item');
-    if (li) li.classList.add('active');
-}
-
-window.handleSidebarClickForComponents = function (event) {
-    const anchor = event.currentTarget;
-
-    document.querySelectorAll('.sidebar-nav-item.active').forEach(item => item.classList.remove('active'));
-
-    const target = anchor.dataset.target;
-
-    if (!target) return;
-
-    const liToActivate = document.querySelector(`.sidebar-nav-item[data-target="${target}"]`);
-
-    if (liToActivate) {
-        liToActivate.classList.add('active');
-    }
-};
-
-
-// İleri geri gitme işlevi
+﻿// İleri geri gitme işlevi
 
 window.addEventListener('popstate', function (event) {
     if (event.state && event.state.view) {
@@ -201,12 +176,30 @@ document.body.addEventListener("htmx:afterRequest", function (event) {
     }
 });
 
-// Ajax ile uyumlu jquery script çalıştırma işlevi 
+// Ajax ile uyumlu jquery script çalıştırma işlevi ve sidebar aktif element işlevi
 
 document.body.addEventListener("htmx:afterSwap", function (event) {
     const $scripts = $(event.target).find('script');
 
+    const path = window.location.pathname;
+    let firstSegment = path.split('/')[1];
 
+    const roleMeta = document.querySelector('meta[name="user-role"]');
+    const role = roleMeta ? roleMeta.getAttribute('content') : null;
+
+    if (firstSegment === "Home") {
+        firstSegment = role === "Admin" ? "HomeAdmin" : "Home";
+    }
+
+    const sidebarItems = document.querySelectorAll('.sidebar-nav-item');
+
+    sidebarItems.forEach(item => {
+        if (item.dataset.target === firstSegment) {
+            item.classList.add('active');
+        } else {
+            item.classList.remove('active');
+        }
+    });
     $scripts.each(function () {
         $.globalEval(this.innerText || this.textContent || '');
     });
@@ -223,14 +216,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const role = roleMeta ? roleMeta.getAttribute('content') : null;
 
     if (firstSegment === "Home") {
-        firstSegment = role === "Admin" ? "HomeAdmin" : "Home";
-
-        if (role === "Admin") {
-
-        }
-    }
-
-    if (!firstSegment) {
         firstSegment = role === "Admin" ? "HomeAdmin" : "Home";
     }
 

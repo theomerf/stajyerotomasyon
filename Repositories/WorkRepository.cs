@@ -85,6 +85,15 @@ namespace Repositories
             return work;
         }
 
+        public async Task<Work?> GetWorkForUpdateByIdAsync(int workId)
+        {
+            var work = await FindByCondition(w => w.WorkId == workId, false)
+                .Include(w => w.Interns!)
+                .FirstOrDefaultAsync();
+
+            return work;
+        }
+
         public void UpdateWork(Work work)
         {
             Update(work);

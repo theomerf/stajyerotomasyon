@@ -73,7 +73,7 @@ namespace Services
             var result = new ResultDto()
             {
                 Success = true,
-                Message = "Görev başarıyla oluşturuldu.",
+                Message = "Görev başarıyla silindi.",
                 ResultType = "success",
                 LoadComponent = "Works"
             };
@@ -134,19 +134,58 @@ namespace Services
             return work;
         }
 
-        public async Task<ResultDto> UpdateWorkAsync(WorkDto workDto)
+        public async Task<WorkDtoForUpdate?> GetWorkForUpdateByIdAsync(int workId)
+        {
+            var work = await _manager.Work.GetWorkForUpdateByIdAsync(workId);
+            if(work == null)
+            {
+                throw new KeyNotFoundException($"{workId} id'sine sahip görev bulunamadı.");
+            }
+
+            var workDto = _mapper.Map<WorkDtoForUpdate>(work);
+            return workDto;
+        }
+
+        public async Task<ResultDto> UpdateWorkAsync(WorkDtoForUpdate workDto)
         {
             var work = _mapper.Map<Work>(workDto);
+            if (workDto.BroadcastType == "All")
+            {
+                var internsId = await _manager.Account.GetAllInternsId();
+                var interns = internsId.Select(id => new Account { Id = id }).ToList();
+                _manager.Account.AttachRange(interns);
+                work.Interns = interns;
+            }
+            else if (workDto.BroadcastType == "Users")
+            {
+                var interns = workDto.InternsId!.Select(id => new Account { Id = id }).ToList();
+            }
+            else if (workDto.BroadcastType == "Department")
+            {
+                var internsId = await _manager.Account.GelAllInternsOfDepartment(workDto.DepartmentId!.Value);
+                var interns = internsId.Select(id => new Account { Id = id }).ToList();
+                _manager.Account.AttachRange(interns);
+                work.Interns = interns;
+            }
+            else if (workDto.BroadcastType == "Section")
+            {
+                var internsId = await _manager.Account.GelAllInternsOfSection(workDto.SectionId!.Value);
+                var interns = internsId.Select(id => new Account { Id = id! }).ToList();
+                _manager.Account.AttachRange(interns);
+                work.Interns = interns;
+            }
+
             _manager.Work.UpdateWork(work);
             await _manager.SaveAsync();
 
             var result = new ResultDto()
             {
                 Success = true,
-                Message = "Rapor başarıyla oluşturuldu.",
+                Message = "Rapor başarıyla güncellendi.",
                 ResultType = "success",
                 LoadComponent = "Reports"
             };
+
             return result;
         }
     }

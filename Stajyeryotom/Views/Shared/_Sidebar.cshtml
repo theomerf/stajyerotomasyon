@@ -4,15 +4,15 @@
 		<ul class="sidebar-nav-list">
 			@if (User.IsInRole("Admin"))
 			{
-				<li class="sidebar-nav-item active" data-target="HomeAdmin">
-					<a hx-on:click="handleSidebarClick(event);" href="/Home/Index" hx-get="/Home/Index" hx-target="#indexSection" hx-push-url="true" class="sidebar-nav-link">
+				<li class="sidebar-nav-item" data-target="HomeAdmin">
+					<a href="/Home/Index" hx-get="/Home/Index" hx-target="#indexSection" hx-push-url="true" class="sidebar-nav-link">
 						<i class="fas fa-home"></i>
 						<span class="sidebar-nav-text">Ana Sayfa</span>
 					</a>
 				</li>
 
 				<li class="sidebar-nav-item" data-target="Interns">
-					<a hx-on:click="handleSidebarClick(event);" href="/Interns/Index" hx-get="/Interns/Index" hx-target="#content" hx-push-url="true" class="sidebar-nav-link">
+					<a href="/Interns/Index" hx-get="/Interns/Index" hx-target="#content" hx-push-url="true" class="sidebar-nav-link">
 						<i class="fas fa-user-graduate"></i>
 						<span class="sidebar-nav-text">Stajyerler</span>
 						<span class="sidebar-badge">@await Component.InvokeAsync("InternsCount")</span>
@@ -20,7 +20,7 @@
 				</li>
 
 				<li class="sidebar-nav-item" data-target="Applications">
-					<a hx-on:click="handleSidebarClick(event);" href="/Applications/Index" hx-get="/Applications/Index" hx-target="#content" hx-push-url="true" class="sidebar-nav-link">
+					<a href="/Applications/Index" hx-get="/Applications/Index" hx-target="#content" hx-push-url="true" class="sidebar-nav-link">
 						<i class="fas fa-file-alt"></i>
 						<span class="sidebar-nav-text">Başvurular</span>
 						<span class="sidebar-badge">@await Component.InvokeAsync("ApplicationsCount")</span>
@@ -28,14 +28,14 @@
 				</li>
 
 				<li class="sidebar-nav-item" data-target="Works">
-					<a hx-on:click="handleSidebarClick(event);" href="/Works/Index" hx-get="/Works/Index" hx-target="#content" hx-push-url="true" class="sidebar-nav-link">
+					<a href="/Works/Index" hx-get="/Works/Index" hx-target="#content" hx-push-url="true" class="sidebar-nav-link">
 						<i class="fa-solid fa-briefcase"></i>
 						<span class="sidebar-nav-text">Görevler</span>
 					</a>
 				</li>
 
 				<li class="sidebar-nav-item" data-target="Reports">
-					<a hx-on:click="handleSidebarClick(event);" href="/Reports/Index" hx-get="/Reports/Index" hx-target="#content" hx-push-url="true" class="sidebar-nav-link">
+					<a href="/Reports/Index" hx-get="/Reports/Index" hx-target="#content" hx-push-url="true" class="sidebar-nav-link">
 						<i class="fas fa-chart-bar"></i>
 						<span class="sidebar-nav-text">Raporlar</span>
 						<span class="sidebar-badge">@await Component.InvokeAsync("ReportsCount")</span>
@@ -43,7 +43,7 @@
 				</li>
 
 				<li class="sidebar-nav-item" data-target="Company">
-					<a hx-on:click="handleSidebarClick(event)" href="/Company/Index" hx-get="/Company/Index" hx-target="#content" hx-push-url="true" class="sidebar-nav-link">
+					<a href="/Company/Index" hx-get="/Company/Index" hx-target="#content" hx-push-url="true" class="sidebar-nav-link">
 						<i class="fas fa-building"></i>
 						<span class="sidebar-nav-text">Şirket Düzeni</span>
 					</a>
@@ -51,40 +51,41 @@
 			}
 			else
 			{
-				<li class="sidebar-nav-item active" data-target="Home">
-					<a hx-on:click="handleSidebarClick(event);" href="/Home/Index" hx-get="/Home/Index" hx-target="#indexSection" hx-push-url="true" class="sidebar-nav-link">
+				<li class="sidebar-nav-item" data-target="Home">
+					<a href="/Home/Index" hx-get="/Home/Index" hx-target="#indexSection" hx-push-url="true" class="sidebar-nav-link">
 						<i class="fas fa-home"></i>
 						<span class="sidebar-nav-text">Ana Sayfa</span>
 					</a>
 				</li>
 
 				<li class="sidebar-nav-item" data-target="Works">
-					<a hx-on:click="handleSidebarClick(event);" href="/Works/Index" hx-get="/Works/Index" hx-target="#content" hx-push-url="true" class="sidebar-nav-link">
+					<a href="/Works/Index" hx-get="/Works/Index" hx-target="#content" hx-push-url="true" class="sidebar-nav-link">
 						<i class="fa-solid fa-briefcase"></i>
 						<span class="sidebar-nav-text">Görevler</span>
+					</a>
+				</li>
+
+				<li class="sidebar-nav-item" data-target="Reports">
+					<a href="/Reports/Index" hx-get="/Reports/Index" hx-target="#content" hx-push-url="true" class="sidebar-nav-link">
+						<i class="fas fa-chart-bar"></i>
+						<span class="sidebar-nav-text">Raporlar</span>
+						<span class="sidebar-badge">@await Component.InvokeAsync("ReportsCount")</span>
 					</a>
 				</li>
 			}
 
 			<li class="sidebar-nav-item" data-target="Calendar">
-				<a hx-on:click="handleSidebarClick(event)" href="/Calendar/Index" hx-get="/Calendar/Index" hx-target="#content" hx-push-url="true" class="sidebar-nav-link">
+				<a href="/Calendar/Index" hx-get="/Calendar/Index" hx-target="#content" hx-push-url="true" class="sidebar-nav-link">
 					<i class="fas fa-calendar-alt"></i>
 					<span class="sidebar-nav-text">Takvim</span>
 				</a>
 			</li>
 
-			<li class="sidebar-nav-item" data-target="">
-				<a href="#" class="sidebar-nav-link">
+			<li class="sidebar-nav-item" data-target="Messages">
+				<a href="/Messages/Index" hx-get="/Messages/Index" hx-target="#content" hx-push-url="true" class="sidebar-nav-link">
 					<i class="fas fa-envelope"></i>
 					<span class="sidebar-nav-text">Mesajlar</span>
 					<span class="sidebar-badge">3</span>
-				</a>
-			</li>
-
-			<li class="sidebar-nav-item" data-target="">
-				<a href="#" class="sidebar-nav-link">
-					<i class="fas fa-bell"></i>
-					<span class="sidebar-nav-text">Bildirimler</span>
 				</a>
 			</li>
 		</ul>
@@ -92,25 +93,24 @@
 		<div class="sidebar-nav-divider"></div>
 
 		<ul class="sidebar-nav-list">
-			<li class="sidebar-nav-item" data-target="">
-				<a href="#" class="sidebar-nav-link">
+			<li class="sidebar-nav-item" data-target="Settings">
+				<a href="/Settings/Index" hx-get="/Settings/Index" hx-target="#content" hx-push-url="true" class="sidebar-nav-link">
 					<i class="fas fa-cog"></i>
 					<span class="sidebar-nav-text">Ayarlar</span>
 				</a>
 			</li>
 
 			<li class="sidebar-nav-item" data-target="">
-				<a href="#" class="sidebar-nav-link">
+				<a href="/Help/Index" hx-get="/Help/Index" hx-target="#content" hx-push-url="true" class="sidebar-nav-link">
 					<i class="fas fa-question-circle"></i>
 					<span class="sidebar-nav-text">Yardım</span>
 				</a>
 			</li>
 
 			<li class="sidebar-nav-item" data-target="">
-				<a href="#" class="sidebar-nav-link sidebar-logout-link">
-					<i class="fas fa-sign-out-alt"></i>
-					<span class="sidebar-nav-text">Çıkış</span>
-				</a>
+				<form method="post" asp-controller="Account" asp-action="Logout">
+					<button class="dropdown-item logout-item"><i class="fa-solid fa-right-from-bracket me-2"></i> Çıkış Yap</button>
+				</form>
 			</li>
 		</ul>
 	</nav>

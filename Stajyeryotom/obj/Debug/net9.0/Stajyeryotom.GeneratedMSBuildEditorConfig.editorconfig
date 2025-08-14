@@ -120,6 +120,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW50ZXJuc1xfVXBkYXRlSW50ZXJuLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/omerf/OneDrive/Masaüstü/Staj/Stajyeryotom/Stajyeryotom/Views/Messages/_Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWVzc2FnZXNcX0luZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/omerf/OneDrive/Masaüstü/Staj/Stajyeryotom/Stajyeryotom/Views/Reports/Small/_Pagination.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVwb3J0c1xTbWFsbFxfUGFnaW5hdGlvbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -190,6 +194,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/omerf/OneDrive/Masaüstü/Staj/Stajyeryotom/Stajyeryotom/Views/Works/_Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV29ya3NcX0luZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/omerf/OneDrive/Masaüstü/Staj/Stajyeryotom/Stajyeryotom/Views/Works/_UpdateWork.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV29ya3NcX1VwZGF0ZVdvcmsuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/omerf/OneDrive/Masaüstü/Staj/Stajyeryotom/Stajyeryotom/Views/_ViewImports.cshtml]

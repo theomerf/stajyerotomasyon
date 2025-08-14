@@ -1,4 +1,5 @@
 ﻿using Entities.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.Contracts;
 using Stajyeryotom.Infrastructure.Extensions;
@@ -6,6 +7,7 @@ using Stajyeryotom.Models;
 
 namespace Stajyeryotom.Controllers
 {
+    [Authorize]
     public class CalendarController : Controller
     {
         private readonly IServiceManager _manager;

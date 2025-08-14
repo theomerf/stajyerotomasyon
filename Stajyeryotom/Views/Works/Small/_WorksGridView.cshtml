@@ -56,13 +56,13 @@
                     </div>
                     <div class="col-4">
                         <div class="work-card-actions mt-5 justify-content-end">
-                            <a href="/Reports/View/@(work.WorkId)" hx-get="/Applications/View/@(work.WorkId)" hx-target="#content" hx-push-url="true" class="btn-action btn-view ms-1" title="Görüntüle">
+                            <a href="/Works/View/@(work.WorkId)" hx-get="/Works/View/@(work.WorkId)" hx-target="#content" hx-push-url="true" class="btn-action btn-view ms-1" title="Görüntüle">
                                 <i class="fas fa-eye"></i>
                             </a>
-                            <a href="/Interns/UpdateIntern?userName=@(work.WorkId)" title="Düzenle" hx-get="/Interns/UpdateIntern?userName=@(work.WorkId)" hx-target="#content" hx-push-url="true" class="btn-action edit ms-1">
+                            <a href="/Works/UpdateWork?workId=@(work.WorkId)" title="Düzenle" hx-get="/Works/UpdateWork?workId=@(work.WorkId)" hx-target="#content" hx-push-url="true" class="btn-action edit ms-1">
                                 <i class="fas fa-edit"></i>
                             </a>
-                            <form method="post" asp-action="DeleteApplication" asp-route-applicationId="@work.WorkId" class="hxform" hx-post="/Applications/DeleteApplication?applicationId=@(work.WorkId)" hx-target="#content" hx-push-url="true">
+                            <form asp-action="DeleteWork" asp-route-applicationId="@work.WorkId" class="hxform" hx-post="/Works/DeleteWork?workId=@(work.WorkId)" hx-target="#content" hx-push-url="true">
                                 <button type="submit" title="Sil" class="btn-action delete ms-1">
                                     <i class="fas fa-trash"></i>
                                 </button>

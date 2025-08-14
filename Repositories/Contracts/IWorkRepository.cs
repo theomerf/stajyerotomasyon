@@ -8,6 +8,7 @@ namespace Repositories.Contracts
     {
         Task<IEnumerable<WorkDto>> GetAllWorksAsync(WorkRequestParameters p);
         Task<Work?> GetWorkByIdAsync(int workId);
+        Task<Work?> GetWorkForUpdateByIdAsync(int workId);
         Task<IEnumerable<Work?>> GetAllWorksOfOneUserAsync(string userId);
         Task<int> GetAllWorksCountAsync();
         Task<int> GetWorksCountAsync(WorkRequestParameters p);

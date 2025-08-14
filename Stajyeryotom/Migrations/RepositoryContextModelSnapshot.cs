@@ -350,8 +350,17 @@ namespace Stajyeryotom.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("WorkId"));
 
+                    b.Property<string>("BroadcastType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("DepartmentId")
+                        .HasColumnType("int");
+
                     b.Property<string>("ImageUrls")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("SectionId")
+                        .HasColumnType("int");
 
                     b.Property<string>("TaskMasterId")
                         .HasColumnType("nvarchar(450)");

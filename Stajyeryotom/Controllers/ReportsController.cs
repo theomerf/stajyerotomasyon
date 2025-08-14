@@ -1,5 +1,6 @@
 ﻿using Entities.Dtos;
 using Entities.RequestParameters;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.Contracts;
 using Stajyeryotom.Models;
@@ -7,6 +8,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Stajyeryotom.Controllers
 {
+    [Authorize]
     public class ReportsController : Controller
     {
         private readonly IServiceManager _manager;

@@ -40,7 +40,7 @@ if (!app.Environment.IsDevelopment())
 app.UseStaticFiles();
 app.UseSession();
 
-app.UseMiddleware<AutoLoginMiddleware>();
+/*app.UseMiddleware<AutoLoginMiddleware>();*/
 app.UseHttpsRedirection();
 app.UseRouting();
 
@@ -49,7 +49,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}"
+    pattern: "{controller=Account}/{action=Login}/{id?}"
 );
 app.MapRazorPages();
 app.MapControllers();

@@ -377,5 +377,12 @@ namespace Services
 
             return interns;
         }
+
+        public async Task<IEnumerable<AccountDtoForSearch>> GetInternsByIds(List<string> internsIds)
+        {
+            var interns = await _manager.Account.GetInternsByIds(internsIds);
+
+            return interns;
+        }
     }
 }

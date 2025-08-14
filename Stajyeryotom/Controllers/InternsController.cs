@@ -228,5 +228,11 @@ namespace Stajyeryotom.Controllers
             var users = await _manager.AuthService.SearchInterns(userName);
             return Json(users);
         }
+
+        public async Task<IActionResult> GetInternsByIds([FromBody]List<string> internsIds)
+        {
+            var interns = await _manager.AuthService.GetInternsByIds(internsIds);
+            return Json(interns);
+        }
     }
 }

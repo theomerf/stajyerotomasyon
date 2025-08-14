@@ -2,7 +2,7 @@
     var isCollapsed = Context.Request.Cookies["Collapsed"] ?? "true";
 }
 
-<div class="container">
+<div class="container" hx-on::load="initNavbar();">
     <div class="row">
         <div class="page-header @((isCollapsed == "true") ? "collapsed" : "")">
             <div class="header-main">
@@ -58,15 +58,17 @@
             </a>
         </div>
         <div class="col col-md-3">
-            <div class="card action-card">
-                <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
-                    <div class="card-icon">
-                        <i class="fas fa-chart-line"></i>
+            <a href="/Works/AddWork" hx-get="/Works/AddWork" hx-on:click="handleSidebarClickForComponents(event);" hx-target="#content" hx-push-url="true" data-target="Works">
+                <div class="card action-card">
+                    <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
+                        <div class="card-icon">
+                            <i class="fa-solid fa-briefcase"></i>
+                        </div>
+                        <h3 class="action-card-title mt-4">Görev Oluştur</h3>
+                        <p class="action-card-p">Stajyerler için görevler <br />oluşturun</p>
                     </div>
-                    <h3 class="action-card-title mt-4">Rapor Oluştur</h3>
-                    <p class="action-card-p">Staj performans raporları hazırlayın</p>
                 </div>
-            </div>
+            </a>
         </div>
         <div class="col col-md-3">
             <div class="card action-card">
@@ -141,3 +143,4 @@
         </div>
     </div>
 </div>
+

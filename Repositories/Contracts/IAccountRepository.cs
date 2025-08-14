@@ -26,5 +26,6 @@ namespace Repositories.Contracts
         Task<Account?> GetOneInternAsync(string userName);
         Task<int> GetLastMonthsInternsCountAsync();
         Task<String?> GetOneUsersNameAsync(string userId);
+        Task<IEnumerable<AccountDtoForSearch>> GetInternsByIds(List<string> internsIds);
     }
 }

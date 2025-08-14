@@ -260,5 +260,22 @@ namespace Repositories
             return interns;
         }
 
+        public async Task<IEnumerable<AccountDtoForSearch>> GetInternsByIds(List<string> internsIds)
+        {
+            var interns = await FindAll(false)
+                .Where(u => internsIds.Contains(u.Id))
+                .Select(i => new AccountDtoForSearch()
+                {
+                     Id = i.Id,
+                     FirstName = i.FirstName,
+                     LastName = i.LastName,
+                     Email = i.Email,
+                     UserName = i.UserName,
+                })
+                .ToListAsync();
+
+            return interns;
+        }
+
     }
 }

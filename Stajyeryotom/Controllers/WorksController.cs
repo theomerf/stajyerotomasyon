@@ -1,13 +1,18 @@
 ﻿using Entities.Dtos;
+using Entities.Models;
 using Entities.RequestParameters;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Services.Contracts;
+using Stajyeryotom.Infrastructure.Extensions;
 using Stajyeryotom.Models;
 using System.Security.Claims;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Stajyeryotom.Controllers
 {
+    [Authorize]
     public class WorksController : Controller
     {
         private readonly IServiceManager _manager;
@@ -88,6 +93,59 @@ namespace Stajyeryotom.Controllers
                 type= result.ResultType,
                 loadComponent = result.LoadComponent,
                 message = result.Message,
+            });
+        }
+
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public async Task<IActionResult> DeleteWork([FromQuery] int workId)
+        {
+            var result = await _manager.WorkService.DeleteWorkAsync(workId);
+
+            return Json(new
+            {
+                success = result.Success,
+                message = result.Message,
+                loadComponent = result.LoadComponent,
+                type = result.ResultType,
+            });
+        }
+
+        public async Task<IActionResult> UpdateWork([FromQuery] int workId)
+        {
+            ViewBag.Departments = await _manager.DepartmentService.GetAllDepartmentsAsync();
+            var sections = await _manager.SectionService.GetAllSectionsAsync();
+            var departmentSections = sections
+                .GroupBy(s => s.DepartmentId)
+                .ToDictionary(
+                    g => g.Key,
+                    g => g.Select(s => new { id = s.SectionId, name = s.SectionName }).ToList()
+                );
+            ViewBag.DepartmentSections = departmentSections;
+            ViewBag.DepartmentSectionsJson = System.Text.Json.JsonSerializer.Serialize(departmentSections);
+
+            var model = await _manager.WorkService.GetWorkForUpdateByIdAsync(workId);
+
+            ViewBag.DepartmentList = new SelectList(ViewBag.Departments, "DepartmentId", "DepartmentName", model?.DepartmentId);
+            ViewBag.SelectedDepartmentId = model?.DepartmentId;
+            ViewBag.SelectedSectionId = model?.SectionId;
+
+            return PartialView("_UpdateWork", model);
+        }
+
+
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public async Task<IActionResult> UpdateWork([FromForm] WorkDtoForUpdate workDto)
+        {
+            var result = await _manager.WorkService.UpdateWorkAsync(workDto);
+
+            return Json(new
+            {
+                success = result.Success,
+                message = result.Message,
+                loadComponent = result.LoadComponent,
+                type = result.ResultType,
             });
         }
     }
