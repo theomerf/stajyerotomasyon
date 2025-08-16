@@ -31,5 +31,7 @@ namespace Services.Contracts
         Task<string> GetEndedInternshipCountAsync();
         Task<string> GetLastMonthsInternsCountAsync();
         Task<IEnumerable<AccountDtoForSearch>> GetInternsByIds(List<string> internsIds);
+        Task<IdentityResult> ChangeStatus(string userName);
+
     }
 }

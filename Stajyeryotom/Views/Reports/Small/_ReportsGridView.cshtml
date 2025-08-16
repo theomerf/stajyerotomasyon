@@ -20,11 +20,13 @@
                             <span><strong>@report.ReportTitle</strong><br>@(report.WorkName == "" ? "Günlük Rapor" : "")</span>
                         </div>
 
-                        <div class="info-item">
-                            <i class="fas fa-building"></i>
-                            <span><strong>@report.DepartmentName</strong><br>@report.SectionName</span>
-                        </div>
-
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <div class="info-item">
+                                <i class="fas fa-building"></i>
+                                <span><strong>@report.DepartmentName</strong><br>@report.SectionName</span>
+                            </div>
+                        }
                         <div class="info-item">
                             <i class="fas fa-calendar"></i>
                             <span>@DateOnly.FromDateTime(report.CreatedAt)</span>
@@ -53,9 +55,13 @@
                 </div>
 
                 <div class="card-actions">
-                    <a href="/Reports/View/@(report.ReportId)" hx-get="/Reports/View/@(report.ReportId)" hx-target="#content" hx-push-url="true" class="btn-action btn-view" title="Görüntüle">
+                    <a href="/Reports/View/@(report.ReportId)" hx-get="/Reports/View/@(report.ReportId)" hx-target="#content" hx-push-url="true" class="btn-action btn-view px-3" title="Görüntüle">
                         <i class="fas fa-eye"></i>
                         Görüntüle
+                    </a>
+                    <a href="/Reports/UpdateReport/@(report.ReportId)" hx-get="/Reports/UpdateReport/@(report.ReportId)" hx-target="#content" hx-push-url="true" class="btn-action edit px-2" title="Düzenle">
+                        <i class="fas fa-edit"></i>
+                        Düzenle
                     </a>
                     <form asp-action="DeleteReport" asp-route-reportId="@report.ReportId" class="hxform" hx-post="/Reports/DeleteReport?reportId=@(report.ReportId)" hx-target="#content" hx-push-url="true">
                         <button type="submit" class="btn-action delete">

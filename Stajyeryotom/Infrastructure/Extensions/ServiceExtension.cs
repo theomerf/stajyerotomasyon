@@ -62,6 +62,7 @@ namespace Stajyeryotom.Infrastructure.Extensions
             services.AddScoped<IEventRepository, EventRepository>();
             services.AddScoped<IReportRepository, ReportRepository>();
             services.AddScoped<IWorkRepository, WorkRepository>();
+            services.AddScoped<IMessageRepository, MessageRepository>();
         }
 
         public static void ConfigureServiceRegistration(this IServiceCollection services)
@@ -74,6 +75,7 @@ namespace Stajyeryotom.Infrastructure.Extensions
             services.AddScoped<IEventService, EventManager>();
             services.AddScoped<IReportService, ReportManager>();
             services.AddScoped<IWorkService, WorkManager>();
+            services.AddScoped<IMessageService, MessageManager>();
         }
 
         public static void ConfigureApplicationCookie(this IServiceCollection services)

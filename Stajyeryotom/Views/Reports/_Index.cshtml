@@ -11,9 +11,23 @@
         <div class="page-header @((isCollapsed == "true") ? "collapsed" : "")">
             <div class="header-main">
                 <div class="header-content">
-                    <h1><i class="fas fa-users"></i> Raporlar</h1>
-                    <p>Stajyer raporlarını görüntüleyin ve yönetin.</p>
+                    <h1><i class="fas fa-users"></i> Raporlar</h1>    
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <p>Stajyer raporlarını görüntüleyin ve yönetin.</p>
+                    }
+                    else
+                    {
+                        <p>Raporlarınızı görüntüleyin ve yönetin.</p>
+                    }
                 </div>
+            </div>
+
+            <div class="header-actions">
+                <a href="/Reports/AddReport" hx-get="/Reports/AddReport" hx-target="#content" hx-push-url="true" class="btn btn-user-add">
+                    <i class="fa-solid fa-file-pen"></i>
+                    Günlük Rapor Yaz
+                </a>
             </div>
 
             <div class="header-toggle-wrapper">
@@ -23,9 +37,12 @@
             </div>
         </div>
     </div>
-    <div class="row mb-4">
-        @await Component.InvokeAsync("ReportsStats")
-    </div>
+    @if (User.IsInRole("Admin"))
+    {
+        <div class="row mb-4">
+            @await Component.InvokeAsync("ReportsStats")
+        </div>
+    }
     <div class="row mb-4">
         <div class="card py-5 px-4 card-before">
             <div class="row mb-3 align-items-center g-2">
@@ -55,21 +72,24 @@
                         }
                     </div>
                 </div>
-                <div class="col col-md-3">
-                    <div class="search-box d-flex align-items-center">
-                        <i class="fas fa-search"></i>
-                        <input hx-on:input="searchFilterForReports();" type="text" placeholder="Rapor ara...">
+                @if (User.IsInRole("Admin"))
+                {
+                    <div class="col col-md-3">
+                        <div class="search-box d-flex align-items-center">
+                            <i class="fas fa-search"></i>
+                            <input hx-on:input="searchFilterForReports();" type="text" placeholder="Rapor ara...">
+                        </div>
                     </div>
-                </div>
-                <div class="col col-md-3">
-                    <select hx-on:change="filterReports(event);" class="filter-select" id="departmentSelect">
-                        <option value="">Departman seçiniz...</option>
-                        @foreach (var department in ViewBag.Departments)
-                        {
-                            <option value="@department.DepartmentId">@department.DepartmentName</option>
-                        }
-                    </select>
-                </div>
+                    <div class="col col-md-3">
+                        <select hx-on:change="filterReports(event);" class="filter-select" id="departmentSelect">
+                            <option value="">Departman seçiniz...</option>
+                            @foreach (var department in ViewBag.Departments)
+                            {
+                                <option value="@department.DepartmentId">@department.DepartmentName</option>
+                            }
+                        </select>
+                    </div>
+                }
             </div>
             <div class="row controls-mid-row-reports align-items-end">
                 <div class="col-md-4">
@@ -113,10 +133,10 @@
                         <div class="status-filter-wrapper">
                             <label class="status-label">Durum Seçiniz:</label>
                             <div class="status-grid">
-                                <button class="status-box approved" hx-on:click="statusFilterForReports(event);" title="Okundu" value="Read">
+                                <button class="status-box approved" hx-on:click="statusFilterForReports(event);" title="Okunanlar" value="Read">
                                     <i class="fas fa-check"></i>
                                 </button>
-                                <button class="status-box denied" hx-on:click="statusFilterForReports(event);" title="Okunmadı" value="NotRead">
+                                <button class="status-box denied" hx-on:click="statusFilterForReports(event);" title="Okunmayanlar" value="NotRead">
                                     <i class="fas fa-times"></i>
                                 </button>
                             </div>

@@ -171,3 +171,20 @@
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
         }
 }
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-image: none;
+}
+
+    .carousel-control-prev-icon::after {
+        content: '‹'; 
+        font-size: 5rem;
+        color: red; 
+    }
+
+    .carousel-control-next-icon::after {
+        content: '›';
+        font-size: 5rem;
+        color: red;
+    }

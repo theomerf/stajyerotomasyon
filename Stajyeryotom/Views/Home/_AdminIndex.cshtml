@@ -32,7 +32,7 @@
     </div>
     <div class="row g-3 mb-4">
         <div class="col col-md-3">
-            <a href="/Interns/AddIntern" hx-get="/Interns/AddIntern" hx-on:click="handleSidebarClickForComponents(event);" hx-target="#content" hx-push-url="true" data-target="Interns">
+            <a href="/Interns/AddIntern" hx-get="/Interns/AddIntern" hx-target="#content" hx-push-url="true">
                 <div class="card action-card">
                     <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
                         <div class="card-icon">
@@ -45,7 +45,7 @@
             </a>
         </div>
         <div class="col col-md-3">
-            <a href="/Applications/Index?Status=OnWait" hx-get="/Applications/Index?Status=OnWait" hx-on:click="handleSidebarClickForComponents(event);" hx-target="#content" hx-push-url="true" data-target="Applications">
+            <a href="/Applications/Index?Status=OnWait" hx-get="/Applications/Index?Status=OnWait" hx-target="#content" hx-push-url="true">
                 <div class="card action-card">
                     <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
                         <div class="card-icon">
@@ -58,7 +58,7 @@
             </a>
         </div>
         <div class="col col-md-3">
-            <a href="/Works/AddWork" hx-get="/Works/AddWork" hx-on:click="handleSidebarClickForComponents(event);" hx-target="#content" hx-push-url="true" data-target="Works">
+            <a href="/Works/AddWork" hx-get="/Works/AddWork" hx-target="#content" hx-push-url="true">
                 <div class="card action-card">
                     <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
                         <div class="card-icon">
@@ -71,15 +71,17 @@
             </a>
         </div>
         <div class="col col-md-3">
-            <div class="card action-card">
-                <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
-                    <div class="card-icon">
-                        <i class="fas fa-cog"></i>
+            <a href="/Settings/Index" hx-get="/Settings/Index" hx-target="#content" hx-push-url="true">
+                <div class="card action-card">
+                    <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
+                        <div class="card-icon">
+                            <i class="fas fa-cog"></i>
+                        </div>
+                        <h3 class="action-card-title mt-4">Sistem Ayarları</h3>
+                        <p class="action-card-p">Staj yönetim ayarlarınızı düzenleyin</p>
                     </div>
-                    <h3 class="action-card-title mt-4">Sistem Ayarları</h3>
-                    <p class="action-card-p">Staj yönetim ayarlarını düzenleyin</p>
                 </div>
-            </div>
+            </a>
         </div>
     </div>
     <div class="row g-3 mb-4">

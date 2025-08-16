@@ -2,7 +2,7 @@
 var uploadedFiles = [];
 var searchTimeout;
 
-window.initAddWorkScripts = function () {
+window.initUpdateWorkScripts = function () {
     initializePhotoUpload();
     initializeBroadcastOptions();
     initializeUserSearch();
@@ -19,51 +19,46 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function initializeDataForUpdate() {
-    // ViewBag'den gelen verileri al
+
     const selectedDepartmentId = window.selectedDepartmentId;
     const selectedSectionId = window.selectedSectionId;
 
-    // Model'den gelen verileri al
     const broadcastType = window.updateWorkModel?.broadcastType;
 
-    if (!broadcastType) return; // Eğer broadcast type yoksa çık
+    if (!broadcastType) return; 
 
-    // Broadcast type'a göre radio button'ları seç
     let radioValue = '';
     if (broadcastType) {
         switch (broadcastType) {
-            case 'all':
-                radioValue = 'all';
+            case 'All':
+                radioValue = 'All';
                 break;
-            case 'users':
-                radioValue = 'users';
-                loadSelectedUsers(); // Seçili kullanıcıları yükle
+            case 'Users':
+                radioValue = 'Users';
+                loadSelectedUsers(); 
                 break;
-            case 'department':
-                radioValue = 'department';
+            case 'Department':
+                radioValue = 'Department';
                 break;
-            case 'section':
-                radioValue = 'section';
+            case 'Section':
+                radioValue = 'Section';
                 break;
         }
     }
 
-    // Radio button'ı seç
     if (radioValue) {
         const radioButton = document.querySelector(`input[name="broadcast"][value="${radioValue}"]`);
         if (radioButton) {
             radioButton.checked = true;
-            updateVisibility(); // Görünürlüğü güncelle
+            updateVisibility();
         }
     }
 
-    // Departman seçimi
     if (selectedDepartmentId && (broadcastType === 'Department' || broadcastType === 'Section')) {
         const departmentSelect = document.getElementById('departmentSelect');
         if (departmentSelect) {
             departmentSelect.value = selectedDepartmentId;
 
-            // Bölümleri yükle
             if (broadcastType === 'Section' && selectedSectionId) {
                 setTimeout(() => {
                     loadSections(selectedDepartmentId, selectedSectionId);
@@ -74,15 +69,12 @@ function initializeDataForUpdate() {
         }
     }
 
-    // Mevcut fotoğrafları yükle
     loadExistingPhotos();
 }
 function loadSelectedUsers() {
-    // Model'den gelen kullanıcı ID'lerini al
     const workInternsId = window.updateWorkModel?.internsId;
 
     if (workInternsId && workInternsId.length > 0) {
-        // Kullanıcı bilgilerini API'den al
         fetch('/Interns/GetInternsByIds', {
             method: 'POST',
             headers: {
@@ -94,13 +86,11 @@ function loadSelectedUsers() {
         })
             .then(response => response.json())
             .then(users => {
-                // Kullanıcıları selectedUsers array'ine ekle
                 selectedUsers = users.map(user => ({
                     id: user.id,
                     name: `${user.firstName} ${user.lastName}`
                 }));
 
-                // UI'ı güncelle
                 updateSelectedUsersUI();
             })
             .catch(error => {
@@ -111,13 +101,11 @@ function loadSelectedUsers() {
 
 // Mevcut fotoğrafları yükle
 function loadExistingPhotos() {
-    // Model'den gelen fotoğraf verilerini al
     const existingPhotosData = window.updateWorkModel?.workPhotos;
 
     if (existingPhotosData && existingPhotosData.length > 0) {
         const thumbnailsContainer = document.getElementById('photo-thumbnails');
 
-        // JSON string'i array'e çevir
         let photoFileNames = [];
         try {
             photoFileNames = typeof existingPhotosData === 'string'
@@ -132,17 +120,15 @@ function loadExistingPhotos() {
             const fileId = `existing_${index}_${fileName}`;
             const photoUrl = `/images/works/${fileName}`;
 
-            // Existing file olarak uploadedFiles array'ine ekle
             uploadedFiles.push({
                 id: fileId,
-                file: null, // Existing file'lar için file objesi yok
+                file: null, 
                 name: fileName,
                 isExisting: true,
                 fileName: fileName,
                 photoUrl: photoUrl
             });
 
-            // Thumbnail oluştur
             createExistingThumbnail({
                 fileName: fileName,
                 photoUrl: photoUrl
@@ -253,23 +239,19 @@ function removePhoto(fileId) {
     const fileToRemove = uploadedFiles.find(f => f.id == fileId);
 
     if (fileToRemove && fileToRemove.isExisting) {
-        // Mevcut fotoğraf silinmek üzere işaretle
         fileToRemove.markedForDeletion = true;
 
-        // Thumbnail'ı gizle
         const thumbnail = document.querySelector(`[data-file-id="${fileId}"]`);
         if (thumbnail) {
             thumbnail.style.opacity = '0.5';
             thumbnail.style.filter = 'grayscale(100%)';
 
-            // Silme butonunu "geri al" butonu yap
             const removeButton = thumbnail.querySelector('.photo-remove');
             removeButton.textContent = '↶';
             removeButton.setAttribute('onclick', `restorePhoto('${fileId}')`);
             removeButton.title = 'Geri Al';
         }
     } else {
-        // Yeni yüklenen fotoğrafı tamamen kaldır
         uploadedFiles = uploadedFiles.filter(f => f.id != fileId);
 
         const thumbnail = document.querySelector(`[data-file-id="${fileId}"]`);
@@ -290,7 +272,6 @@ function restorePhoto(fileId) {
             thumbnail.style.opacity = '1';
             thumbnail.style.filter = 'none';
 
-            // Butonu tekrar silme butonu yap
             const removeButton = thumbnail.querySelector('.photo-remove');
             removeButton.textContent = '×';
             removeButton.setAttribute('onclick', `removePhoto('${fileId}')`);
@@ -326,28 +307,29 @@ function updateVisibility() {
     window.value = selectedBroadcast.value;
 
     switch (value) {
-        case 'all':
+        case 'All':
             userSearchSection.style.display = 'none';
             departmentSection.style.display = 'none';
             break;
 
-        case 'users':
+        case 'Users':
             userSearchSection.style.display = 'block';
             departmentSection.style.display = 'none';
             break;
 
-        case 'department':
+        case 'Department':
             userSearchSection.style.display = 'none';
             departmentSection.style.display = 'block';
             sectionsContainer.style.display = 'none';
             departmentSelect.parentElement.style.display = 'block';
             break;
 
-        case 'section':
+        case 'Section':
             userSearchSection.style.display = 'none';
             departmentSection.style.display = 'block';
             departmentSelect.parentElement.style.display = 'block';
             if (departmentSelect.value) {
+                loadSections(departmentSelect.value, departmentSection.value);
                 sectionsContainer.style.display = 'block';
             }
             break;
@@ -462,18 +444,14 @@ function removeSelectedUser(userId) {
     updateSelectedUsersUI();
 }
 
-// Form gönderme handler'ı
-function handleFormSubmit(e) {
-    e.preventDefault();
+// Form gönderme işlevi
+window.updateWorkFormSubmitHandler = function (event) {
     const form = document.getElementById('workForm');
-
-    // Tüm hataları temizle
+    const selectedUserIds = selectedUsers.map(u => u.id);
     clearAllErrors();
 
-    const hiddenContainer = document.getElementById('hidden-inputs-container');
     const selectedBroadcast = document.querySelector('input[name="broadcast"]:checked');
 
-    // Broadcast type seçilmemiş kontrolü
     if (!selectedBroadcast) {
         const broadcastSection = document.querySelector('.broadcast-section');
         const errorElement = broadcastSection.querySelector('.text-danger') || createErrorElement(broadcastSection);
@@ -482,61 +460,48 @@ function handleFormSubmit(e) {
     }
 
     var value = selectedBroadcast.value;
-    hiddenContainer.innerHTML = '';
 
-    // Broadcast type'a göre doğrulama ve hidden input'ları oluştur
-    if (value == 'all') {
-        var hiddenInput = document.createElement('input');
-        hiddenInput.type = 'hidden';
-        hiddenInput.name = `BroadcastType`;
-        hiddenInput.value = 'All';
-        hiddenContainer.appendChild(hiddenInput);
+    if (value == 'All') {
+        event.detail.parameters.append('BroadcastType', 'All');
     }
-    else if (value == 'users') {
+    else if (value == 'Users') {
         if (selectedUsers.length === 0) {
             const userSearchSection = document.querySelector('.user-search-section');
             const errorElement = userSearchSection.querySelector('.text-danger') || createErrorElement(userSearchSection);
             showError(errorElement, 'Lütfen en az bir kullanıcı seçiniz.');
+            event.preventDefault();
             return;
         }
 
-        selectedUsers.forEach((user, index) => {
-            var hiddenInput = document.createElement('input');
-            hiddenInput.type = 'hidden';
-            hiddenInput.name = `InternsId[${index}]`;
-            hiddenInput.value = user.id;
-            hiddenContainer.appendChild(hiddenInput);
+        const selectedUserIds = selectedUsers.map(u => String(u.id));
+        const workInternsId = (window.updateWorkModel?.internsId || []).map(id => String(id));
+
+        selectedUserIds.forEach((userId, index) => {
+             event.detail.parameters.append(`UpdatedInternsId[${index}]`, userId);
         });
 
-        var hiddenInput2 = document.createElement('input');
-        hiddenInput2.type = 'hidden';
-        hiddenInput2.name = `BroadcastType`;
-        hiddenInput2.value = 'Users';
-        hiddenContainer.appendChild(hiddenInput2);
+        workInternsId.forEach((userId, index) => {
+            event.detail.parameters.append(`InternsId[${index}]`, userId);
+        });
+
+
+        event.detail.parameters.append(`BroadcastType`, 'Users');
     }
-    else if (value == 'department') {
+    else if (value == 'Department') {
         var departmentSelect = document.getElementById('departmentSelect');
 
         if (!departmentSelect.value) {
             const departmentSection = document.querySelector('.department-section');
             const errorElement = departmentSection.querySelector('.text-danger') || createErrorElement(departmentSection);
             showError(errorElement, 'Lütfen bir departman seçiniz.');
+            event.preventDefault();
             return;
         }
 
-        var hiddenInput = document.createElement('input');
-        hiddenInput.type = 'hidden';
-        hiddenInput.name = `BroadcastType`;
-        hiddenInput.value = 'Department';
-        hiddenContainer.appendChild(hiddenInput);
-
-        var hiddenInput2 = document.createElement('input');
-        hiddenInput2.type = 'hidden';
-        hiddenInput2.name = `DepartmentId`;
-        hiddenInput2.value = departmentSelect.value;
-        hiddenContainer.appendChild(hiddenInput2);
+        event.detail.parameters.append(`BroadcastType`, 'Department');
+        event.detail.parameters.append('DepartmentId', departmentSelect.value);
     }
-    else if (value == 'section') {
+    else if (value == 'Section') {
         var departmentSelect = document.getElementById('departmentSelect');
         var selectedSection = document.querySelector('input[name="SectionId"]:checked');
 
@@ -544,98 +509,51 @@ function handleFormSubmit(e) {
             const departmentSection = document.querySelector('.department-section');
             const errorElement = departmentSection.querySelector('.text-danger') || createErrorElement(departmentSection);
             showError(errorElement, 'Lütfen önce bir departman seçiniz.');
+            event.preventDefault();
             return;
-        }
+        } 
 
         if (!selectedSection) {
             const sectionsContainer = document.getElementById('sectionsContainer');
             const errorElement = sectionsContainer.querySelector('.text-danger') || createErrorElement(sectionsContainer);
             showError(errorElement, 'Lütfen bir bölüm seçiniz.');
+            event.preventDefault();
             return;
         }
 
-        var hiddenInput = document.createElement('input');
-        hiddenInput.type = 'hidden';
-        hiddenInput.name = `BroadcastType`;
-        hiddenInput.value = 'Section';
-        hiddenContainer.appendChild(hiddenInput);
-
-        var hiddenInput2 = document.createElement('input');
-        hiddenInput2.type = 'hidden';
-        hiddenInput2.name = `SectionId`;
-        hiddenInput2.value = selectedSection.value;
-        hiddenContainer.appendChild(hiddenInput2);
+        event.detail.parameters.append(`BroadcastType`, 'Section');
+        event.detail.parameters.append(`SectionId`, selectedSection.value);
+        event.detail.parameters.append(`DepartmentId`, departmentSelect.value);
     }
 
-    // Silinmek üzere işaretlenen fotoğrafların dosya adlarını gönder
     const photosToDelete = uploadedFiles
         .filter(f => f.isExisting && f.markedForDeletion)
         .map(f => f.fileName);
 
     if (photosToDelete.length > 0) {
         photosToDelete.forEach((fileName, index) => {
-            var hiddenInput = document.createElement('input');
-            hiddenInput.type = 'hidden';
-            hiddenInput.name = `PhotosToDelete[${index}]`;
-            hiddenInput.value = fileName;
-            hiddenContainer.appendChild(hiddenInput);
+            event.detail.parameters.append(`PhotosToDelete[${index}]`, fileName);
         });
     }
 
-    const formData = new FormData(form);
-    const submitBtn = document.getElementById('submitBtn');
-
-    // Loading state başlat
-    submitBtn.classList.add('loading');
-    submitBtn.disabled = true;
-
-    // Yeni yüklenen dosyaları ekle
     const newFiles = uploadedFiles.filter(f => !f.isExisting && f.file);
     if (newFiles.length > 0) {
         newFiles.forEach(fileObj => {
-            formData.append('files', fileObj.file);
+            event.detail.parameters.append('files', fileObj.file);
         });
     }
 
-    fetch('/Works/UpdateWork', {
-        method: 'POST',
-        body: formData,
-        headers: {
-            'X-Requested-With': 'XMLHttpRequest'
-        }
-    })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Güncelleme Başarılı:', data);
-            if (data.success) {
-                // Başarı mesajı göster
-                alert('Görev başarıyla güncellendi!');
-                // İsteğe bağlı: sayfayı yönlendir veya yenile
-                if (data.loadComponent) {
-                    // HTMX ile component yükle
-                    document.getElementById('content').innerHTML = data.loadComponent;
-                }
-            } else {
-                // Server'dan gelen hataları form üzerinde göster
-                if (data.errors) {
-                    showServerErrors(data.errors);
-                } else {
-                    alert('Hata: ' + (data.message || 'Bilinmeyen bir hata oluştu.'));
-                }
-            }
-        })
-        .catch(error => {
-            console.error('Güncelleme Hatası:', error);
-            alert('Bir hata oluştu: ' + error.message);
-        })
-        .finally(() => {
-            // Loading state sonlandır
-            submitBtn.classList.remove('loading');
-            submitBtn.disabled = false;
-        });
+    for (let [key, value] of event.detail.parameters.entries()) {
+        console.log(key, value);
+    }
+
+    const submitBtn = document.getElementById('submitBtn');
+    if (submitBtn) {
+        submitBtn.classList.add('loading');
+        submitBtn.disabled = true;
+    }
 }
 
-// Hata gösterme fonksiyonları
 function showError(errorElement, message) {
     errorElement.textContent = message;
     errorElement.style.display = 'block';
@@ -646,7 +564,6 @@ function hideError(errorElement) {
     errorElement.style.display = 'none';
 }
 
-// Tüm hataları temizleme fonksiyonu
 function clearAllErrors() {
     const errorElements = document.querySelectorAll('.text-danger');
     errorElements.forEach(errorElement => {
@@ -654,7 +571,6 @@ function clearAllErrors() {
     });
 }
 
-// Hata elementi oluşturma fonksiyonu (eğer mevcut değilse)
 function createErrorElement(parentElement) {
     const errorElement = document.createElement('span');
     errorElement.className = 'text-danger';
@@ -663,12 +579,10 @@ function createErrorElement(parentElement) {
     return errorElement;
 }
 
-// Server'dan gelen hataları gösterme fonksiyonu
 function showServerErrors(errors) {
     Object.keys(errors).forEach(fieldName => {
         const errorMessages = errors[fieldName];
         if (errorMessages && errorMessages.length > 0) {
-            // Field'a göre uygun error elementi bul
             const fieldElement = document.querySelector(`[name="${fieldName}"]`);
             if (fieldElement) {
                 const formGroup = fieldElement.closest('.form-group');
@@ -711,7 +625,7 @@ window.loadSections = function (departmentId, selectedSectionId = null) {
     window.sectionsContainer = document.getElementById('sectionsContainer');
     window.sectionsGrid = document.getElementById('sectionsGrid');
 
-    if (selectedBroadcast.value == 'section') {
+    if (selectedBroadcast.value == 'Section') {
 
 
         if (sections && sections.length > 0) {

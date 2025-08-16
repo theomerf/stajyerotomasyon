@@ -6,7 +6,7 @@
 
 <div class="form-container" hx-on::load="initAddWorkScripts();">
     <div class="form-header">
-        <a href="/Works/Index" hx-get="/Works/Index" hx-target="#content" hx-push-url="true" class="back-btn">
+        <a href="/Messages/Index" hx-get="/Messages/Index" hx-target="#content" hx-push-url="true" class="back-btn">
             <i class="fas fa-arrow-left"></i>Geri
         </a>
         <h1><i class="fas fa-user-plus"></i> Görev Ekleme</h1>
@@ -14,7 +14,7 @@
     </div>
     <div class="form-body">
         <div id="login-errors" class="text-danger validation-summary-errors" asp-validation-summary="All"></div>
-        <form method="post" asp-action="AddWork" id="workForm" class="hxform validation" hx-post="/Works/AddWork" hx-target="#content" enctype="multipart/form-data">
+        <form method="post" id="workForm" class="hxform validation workAddForm" hx-encoding="multipart/form-data" hx-push-url="false"  hx-post="/Works/AddWork" hx-target="#content" enctype="multipart/form-data">
             @Html.AntiForgeryToken()
 
             <div class="form-grid">
@@ -85,7 +85,7 @@
 
                 <div class="broadcast-options">
                     <div class="broadcast-option">
-                        <input type="radio" id="broadcast-all" name="broadcast" class="broadcast-radio" value="all">
+                        <input type="radio" id="broadcast-all" name="broadcast" class="broadcast-radio" value="All">
                         <label for="broadcast-all" class="broadcast-label">
                             <div class="radio-icon"></div>
                             <div class="broadcast-label-text">
@@ -96,7 +96,7 @@
                     </div>
 
                     <div class="broadcast-option">
-                        <input type="radio" id="broadcast-users" name="broadcast" class="broadcast-radio" value="users">
+                        <input type="radio" id="broadcast-users" name="broadcast" class="broadcast-radio" value="Users">
                         <label for="broadcast-users" class="broadcast-label">
                             <div class="radio-icon"></div>
                             <div class="broadcast-label-text">
@@ -107,7 +107,7 @@
                     </div>
 
                     <div class="broadcast-option">
-                        <input type="radio" id="broadcast-department" name="broadcast" class="broadcast-radio" value="department">
+                        <input type="radio" id="broadcast-department" name="broadcast" class="broadcast-radio" value="Department">
                         <label for="broadcast-department" class="broadcast-label">
                             <div class="radio-icon"></div>
                             <div class="broadcast-label-text">
@@ -118,7 +118,7 @@
                     </div>
 
                     <div class="broadcast-option">
-                        <input type="radio" id="broadcast-section" name="broadcast" class="broadcast-radio" value="section">
+                        <input type="radio" id="broadcast-section" name="broadcast" class="broadcast-radio" value="Section">
                         <label for="broadcast-section" class="broadcast-label">
                             <div class="radio-icon"></div>
                             <div class="broadcast-label-text">
@@ -184,7 +184,7 @@
 
             <div id="hidden-inputs-container"></div>
 
-            <button type="submit" hx-on:click="handleFormSubmit(event);" class="form-submit-btn" id="submitBtn">
+            <button class="form-submit-btn" id="submitBtn">
                 <i class="fas fa-user-plus"></i> Görev Oluştur
             </button>
         </form>
@@ -194,5 +194,5 @@
 <script>
     window.departmentSections = @Html.Raw(ViewBag.DepartmentSectionsJson ?? "{}");
 </script>
-<script asp-append-version="true" src="~/js/addwork.js"></script>
+<script src="~/js/addwork.js" asp-append-version="true"></script>
 

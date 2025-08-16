@@ -14,7 +14,10 @@
         <div class="day-cell @(day.IsOtherMonth ? "other-month" : "") @(day.IsToday ? "today" : "")"
              @if (!day.IsOtherMonth)
              {
-                 @:onclick="openModal('@day.Date.ToString("yyyy-MM-dd")')"
+                 if (User.IsInRole("Admin"))
+                 {
+                     @:onclick="openModal('@day.Date.ToString("yyyy-MM-dd")')"
+                 }
              }
              @if (day.Events.Any())
              {
@@ -33,13 +36,16 @@
                         <div class="event-icon"></div>
                         @eventItem.Time.ToString(@"hh\:mm")
                         <span class="eventTitle">@eventItem.Title</span>
-                        <form asp-action="RemoveEvent" class="hxform date-send"
-                              hx-post="/Calendar/RemoveEvent?eventId=@(eventItem.EventId)&selectedDateForRemove=@day.Date.ToString("yyyy-MM-dd")"
-                              hx-target="#calendarContainer">
-                            <button type="submit" title="Etkinliği Sil" hx-on:click="deleteEvent(event)" class="event-delete-btn">
-                                <span class="delete-icon">×</span>
-                            </button>
-                        </form>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <form asp-action="RemoveEvent" class="hxform date-send"
+                                  hx-post="/Calendar/RemoveEvent?eventId=@(eventItem.EventId)&selectedDateForRemove=@day.Date.ToString("yyyy-MM-dd")"
+                                  hx-target="#calendarContainer">
+                                <button type="submit" title="Etkinliği Sil" hx-on:click="deleteEvent(event)" class="event-delete-btn">
+                                    <span class="delete-icon">×</span>
+                                </button>
+                            </form>
+                        }
                     </div>
                 }
                 @if (day.HasMoreEvents)

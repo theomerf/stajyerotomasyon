@@ -3,6 +3,7 @@ using Entities.Dtos;
 using Entities.Models;
 using Entities.RequestParameters;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Repositories;
 using Repositories.Contracts;
 using Services.Contracts;
@@ -13,13 +14,13 @@ namespace Services
     {
         private readonly IRepositoryManager _manager;
         private readonly IMapper _mapper;
-        private readonly RepositoryContext _context;
+        private readonly IMemoryCache _cache;
 
-        public WorkManager(IRepositoryManager manager, IMapper mapper, RepositoryContext context)
+        public WorkManager(IRepositoryManager manager, IMapper mapper, IMemoryCache cache)
         {
             _manager = manager;
             _mapper = mapper;
-            _context = context;
+            _cache = cache;
         }
 
         public async Task<ResultDto> CreateWorkAsync(WorkDtoForCreation workDto)
@@ -32,9 +33,11 @@ namespace Services
                 _manager.Account.AttachRange(interns);
                 work.Interns = interns;
             }
-            else if (workDto.BroadcastType == "Users") 
+            else if (workDto.BroadcastType == "Users")
             {
                 var interns = workDto.InternsId!.Select(id => new Account { Id = id }).ToList();
+                _manager.Account.AttachRange(interns);
+                work.Interns = interns;
             }
             else if (workDto.BroadcastType == "Department")
             {
@@ -54,6 +57,8 @@ namespace Services
             _manager.Work.CreateWork(work);
             await _manager.SaveAsync();
 
+            _cache.Remove("worksCount");
+
             var result = new ResultDto()
             {
                 Success = true,
@@ -70,6 +75,8 @@ namespace Services
             _manager.Work.DeleteWork(work!);
             await _manager.SaveAsync();
 
+            _cache.Remove("worksCount");
+
             var result = new ResultDto()
             {
                 Success = true,
@@ -80,6 +87,15 @@ namespace Services
             return result;
         }
 
+        public async Task<WorkViewDto?> GetWorkByIdForViewOfOneUserAsync(int workId, string userId) 
+        {
+            var work = await _manager.Work.GetWorkByIdForViewOfOneUserAsync(workId, userId);
+            if (work == null)
+            {
+                throw new KeyNotFoundException($"{workId} id'sine sahip görev bulunamadı.");
+            }
+            return work;
+        }
         public async Task<IEnumerable<WorkDto?>> GetAllWorksAsync(WorkRequestParameters p)
         {
             var works = await _manager.Work.GetAllWorksAsync(p);
@@ -93,6 +109,26 @@ namespace Services
             var count = await _manager.Work.GetAllWorksCountAsync();
             return count;
         }
+
+        public async Task<string> GetWorksCountForSidebarAsync()
+        {
+            string cacheKey = "worksCount";
+
+            if (_cache.TryGetValue(cacheKey, out int? cachedData))
+            {
+                return cachedData!.ToString() ?? "";
+            }
+
+            var count = await _manager.Work.GetAllWorksCountAsync();
+
+            var cacheOptions = new MemoryCacheEntryOptions()
+                 .SetSlidingExpiration(TimeSpan.FromMinutes(30));
+
+            _cache.Set(cacheKey, count, cacheOptions);
+
+            return count.ToString();
+        }
+
         public async Task<int> GetWorksCountAsync(WorkRequestParameters p)
         {
             var count = await _manager.Work.GetWorksCountAsync(p);
@@ -134,10 +170,20 @@ namespace Services
             return work;
         }
 
+        public async Task<WorkViewDto?> GetWorkByIdForViewAsync(int workId)
+        {
+            var work = await _manager.Work.GetWorkByIdForViewAsync(workId);
+            if (work == null)
+            {
+                throw new KeyNotFoundException($"{workId} id'sine sahip görev bulunamadı.");
+            }
+            return work;
+        }
+
         public async Task<WorkDtoForUpdate?> GetWorkForUpdateByIdAsync(int workId)
         {
             var work = await _manager.Work.GetWorkForUpdateByIdAsync(workId);
-            if(work == null)
+            if (work == null)
             {
                 throw new KeyNotFoundException($"{workId} id'sine sahip görev bulunamadı.");
             }
@@ -148,45 +194,135 @@ namespace Services
 
         public async Task<ResultDto> UpdateWorkAsync(WorkDtoForUpdate workDto)
         {
-            var work = _mapper.Map<Work>(workDto);
+            var existingWork = await _manager.Work.GetWorkForUpdateByIdAsync(workDto.WorkId);
+
+            _mapper.Map(workDto, existingWork);
+
+            if (existingWork == null)
+                throw new KeyNotFoundException($"{workDto.WorkId} id'sine sahip görev bulunamadı.");
+
             if (workDto.BroadcastType == "All")
             {
                 var internsId = await _manager.Account.GetAllInternsId();
-                var interns = internsId.Select(id => new Account { Id = id }).ToList();
-                _manager.Account.AttachRange(interns);
-                work.Interns = interns;
+
+                foreach (var id in internsId)
+                {
+                    if (existingWork.Interns!.Where(i => i.Id == id).Any())
+                    {
+                        continue;
+                    }
+                    var intern = new Account { Id = id };
+                    _manager.Account.Attach(intern);
+                    existingWork.Interns?.Add(intern);
+                }
             }
             else if (workDto.BroadcastType == "Users")
             {
-                var interns = workDto.InternsId!.Select(id => new Account { Id = id }).ToList();
+                if (workDto.UpdatedInternsId != null && workDto.UpdatedInternsId.Any())
+                {
+                    foreach (var intern in existingWork.Interns!)
+                    {
+                        if (!workDto.UpdatedInternsId.Contains(intern.Id))
+                        {
+                            existingWork.Interns?.Remove(intern);
+                        }
+                    }
+                    foreach (var id2 in workDto.UpdatedInternsId)
+                    {
+                        if (existingWork.Interns!.Where(i => i.Id == id2).Any())
+                        {
+                            continue;
+                        }
+                        var intern = new Account { Id = id2 };
+                        _manager.Account.Attach(intern);
+                        existingWork.Interns?.Add(intern);
+                    }
+                }
             }
             else if (workDto.BroadcastType == "Department")
             {
                 var internsId = await _manager.Account.GelAllInternsOfDepartment(workDto.DepartmentId!.Value);
-                var interns = internsId.Select(id => new Account { Id = id }).ToList();
-                _manager.Account.AttachRange(interns);
-                work.Interns = interns;
+
+                foreach (var intern2 in existingWork.Interns!)
+                {
+                    if (!internsId.Contains(intern2.Id))
+                    {
+                        existingWork.Interns?.Remove(intern2);
+                    }
+                }
+
+                foreach (var id in internsId)
+                {
+                    if (existingWork.Interns!.Where(i => i.Id == id).Any())
+                    {
+                        continue;
+                    }
+                    var intern = new Account { Id = id };
+                    _manager.Account.Attach(intern);
+                    existingWork.Interns?.Add(intern);
+                }
             }
             else if (workDto.BroadcastType == "Section")
             {
                 var internsId = await _manager.Account.GelAllInternsOfSection(workDto.SectionId!.Value);
-                var interns = internsId.Select(id => new Account { Id = id! }).ToList();
-                _manager.Account.AttachRange(interns);
-                work.Interns = interns;
+
+                foreach (var intern2 in existingWork.Interns!)
+                {
+                    if (!internsId.Contains(intern2.Id))
+                    {
+                        existingWork.Interns?.Remove(intern2);
+                    }
+                }
+
+                foreach (var id in internsId)
+                {
+                    if (existingWork.Interns!.Where(i => i.Id == id).Any())
+                    {
+                        continue;
+                    }
+                    var intern = new Account { Id = id! };
+                    _manager.Account.Attach(intern);
+                    existingWork.Interns?.Add(intern);
+                }
+            }
+
+            _manager.Work.UpdateWork(existingWork);
+            await _manager.SaveAsync();
+
+            return new ResultDto
+            {
+                Success = true,
+                Message = "Görev başarıyla güncellendi.",
+                ResultType = "success",
+                LoadComponent = "Works"
+            };
+        }
+
+        public async Task<ResultDto> ChangeStatusAsync(int workId)
+        {
+            var work = await _manager.Work.GetWorkForUpdateByIdAsync(workId);
+
+            if (work == null)
+                throw new KeyNotFoundException($"{workId} id'sine sahip görev bulunamadı.");
+
+            if (work.Status == WorkStatus.Passive)
+            {
+                work.Status = WorkStatus.Active;
+            }
+            else
+            {
+                work.Status = WorkStatus.Passive;
             }
 
             _manager.Work.UpdateWork(work);
             await _manager.SaveAsync();
 
-            var result = new ResultDto()
+            return new ResultDto
             {
                 Success = true,
-                Message = "Rapor başarıyla güncellendi.",
+                Message = "Görev durumu başarıyla güncellendi.",
                 ResultType = "success",
-                LoadComponent = "Reports"
             };
-
-            return result;
         }
     }
 }

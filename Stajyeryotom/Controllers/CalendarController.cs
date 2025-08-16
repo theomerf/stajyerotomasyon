@@ -111,6 +111,7 @@ namespace Stajyeryotom.Controllers
             return days;
         }
 
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         [HttpPost]
         public async Task<IActionResult> AddEvent([Bind(Prefix = "Event")] EventDto eventDto, DateTime selectedDate)
@@ -137,6 +138,7 @@ namespace Stajyeryotom.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         [HttpPost]
         public async Task<IActionResult> RemoveEvent([FromQuery] int eventId, [FromQuery] string selectedDateForRemove)

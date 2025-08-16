@@ -14,6 +14,7 @@ namespace Repositories
         public DbSet<Event> Events { get; set; }
         public DbSet<Report> Reports { get; set; }
         public DbSet<Work> Works { get; set; }
+        public DbSet<Message> Messages { get; set; }
 
         public RepositoryContext(DbContextOptions<RepositoryContext> options)
             : base(options)

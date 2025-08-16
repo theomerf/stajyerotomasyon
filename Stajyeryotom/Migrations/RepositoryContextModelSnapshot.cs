@@ -22,6 +22,21 @@ namespace Stajyeryotom.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("AccountMessage", b =>
+                {
+                    b.Property<string>("InternsId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("MessagesMessageId")
+                        .HasColumnType("int");
+
+                    b.HasKey("InternsId", "MessagesMessageId");
+
+                    b.HasIndex("MessagesMessageId");
+
+                    b.ToTable("MessageInterns", (string)null);
+                });
+
             modelBuilder.Entity("AccountWork", b =>
                 {
                     b.Property<string>("InternsId")
@@ -243,6 +258,37 @@ namespace Stajyeryotom.Migrations
                     b.ToTable("Events");
                 });
 
+            modelBuilder.Entity("Entities.Models.Message", b =>
+                {
+                    b.Property<int>("MessageId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MessageId"));
+
+                    b.Property<string>("BroadcastType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("DepartmentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("MessageBody")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MessageTitle")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int?>("SectionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("MessageId");
+
+                    b.ToTable("Messages");
+                });
+
             modelBuilder.Entity("Entities.Models.Note", b =>
                 {
                     b.Property<int>("NoteId")
@@ -360,6 +406,9 @@ namespace Stajyeryotom.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("SectionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.Property<string>("TaskMasterId")
@@ -536,6 +585,21 @@ namespace Stajyeryotom.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("AccountMessage", b =>
+                {
+                    b.HasOne("Entities.Models.Account", null)
+                        .WithMany()
+                        .HasForeignKey("InternsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entities.Models.Message", null)
+                        .WithMany()
+                        .HasForeignKey("MessagesMessageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("AccountWork", b =>

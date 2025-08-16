@@ -169,7 +169,7 @@ namespace Stajyeryotom.Controllers
 
         public IActionResult AccessDenied()
         {
-            return View();
+            return PartialView("_AccessDenied");
         }
     }
 }

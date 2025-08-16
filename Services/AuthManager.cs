@@ -384,5 +384,23 @@ namespace Services
 
             return interns;
         }
+
+        public async Task<IdentityResult> ChangeStatus(string userName)
+        {
+            var intern = await GetOneUserForServiceAsync(userName);
+
+            if (intern.IsActive == true)
+            {
+                intern.IsActive = false;
+            }
+            else
+            {
+                intern.IsActive = true;
+            }
+
+                var result = await _userManager.UpdateAsync(intern);
+
+            return result;
+        }
     }
 }

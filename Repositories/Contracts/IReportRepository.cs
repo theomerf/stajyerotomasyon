@@ -8,12 +8,15 @@ namespace Repositories.Contracts
     {
         Task<IEnumerable<ReportDto>> GetAllReportsAsync(ReportRequestParameters p);
         Task<Report?> GetReportByIdAsync(int reportId);
-        Task<IEnumerable<Report?>> GetAllReportsOfOneUserAsync(string userId);
+        Task<IEnumerable<ReportDto>> GetAllReportsOfOneUserAsync(ReportRequestParameters p, string userId);
         Task<IEnumerable<Report>> GetAllReportsOfOneWorkAsync(int workId);
+        Task<int> GetAllReportsCountOfOneUserForSidebarAsync(string userId);
         Task<IEnumerable<Stats>> GetReportsStatusStatsAsync();
+        Task<Report?> GetReportByIdForUpdateAsync(int reportId);
         Task<int> GetAllReportsCountAsync();
         Task<int> GetReportsCountAsync(ReportRequestParameters p);
-        Task<int> GetAllReportsCountOfOneUserAsync(string userId);
+        Task<int> GetAllReportsCountOfOneUserAsync(ReportRequestParameters p, string userId);
+        Task<ReportViewDto?> GetReportByIdForViewAsync(int reportId);
         void CreateReport(Report report);
         void DeleteReport(Report report);
         void UpdateReport(Report report);

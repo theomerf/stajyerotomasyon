@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Repositories.Contracts;
 using System.Linq.Expressions;
 
@@ -70,6 +71,21 @@ namespace Repositories
         public void AttachRange(IEnumerable<T> entities)
         {
             _context.Set<T>().AttachRange(entities);
+        }
+
+        public void Attach(T entity)
+        {
+            _context.Set<T>().Attach(entity);
+        }
+
+        public EntityEntry<T> Entry(T entity)
+        {
+            return _context.Entry(entity);
+        }
+
+        public void AddRange(IEnumerable<T> entities)
+        {
+            _context.AddRange(entities);
         }
     }
 }

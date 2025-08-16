@@ -31,6 +31,7 @@
 					<a href="/Works/Index" hx-get="/Works/Index" hx-target="#content" hx-push-url="true" class="sidebar-nav-link">
 						<i class="fa-solid fa-briefcase"></i>
 						<span class="sidebar-nav-text">Görevler</span>
+						<span class="sidebar-badge">@await Component.InvokeAsync("WorksCount")</span>
 					</a>
 				</li>
 
@@ -62,6 +63,7 @@
 					<a href="/Works/Index" hx-get="/Works/Index" hx-target="#content" hx-push-url="true" class="sidebar-nav-link">
 						<i class="fa-solid fa-briefcase"></i>
 						<span class="sidebar-nav-text">Görevler</span>
+						<span class="sidebar-badge">@await Component.InvokeAsync("WorksCount")</span>
 					</a>
 				</li>
 
@@ -85,7 +87,7 @@
 				<a href="/Messages/Index" hx-get="/Messages/Index" hx-target="#content" hx-push-url="true" class="sidebar-nav-link">
 					<i class="fas fa-envelope"></i>
 					<span class="sidebar-nav-text">Mesajlar</span>
-					<span class="sidebar-badge">3</span>
+					<span class="sidebar-badge">@await Component.InvokeAsync("MessagesCount")</span>
 				</a>
 			</li>
 		</ul>
@@ -101,13 +103,6 @@
 			</li>
 
 			<li class="sidebar-nav-item" data-target="">
-				<a href="/Help/Index" hx-get="/Help/Index" hx-target="#content" hx-push-url="true" class="sidebar-nav-link">
-					<i class="fas fa-question-circle"></i>
-					<span class="sidebar-nav-text">Yardım</span>
-				</a>
-			</li>
-
-			<li class="sidebar-nav-item" data-target="">
 				<form method="post" asp-controller="Account" asp-action="Logout">
 					<button class="dropdown-item logout-item"><i class="fa-solid fa-right-from-bracket me-2"></i> Çıkış Yap</button>
 				</form>
@@ -117,7 +112,7 @@
 
 	<div class="sidebar-footer">
 		<div class="sidebar-footer-content">
-			<p class="sidebar-footer-text">© 2024 Stajyer Portal</p>
+			<p class="sidebar-footer-text">© 2025 Stajyer Portal</p>
 			<p class="sidebar-version">v1.0.0</p>
 		</div>
 	</div>

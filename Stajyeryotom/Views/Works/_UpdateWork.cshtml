@@ -4,7 +4,7 @@
     Layout = Context.Request.Headers["HX-Request"] == "true" ? null : "_Layout";
 }
 
-<div class="form-container" hx-on::load="initAddWorkScripts();">
+<div class="form-container" hx-on::load="initUpdateWorkScripts();">
     <div class="form-header">
         <a href="/Works/Index" hx-get="/Works/Index" hx-target="#content" hx-push-url="true" class="back-btn">
             <i class="fas fa-arrow-left"></i>Geri
@@ -14,8 +14,15 @@
     </div>
     <div class="form-body">
         <div id="login-errors" class="text-danger validation-summary-errors" asp-validation-summary="All"></div>
-        <form method="post" asp-action="AddWork" id="workForm" class="hxform validation" hx-post="/Works/AddWork" hx-target="#content" enctype="multipart/form-data">
+        <form method="post" id="workForm" hx-encoding="multipart/form-data" class="hxform validation workUpdateForm" hx-post="/Works/UpdateWork" hx-target="#content" hx-push-url="false" enctype="multipart/form-data">
             @Html.AntiForgeryToken()
+
+            <input type="hidden" asp-for="WorkId"/>
+            <input type="hidden" asp-for="TaskMasterId" />
+            @for (int i = 0; i < Model.ImageUrls?.Count; i++)
+            {
+                <input type="hidden" name="ImageUrls[@i]" value="@Model.ImageUrls[i]" />
+            }
 
             <div class="form-grid">
                 <div class="form-group full-width">
@@ -83,10 +90,9 @@
                     Gönderim Seçenekleri
                 </div>
 
-                <input type="hidden" id="broadcastType" name="BroadcastType"/>
                 <div class="broadcast-options">
                     <div class="broadcast-option">
-                        <input type="radio" id="broadcast-all" name="broadcast" class="broadcast-radio" value="all">
+                        <input type="radio" id="broadcast-all" name="broadcast" class="broadcast-radio" value="All">
                         <label for="broadcast-all" class="broadcast-label">
                             <div class="radio-icon"></div>
                             <div class="broadcast-label-text">
@@ -97,7 +103,7 @@
                     </div>
 
                     <div class="broadcast-option">
-                        <input type="radio" id="broadcast-users" name="broadcast" class="broadcast-radio" value="users">
+                        <input type="radio" id="broadcast-users" name="broadcast" class="broadcast-radio" value="Users">
                         <label for="broadcast-users" class="broadcast-label">
                             <div class="radio-icon"></div>
                             <div class="broadcast-label-text">
@@ -108,7 +114,7 @@
                     </div>
 
                     <div class="broadcast-option">
-                        <input type="radio" id="broadcast-department" name="broadcast" class="broadcast-radio" value="department">
+                        <input type="radio" id="broadcast-department" name="broadcast" class="broadcast-radio" value="Department">
                         <label for="broadcast-department" class="broadcast-label">
                             <div class="radio-icon"></div>
                             <div class="broadcast-label-text">
@@ -119,7 +125,7 @@
                     </div>
 
                     <div class="broadcast-option">
-                        <input type="radio" id="broadcast-section" name="broadcast" class="broadcast-radio" value="section">
+                        <input type="radio" id="broadcast-section" name="broadcast" class="broadcast-radio" value="Section">
                         <label for="broadcast-section" class="broadcast-label">
                             <div class="radio-icon"></div>
                             <div class="broadcast-label-text">
@@ -183,9 +189,7 @@
                 <span class="text-danger"></span>
             </div>
 
-            <div id="hidden-inputs-container"></div>
-
-            <button type="submit" hx-on:click="handleFormSubmit(event);" class="form-submit-btn" id="submitBtn">
+            <button type="submit" class="form-submit-btn" id="submitBtn">
                 <i class="fas fa-user-plus"></i> Görev Oluştur
             </button>
         </form>
@@ -195,11 +199,9 @@
 <script>
     window.departmentSections = @Html.Raw(ViewBag.DepartmentSectionsJson ?? "{}");
 
-    // ViewBag'den gelen veriler
     window.selectedDepartmentId = @(ViewBag.SelectedDepartmentId?.ToString() ?? "null");
     window.selectedSectionId = @(ViewBag.SelectedSectionId?.ToString() ?? "null");
 
-    // Model verilerini JavaScript'e aktar
     window.updateWorkModel = {
         workId: @(Model?.WorkId ?? 0),
         broadcastType: '@(Model?.BroadcastType ?? "")',
@@ -211,5 +213,5 @@
 
     window.isUpdateMode = @(Model?.WorkId != null ? "true" : "false");
 </script>
-<script asp-append-version="true" src="~/js/updatework.js"></script>
+<script src="~/js/updatework.js" asp-append-version="true"></script>
 

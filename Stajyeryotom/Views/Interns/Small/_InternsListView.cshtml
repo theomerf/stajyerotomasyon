@@ -137,7 +137,12 @@
                         string statusClass = "";
                         string statusText = "";
 
-                        if (intern.InternshipStartDate > DateTime.Now)
+                        if(intern.IsActive == false)
+                        {
+                            statusClass = "passive";
+                            statusText = "PASİF";
+                        }
+                        else if (intern.InternshipStartDate > DateTime.Now)
                         {
                             statusClass = "notstarted";
                             statusText = "BAŞLAMADI";
@@ -157,6 +162,22 @@
                 </div>
                 <div class="cell">
                     <div class="action-buttons">
+                        @if (intern.IsActive)
+                        {
+                            <form class="hxform" hx-post="/Interns/ChangeStatus?userName=@(intern.UserName)" hx-target="#content" hx-push-url="true">
+                                <button type="submit" title="Pasif Yap" class="btn-action changeStatus">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+                            </form>
+                        }
+                        else
+                        {
+                            <form class="hxform" hx-post="/Interns/ChangeStatus?userName=@(intern.UserName)" hx-target="#content" hx-push-url="true">
+                                <button type="submit" title="Aktif Yap" class="btn-action changeStatus">
+                                    <i class="fa-solid fa-check"></i>
+                                </button>
+                            </form>
+                        }
                         <a href="/Interns/UpdateIntern?userName=@(intern.UserName)" title="Düzenle" hx-get="/Interns/UpdateIntern?userName=@(intern.UserName)" hx-target="#content" hx-push-url="true" class="btn-action edit">
                             <i class="fas fa-edit"></i>
                         </a>

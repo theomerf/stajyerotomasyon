@@ -16,6 +16,10 @@ namespace Stajyeryotom.Components.Small
         public async Task<string> InvokeAsync()
         {
             var internCount = await _manager.AuthService.GetInternsCountAsync();
+            if (int.Parse(internCount) > 99)
+            {
+                return "99+";
+            }
             return internCount;
         }
     }

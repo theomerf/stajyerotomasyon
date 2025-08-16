@@ -59,14 +59,23 @@
                             <a href="/Works/View/@(work.WorkId)" hx-get="/Works/View/@(work.WorkId)" hx-target="#content" hx-push-url="true" class="btn-action btn-view ms-1" title="Görüntüle">
                                 <i class="fas fa-eye"></i>
                             </a>
-                            <a href="/Works/UpdateWork?workId=@(work.WorkId)" title="Düzenle" hx-get="/Works/UpdateWork?workId=@(work.WorkId)" hx-target="#content" hx-push-url="true" class="btn-action edit ms-1">
-                                <i class="fas fa-edit"></i>
-                            </a>
-                            <form asp-action="DeleteWork" asp-route-applicationId="@work.WorkId" class="hxform" hx-post="/Works/DeleteWork?workId=@(work.WorkId)" hx-target="#content" hx-push-url="true">
-                                <button type="submit" title="Sil" class="btn-action delete ms-1">
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <a href="/Works/UpdateWork?workId=@(work.WorkId)" title="Düzenle" hx-get="/Works/UpdateWork?workId=@(work.WorkId)" hx-target="#content" hx-push-url="true" class="btn-action edit ms-1">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <form asp-action="DeleteWork" asp-route-applicationId="@work.WorkId" class="hxform" hx-post="/Works/DeleteWork?workId=@(work.WorkId)" hx-target="#content" hx-push-url="false">
+                                    <button type="submit" title="Sil" class="btn-action delete ms-1">
                                     <i class="fas fa-trash"></i>
                                 </button>
-                            </form>
+                                </form>
+                            }
+                            else
+                            {
+                                <a href="/Reports/AddReport?workId=@(work.WorkId)" title="Rapor Ekle" hx-get="/Reports/AddReport?workId=@(work.WorkId)" hx-target="#content" hx-push-url="true" class="btn-action edit ms-1">
+                                    <i class="fa-solid fa-file-pen"></i>
+                                </a>
+                            }
                         </div>
                     </div>
                 </div>

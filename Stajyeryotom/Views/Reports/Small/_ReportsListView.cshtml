@@ -52,10 +52,10 @@
             DURUM
             <div class="sort-controls">
                 <div class="sort-buttons-row">
-                    <button hx-on:click="sortingButton(event);" class="sort-btn" data-sort="READ" title="Onaylananlar">
+                    <button hx-on:click="sortingButton(event);" class="sort-btn" data-sort="READ" title="Okunanlar">
                         <i class="fa-solid fa-circle-check"></i>
                     </button>
-                    <button hx-on:click="sortingButton(event);" class="sort-btn" data-sort="NOTREAD" title="Reddedilenler">
+                    <button hx-on:click="sortingButton(event);" class="sort-btn" data-sort="NOTREAD" title="Okunmayanlar">
                         <i class="fa-solid fa-circle-xmark"></i>
                     </button>
                 </div>
@@ -119,6 +119,13 @@
                         <a href="/Reports/View/@(report.ReportId)" hx-get="/Reports/View/@(report.ReportId)" hx-target="#content" hx-push-url="true" class="btn-action btn-view" title="Görüntüle">
                             <i class="fas fa-eye"></i>
                         </a>
+                        @if (User.IsInRole("Stajyer"))
+                        {
+                            <a href="/Reports/UpdateReport/@(report.ReportId)" hx-get="/Reports/UpdateReport/@(report.ReportId)" hx-target="#content" hx-push-url="true" class="btn-action edit" title="Düzenle">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                        }
+
                         <form method="post" asp-action="DeleteReport" asp-route-reportId="@report.ReportId" class="hxform" hx-post="/Reports/DeleteReport?reportId=@(report.ReportId)" hx-target="#content" hx-push-url="true">
                             <button type="submit" title="Sil" class="btn-action delete">
                                 <i class="fas fa-trash"></i>

@@ -41,9 +41,9 @@ namespace Repositories
                 {
                     ReportId = r.ReportId,
                     ReportTitle = r.ReportTitle,
+                    Status = r.Status.ToString(),
                     DepartmentName = r.Account!.Section!.Department!.DepartmentName,
                     SectionName = r.Account.Section.SectionName,
-                    Status = r.Status.ToString(),
                     CreatedAt = r.CreatedAt,
                     AccountFirstName = r.Account!.FirstName,
                     AccountLastName = r.Account.LastName,
@@ -88,6 +88,33 @@ namespace Repositories
             return finalStats;
         }
 
+        public async Task<IEnumerable<ReportDto>> GetAllReportsOfOneUserAsync(ReportRequestParameters p, string userId)
+        {
+            var reports = await FindByCondition(r => r.AccountId == userId, false)
+                .Include(r => r.Work)
+                .Include(r => r.Account)
+                    .ThenInclude(a => a!.Section)
+                        .ThenInclude(s => s!.Department)
+                .FilteredByDate(p.StartDate ?? "", p.EndDate ?? "", r => r.CreatedAt)
+                .FilteredByStatus(p.Status ?? "", r => r.Status.ToString()!)
+                .FilteredByType(p.Type ?? "")
+                .SortExtensionForReports(p.SortBy ?? "")
+                .ToPaginate(p.PageNumber, p.PageSize)
+                .Select(r => new ReportDto()
+                {
+                    ReportId = r.ReportId,
+                    ReportTitle = r.ReportTitle,
+                    Status = r.Status.ToString(),
+                    CreatedAt = r.CreatedAt,
+                    AccountFirstName = r.Account!.FirstName,
+                    AccountLastName = r.Account.LastName,
+                    WorkName = r.Work != null ? r.Work.WorkName : ""
+                })
+                .ToListAsync();
+
+            return reports;
+        }
+
         public async Task<int> GetReportsCountAsync(ReportRequestParameters p)
         {
             var count = await FindAll(false)
@@ -109,20 +136,24 @@ namespace Repositories
             return count;
         }
 
-        public async Task<int> GetAllReportsCountOfOneUserAsync(string userId)
+        public async Task<int> GetAllReportsCountOfOneUserAsync(ReportRequestParameters p, string userId)
         {
             var count = await FindAllByCondition(r => r.AccountId == userId, false)
+                .FilteredByDate(p.StartDate ?? "", p.EndDate ?? "", r => r.CreatedAt)
+                .FilteredByStatus(p.Status ?? "", r => r.Status.ToString()!)
+                .FilteredByType(p.Type ?? "")
+                .SortExtensionForReports(p.SortBy ?? "")
                 .CountAsync();
 
             return count;
         }
 
-        public async Task<IEnumerable<Report?>> GetAllReportsOfOneUserAsync(string userId)
+        public async Task<int> GetAllReportsCountOfOneUserForSidebarAsync(string userId)
         {
-            var reports = await FindAllByCondition(r => r.AccountId == userId, false)
-                .ToListAsync();
+            var count = await FindAllByCondition(r => r.AccountId == userId, false)
+                .CountAsync();
 
-            return reports;
+            return count;
         }
 
         public async Task<IEnumerable<Report>> GetAllReportsOfOneWorkAsync(int workId)
@@ -133,9 +164,43 @@ namespace Repositories
             return reports;
         }
 
-        public Task<Report?> GetReportByIdAsync(int reportId)
+        public async Task<Report?> GetReportByIdAsync(int reportId)
         {
-            var reports = FindByCondition(r => r.ReportId == reportId, false)
+            var reports = await FindByCondition(r => r.ReportId == reportId, false)
+                .FirstOrDefaultAsync();
+
+            return reports;
+        }
+
+        public async Task<Report?> GetReportByIdForUpdateAsync(int reportId)
+        {
+            var reports = await FindByCondition(r => r.ReportId == reportId, true)
+                .FirstOrDefaultAsync();
+
+            return reports;
+        }
+
+        public async Task<ReportViewDto?> GetReportByIdForViewAsync(int reportId)
+        {
+            var reports = await FindByCondition(r => r.ReportId == reportId, false)
+                .Include(r => r.Work)
+                .Include(r => r.Account)
+                .ThenInclude(a => a!.Section)
+                .ThenInclude(s => s!.Department)
+                .Select(r => new ReportViewDto()
+                {
+                    ReportId = r.ReportId,
+                    ReportTitle = r.ReportTitle,
+                    Status = r.Status.ToString(),
+                    CreatedAt = r.CreatedAt,
+                    DepartmentName = r.Account!.Section!.Department!.DepartmentName,
+                    SectionName = r.Account.Section.SectionName,
+                    AccountFirstName = r.Account!.FirstName,
+                    AccountLastName = r.Account.LastName,
+                    ImageUrls = r.ImageUrls,
+                    ReportContent = r.ReportContent,
+                    WorkName = r.Work != null ? r.Work.WorkName : ""
+                })
                 .FirstOrDefaultAsync();
 
             return reports;

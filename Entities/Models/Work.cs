@@ -18,9 +18,16 @@ namespace Entities.Models
         public String? BroadcastType { get; init; }
         public Account? TaskMaster { get; set; }
         public String? TaskMasterId { get; set; }
-        public int? DepartmentId { get; init; }
-        public int? SectionId { get; init; }
+        public int? DepartmentId { get; set; }
+        public int? SectionId { get; set; }
+        public WorkStatus Status { get; set; } =  WorkStatus.Active;
         public ICollection<Account>? Interns { get; set; }
         public ICollection<Report>? Reports { get; set; }
+    }
+
+    public enum WorkStatus
+    {
+        Passive = 0,
+        Active = 1
     }
 }

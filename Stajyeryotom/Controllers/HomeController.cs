@@ -10,5 +10,11 @@ namespace Stajyeryotom.Controllers
         {
             return View();
         }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult Sidebar()
+        {
+            return PartialView("_Sidebar");
+        }
     }
 }

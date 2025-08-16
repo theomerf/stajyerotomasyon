@@ -9,5 +9,6 @@
         IEventService EventService { get; }
         IReportService ReportService { get; }
         IWorkService WorkService { get; }
+        IMessageService MessageService { get; }
     }
 }

@@ -11,14 +11,24 @@
             <div class="header-main">
                 <div class="header-content">
                     <h1><i class="fa-solid fa-briefcase"></i> Görevler</h1>
-                    <p>Stajyer görevlerini görüntüleyin ve yönetin.</p>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <p>Stajyer görevlerini görüntüleyin ve yönetin.</p>
+                    }
+                    else
+                    {
+                        <p>Görevlerinizi görüntüleyin ve yönetin.</p>
+                    }
                 </div>
 
                 <div class="header-actions">
-                    <a href="/Works/AddWork" hx-get="/Works/AddWork" hx-target="#content" hx-push-url="true" class="btn btn-user-add">
-                        <i class="fa-solid fa-plus"></i>
-                        Yeni Görev Ekle
-                    </a>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a href="/Works/AddWork" hx-get="/Works/AddWork" hx-target="#content" hx-push-url="true" class="btn btn-user-add">
+                            <i class="fa-solid fa-plus"></i>
+                            Yeni Görev Ekle
+                        </a>
+                    }
                 </div>
             </div>
 
@@ -37,18 +47,13 @@
                 <div class="card-body">
                     <div class="no-results-icon"><i class="fa-solid fa-xmark"></i></div>
                     <h2 class="no-results-title">Görev Bulunamadı</h2>
-                    <p class="no-results-text">Arama kriterlerinize uygun görev bulunamadı.</p>
-                    <a href="@Url.Action("Index")" class="no-results-button">
-                        <i class="fa-solid fa-grid-2 me-2"></i>
-                        Tüm Görevleri Göster
-                    </a>
+                    <p class="no-results-text">Henüz görev eklenmemiş.</p>
                 </div>
             </div>
         </div>
     }
     else
     {
-
         <div class="scroll-target"></div>
         <div class="row gy-5 gx-4">
             <partial name="Small/_WorksGridView" />
@@ -63,52 +68,4 @@
     <img id="modalImage" class="modal-content-img" src="" alt="Büyük görsel">
 </div>
 
-<script>
-    function initWorkCircles() {
-        document.querySelectorAll('.work-circle').forEach(circle => {
-            const progress = circle.dataset.progress;
-            const progressRing = circle.querySelector('.work-progress-fill');
-            const radius = progressRing.r.baseVal.value;
-            const circumference = radius * 2 * Math.PI;
-
-            progressRing.style.strokeDasharray = `${circumference} ${circumference}`;
-            progressRing.style.strokeDashoffset = circumference;
-
-            setTimeout(() => {
-                const offset = circumference - (progress / 100) * circumference;
-                progressRing.style.strokeDashoffset = offset;
-            }, 200);
-        });
-    }
-
-    function openModal(imageSrc) {
-        const modal = document.getElementById('imageModal');
-        const modalImage = document.getElementById('modalImage');
-
-        modalImage.src = imageSrc;
-        modal.style.display = 'block';
-
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeModal();
-            }
-        });
-    }
-
-    function closeModal() {
-        const modal = document.getElementById('imageModal');
-        modal.style.display = 'none';
-
-        document.removeEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeModal();
-            }
-        });
-    }
-
-    document.getElementById('imageModal').addEventListener('click', function(e) {
-        if (e.target === this) {
-            closeModal();
-        }
-    });
-</script>
+<script src="~/js/work.js" asp-append-version="true"></script>

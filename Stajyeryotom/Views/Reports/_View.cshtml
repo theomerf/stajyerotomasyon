@@ -1,0 +1,126 @@
+﻿@model ReportViewDto
+
+@{
+    Layout = Context.Request.Headers["HX-Request"] == "true" ? null : "_Layout";
+    var isCollapsed = Context.Request.Cookies["Collapsed"] ?? "true";
+}
+
+@{
+    var statusClass = "";
+    string status = "";
+
+    switch (Model.Status)
+    {
+        case "Read":
+            statusClass = "status-approved";
+            status = "Okundu";
+            break;
+        case "NotRead":
+            statusClass = "status-denied";
+            status = "Okunmadı";
+            break;
+    }
+}
+
+
+<div class="container">
+    <div class="row">
+        <div class="page-header">
+            <div class="header-main">
+                <div class="header-content">
+                    <h1>@Model.ReportTitle @(Model.WorkName == null ? $"• {Model.WorkName}" : "")</h1>
+                    <p>Başvuran: @String.Concat(Model.AccountFirstName, " ", Model.AccountLastName) • @Model.CreatedAt</p>
+                </div>
+
+                <div class="header-actions">
+                    <a href="/Reports/Index" hx-get="/Reports/Index" hx-target="#content" hx-push-url="true" class="back-btn">
+                        <i class="fas fa-arrow-left"></i>Geri
+                    </a>
+                    <span class="applicationview-status-badge @statusClass" style="margin-right:-150px;">@status</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="card p-4 card-before">
+            <div class="card-body">
+                <div class="d-flex justify-content-center flex-wrap gap-3">
+                    @if (User.IsInRole("Admin"))
+                    {
+                        @if (Model.Status == "NotRead")
+                        {
+                            <form class="hxform" hx-post="/Reports/ChangeStatus?reportId=@(Model.ReportId)" hx-target="#content" hx-push-url="false">
+                                <button type="submit" class="application-btn btn-export-intern">
+                                    <span><i class="fa-solid fa-book-open-reader"></i></span> Okundu olarak işaretle
+                                </button>
+                            </form>
+                        }
+                    }
+                    else
+                    {
+                        @if (User.IsInRole("Stajyer"))
+                        {
+                            @if(Model.Status == ReportStatus.NotRead.ToString())
+                            {
+                                <a href="/Reports/UpdateReport/@(Model.ReportId)" hx-get="/Reports/UpdateReport/@(Model.ReportId)" hx-target="#content" hx-push-url="true" class="application-btn btn-approve">
+                                    <i class="fas fa-edit"></i>
+                                    Düzenle
+                                </a>
+                            }
+                        }
+                    }
+                    <form method="post" class="hxform" hx-post="/Reports/DeleteReport?reportId=@(Model.ReportId)" hx-target="#content" hx-push-url="true">
+                        <button type="submit" class="application-btn btn-delete">
+                            <span><i class="fa-solid fa-trash"></i></span> Sil
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-4">
+        <div class="card" style="height:500px;overflow-y:auto;">
+            <div class="card-header colored-header">
+                <h3><i class="fa-solid fa-file-lines" style="color: #ffffff;"></i>İÇERİK</h3>
+            </div>
+            <div class="card-body">
+                <div class="paper-note">
+                    <div class="paper-note-content">@Model.ReportContent</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-4">
+        <div class="card" style="height:500px;">
+            <div class="card-header colored-header">
+                <h3><i class="fa-solid fa-image" style="color: #ffffff;"></i> Ödev Görselleri (@Model.ImageUrls?.Count)</h3>
+            </div>
+            <div class="cv-viewer">
+                <div id="workImageSlider" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        @for (int i = 0; i < Model.ImageUrls?.Count; i++)
+                        {
+                            var img = Model.ImageUrls[i];
+                            <div class="carousel-item @(i == 0 ? "active" : "")">
+                                <img src="~/images/works/@img" class="d-block w-100" style="height:400px; object-fit:contain;" />
+                            </div>
+                        }
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#workImageSlider" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Önceki</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#workImageSlider" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Sonraki</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   
+</div>

@@ -1,4 +1,4 @@
-﻿<nav class="navbar navbar-expand-lg navbar-dark custom-navbar shadow-sm sticky-top">
+﻿<nav class="navbar navbar-expand-lg navbar-dark custom-navbar shadow-sm sticky-top" hx-on::load="initNavbarScripts();">
     <div class="container-fluid">
         <a class="ps-4 navbar-brand ajax-link fw-bold text-white d-flex align-items-center" asp-action="Index">
             <div class="brand-logo">
@@ -11,9 +11,9 @@
         <div class="d-flex align-items-center pe-5">
             @if (User?.Identity?.IsAuthenticated == true)
             {
-                <a asp-controller="Account" asp-action="Notifications" class="nav-link ajax-link text-white nav-icon-link position-relative me-2" title="Bildirimler">
-                    <i class="fa-regular fa-bell"></i>
-                    <span class="position-absolute start-100 translate-middle badge rounded-pill bg-danger notification-badge">2</span>
+                <a href="/Messages/Index" hx-get="/Messages/Index" title="Bildirimler" class="nav-link text-white nav-icon-link position-relative me-2" hx-target="#content" hx-push-url="true">
+                    <i class="fas fa-envelope"></i>
+                    <span class="position-absolute start-100 translate-middle badge rounded-pill bg-danger notification-badge">@await Component.InvokeAsync("MessagesCount")</span>
                 </a>
             }
 
@@ -40,15 +40,9 @@
                             <a asp-controller="Account" asp-action="Profile" class="ajax-link dropdown-item">
                                 <i class="fa-solid fa-user me-2"></i> Profilim
                             </a>
-                            <a class="dropdown-item" href="#">
+                            <a href="/Settings/Index" class="dropdown-item" hx-get="/Settings/Index" hx-target="#content" hx-push-url="true">
                                 <i class="fa-solid fa-gear me-2"></i> Ayarlar
                             </a>
-                            @if (!User.IsInRole("Admin"))
-                            {
-                                <a class="dropdown-item" href="#">
-                                    <i class="fa-solid fa-info me-2"></i> Destek
-                                </a>
-                            }
                             <div class="dropdown-divider"></div>
                             <form method="post" asp-controller="Account" asp-action="Logout">
                                 <button class="dropdown-item logout-item"><i class="fa-solid fa-right-from-bracket me-2"></i> Çıkış Yap</button>
@@ -67,55 +61,4 @@
     </div>
 </nav>
 
-<script>
-         function initNavbar() {
-            var topNavbar = document.querySelector('.custom-navbar');
-
-            var dropdownElementList = [].slice.call(document.querySelectorAll('.user-dropdown .dropdown-toggle'));
-
-            dropdownElementList.forEach(function (dropdownToggleEl) {
-                var dropdownMenu = dropdownToggleEl.nextElementSibling;
-
-                if (dropdownMenu) {
-                    dropdownMenu.classList.add('animate__animated');
-                }
-
-                dropdownToggleEl.addEventListener('shown.bs.dropdown', function () {
-                    dropdownMenu.classList.remove('animate__fadeOutDown');
-                    dropdownMenu.classList.add('animate__fadeInUp');
-                });
-
-                dropdownToggleEl.addEventListener('hide.bs.dropdown', function (e) {
-                    if (!dropdownMenu.classList.contains('animate__fadeOutDown')) {
-                        e.preventDefault();
-
-                        dropdownMenu.classList.remove('animate__fadeInUp');
-                        dropdownMenu.classList.add('animate__fadeOutDown');
-
-                        setTimeout(function () {
-                            dropdownToggleEl.click();
-                            dropdownMenu.classList.remove('animate__fadeOutDown');
-                        }, 300);
-                    }
-                });
-            });
-
-            if (window.innerWidth < 992) {
-                var mobileMenu = document.querySelector('#navbarNav .navbar-nav');
-            }
-
-            window.addEventListener('scroll', function() {
-                var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-
-                if (scrollTop > 50) {
-                    topNavbar.classList.add('scrolled');
-                } else {
-                    topNavbar.classList.remove('scrolled');
-                }
-
-                lastScrollTop = scrollTop;
-            });
-
-    };
-
-</script>
+<script src="~/js/navbar.js" asp-append-version="true"></script>

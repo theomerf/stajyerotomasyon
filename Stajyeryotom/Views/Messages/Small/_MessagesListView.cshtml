@@ -1,0 +1,75 @@
+﻿<div class="content-table">
+    <div class="messages-table-header @(User.IsInRole("Admin") ? "" : "user")">
+        <div class="header-cell">
+            MESAJ BAŞLIĞI
+        </div>
+        <div class="header-cell">
+            MESAJ İÇERİĞİ
+        </div>
+        @if (User.IsInRole("Admin"))
+        {
+            <div class="header-cell">
+                KİŞİ SAYISI
+            </div>
+        }
+        <div class="header-cell">
+            MESAJ TARİHİ
+        </div>
+        @if (User.IsInRole("Admin"))
+        {
+            <div class="header-cell">İŞLEMLER</div>
+        }
+    </div>
+
+    @{
+        var dateTime = DateTime.UtcNow;
+        foreach (var message in Model ?? new List<MessageDto>())
+        {
+
+            <div class="messages-table-row @(User.IsInRole("Admin") ? "" : "user")">
+                <div class="cell student-info">
+                    <div class="student-details">
+                        <h4>@message.MessageTitle</h4>
+                    </div>
+                </div>
+                <div class="cell">
+                    <div class="department-info">
+                        <strong>@message.MessageBody</strong>
+                    </div>
+                </div>
+                @if (User.IsInRole("Admin"))
+                {
+                    <div class="cell">
+                        <div class="department-info">
+                        <strong>@message.InternsCount</strong>
+                    </div>
+                </div>
+                }
+                <div class="cell">
+                    <div class="date-info">
+                        <div class="date-item">
+                            <i class="fa-solid fa-calendar-days" style="color: #16cd13;"></i>
+                            <span class="internshipEndDate">@(message.CreatedAt.ToString("dd.MM.yyyy, HH:mm"))</span>
+                        </div>
+                    </div>
+                </div>
+                @if (User.IsInRole("Admin"))
+                {
+                    <div class="cell">
+                        <div class="action-buttons">
+                            <a href="/Messages/UpdateMessages?messageId=@(message.MessageId)" title="Düzenle" hx-get="/Messages/UpdateMessage?messageId=@(message.MessageId)" hx-target="#content" hx-push-url="true" class="btn-action edit">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <form method="post" class="hxform" hx-post="/Message/DeleteMessage?messageId=@(message.MessageId)" hx-target="#content" hx-push-url="false">
+                                <button type="submit" title="Sil" class="btn-action delete">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+
+    }
+</div>

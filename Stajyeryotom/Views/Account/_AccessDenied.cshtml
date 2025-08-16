@@ -1,0 +1,17 @@
+﻿@{
+    Layout = Context.Request.Headers["HX-Request"] == "true" ? null : "_Layout";
+}
+
+<div class="row m-5">
+    <div class="card card-before d-flex text-center py-5" style="height:500px">
+        <div class="card-body">
+            <div class="no-results-icon mt-5"><i class="fa-solid fa-xmark"></i></div>
+            <h2 class="no-results-title">Erişim Engellendi</h2>
+            <a href="@Url.Action("Index", "Home")" class="no-results-button">
+                <i class="fa-solid fa-grid-2 me-2"></i>
+                Ana Sayfaya Dön
+            </a>
+        </div>
+
+    </div>
+</div>

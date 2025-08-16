@@ -1,0 +1,106 @@
+﻿.messages-table-header {
+    display: grid;
+    grid-template-columns: 1.5fr 3.5fr 1fr 2fr 1fr;
+    gap: 1rem;
+    background: linear-gradient(135deg, rgba(42, 155, 91, 0.05) 0%, rgba(87, 199, 133, 0.05) 50%, rgba(83, 237, 114, 0.05) 100%);
+    padding: 2rem 1.5rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    font-weight: 700;
+    color: #374151;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+}
+
+.messages-table-header.user {
+    grid-template-columns: 1.5fr 3.5fr 1.5fr!important;
+}
+
+.messages-table-row.user {
+    grid-template-columns: 1.5fr 3.5fr 1.5fr !important;
+}
+
+.messages-table-row {
+    display: grid;
+    grid-template-columns: 1.5fr 3.5fr 1fr 2fr 1fr;
+    gap: 1rem;
+    padding: 2rem 1.5rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    align-items: center;
+    position: relative;
+}
+
+    .messages-table-row::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 0;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(42, 155, 91, 0.1) 0%, rgba(83, 237, 114, 0.1) 100%);
+        transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .messages-table-row:hover::before {
+        width: 100%;
+    }
+
+    .messages-table-row:hover {
+        background: transparent;
+        transform: translateX(8px);
+        box-shadow: 0 8px 30px rgba(42, 155, 91, 0.1);
+    }
+
+    .messages-table-row:last-child {
+        border-bottom: none;
+    }
+
+.message-body strong {
+    display: block;
+    color: #1e293b;
+    margin-bottom: 0.3rem;
+    font-weight: 700;
+    font-size: 1rem;
+    white-space: normal;
+    word-break: break-word;
+}
+
+@media (max-width: 968px) {
+    .messages-table-header,
+    .messages-table-row {
+        grid-template-columns: 1fr;
+        gap: 0.8rem;
+    }
+
+    .messages-table-header {
+        display: none;
+    }
+
+    .messages-table-row {
+        display: block;
+        padding: 2rem;
+        border-radius: 16px;
+        margin-bottom: 1.5rem;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+        position: relative;
+    }
+
+        .messages-table-row::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, rgba(42, 155, 91, 1) 0%, rgba(87, 199, 133, 1) 50%, rgba(83, 237, 114, 1) 100%);
+        }
+
+        .messages-table-row:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        }
+}

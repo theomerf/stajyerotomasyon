@@ -15,6 +15,10 @@ namespace Stajyeryotom.Components.Small
         public async Task<string> InvokeAsync()
         {
             var count = await _manager.ApplicationService.GetAllApplicationsCountAsync();
+            if(count > 99)
+            {
+                return "99+";
+            }
             return count.ToString();
         }
     }

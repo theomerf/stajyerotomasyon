@@ -66,11 +66,29 @@
             </div>
 
             <div class="card-actions">
-                <a href="/Interns/UpdateIntern?userName=@(intern.UserName)" hx-get="/Interns/UpdateIntern?userName=@(intern.UserName)" hx-target="#content" hx-push-url="true" class="btn-action edit">
+                    @if (intern.IsActive)
+                    {
+                        <form class="hxform" hx-post="/Interns/ChangeStatus?userName=@(intern.UserName)" hx-target="#content" hx-push-url="true">
+                            <button type="submit" title="Pasif Hale Getir" class="btn-action changeStatus p-2">
+                                <i class="fa-solid fa-xmark"></i>
+                                Pasif
+                            </button>
+                        </form>
+                    }
+                    else
+                    {
+                        <form class="hxform" hx-post="/Interns/ChangeStatus?userName=@(intern.UserName)" hx-target="#content" hx-push-url="true">
+                            <button type="submit" title="Aktif Hale Getir" class="btn-action changeStatus">
+                                <i class="fa-solid fa-check"></i>
+                                Aktif
+                            </button>
+                        </form>
+                    }
+                <a href="/Interns/UpdateIntern?userName=@(intern.UserName)" hx-get="/Interns/UpdateIntern?userName=@(intern.UserName)" hx-target="#content" hx-push-url="true" class="btn-action edit p-2">
                     <i class="fas fa-edit"></i>
                     Düzenle
                 </a>
-                <form asp-action="DeleteIntern" asp-route-userName="@intern.UserName" class="hxform" hx-post="/Interns/DeleteIntern?userName=@(intern.UserName)" hx-target="#content" hx-push-url="true">
+                <form class="hxform" hx-post="/Interns/DeleteIntern?userName=@(intern.UserName)" hx-target="#content" hx-push-url="true">
                     <button type="submit" class="btn-action delete">
                         <i class="fas fa-trash"></i>Sil
                     </button>

@@ -14,6 +14,10 @@ window.addEventListener('popstate', function (event) {
     }
 });
 
+window.reloadSidebar = function () {
+    htmx.ajax('GET', '/Home/Sidebar', { target: '#sidebar' });
+}
+
 // Toast gönderme işlevi
 
 window.toastInstance = null;
@@ -93,6 +97,18 @@ document.body.addEventListener('htmx:configRequest', function (evt) {
     if (triggeredElement && triggeredElement.classList.contains("pagination-send")) {
         evt.detail.headers['Pagination-Send'] = 'true';
     }
+    if (triggeredElement && triggeredElement.classList.contains("workUpdateForm")) {
+        window.updateWorkFormSubmitHandler(evt);
+    }
+    if (triggeredElement && triggeredElement.classList.contains("workAddForm")) {
+        window.addWorkFormSubmitHandler(evt);
+    }
+    if (triggeredElement && triggeredElement.classList.contains("messageAddForm")) {
+        window.addMessageFormSubmitHandler(evt);
+    }
+    if (triggeredElement && triggeredElement.classList.contains("messageUpdateForm")) {
+        window.updateMessageFormSubmitHandler(evt);
+    }
 });
 
 document.body.addEventListener("htmx:afterRequest", function (event) {
@@ -116,6 +132,7 @@ document.body.addEventListener("htmx:afterRequest", function (event) {
                         $.validator.unobtrusive.parse(".validation");
                     }
                 }
+                reloadSidebar();
                 window.toastInstance = null;
                 showToast(response.message, response.type);
                 if (event.detail.requestConfig.headers["Date-Send"] == "true") {
@@ -138,6 +155,7 @@ document.body.addEventListener("htmx:afterRequest", function (event) {
                         window.scrollTo({ top: 0, behavior: 'smooth' });
                     }
                 }
+                reloadSidebar();
                 return;
             }
             else if (response.html) {
@@ -164,7 +182,6 @@ document.body.addEventListener("htmx:afterRequest", function (event) {
         }
     }
     else if (event.detail.requestConfig.headers["Pagination-Send"] == "true") {
-        console.log('sa');
         document.querySelector('.scroll-target')?.scrollIntoView({
             behavior: 'smooth',
             block: 'center'

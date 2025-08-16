@@ -17,6 +17,7 @@ namespace Entities.Models
         public Section? Section { get; set; }
         public ICollection<Note>? Notes { get; set; }
         public ICollection<Work>? Works { get; set; }
+        public ICollection<Message>? Messages { get; set; }
         public ICollection<Work>? SupervisedWorks { get; set; }
         public ICollection<Report>? Reports { get; set; }
         public bool IsActive { get; set; } = true;

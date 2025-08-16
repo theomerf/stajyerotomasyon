@@ -539,6 +539,12 @@
         box-shadow: 0 8px 25px rgba(201, 31, 28, 0.3);
     }
 
+    .status-badge.passive {
+        background: black;
+        color: white;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+    }
+
 .action-buttons {
     display: flex;
     gap: 0.6rem;
@@ -603,6 +609,20 @@
             transform: translateY(-4px) scale(1.1);
             box-shadow: 0 12px 35px rgba(220, 38, 38, 0.4);
         }
+
+    .btn-action.changeStatus {
+        background: linear-gradient(90deg, rgba(176, 184, 35, 1) 0%, rgba(237, 227, 83, 1) 100%);
+        text-decoration: none;
+        color: white;
+        box-shadow: 0 6px 20px rgba(176, 184, 35, 0.4);
+        transition: all 0.3s ease;
+    }
+
+        .btn-action.changeStatus:hover {
+            transform: translateY(-4px) scale(1.1);
+            box-shadow: 0 12px 35px rgba(237, 227, 83, 0.5);
+        }
+
 
 .stajyer-grid {
     display: grid;

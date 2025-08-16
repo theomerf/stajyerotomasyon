@@ -8,6 +8,8 @@ namespace Entities.Dtos
 {
     public record WorkDtoForUpdate : WorkDtoForCreation
     {
-        public List<string>? PhotosToDelete { get; set; }
+        public int WorkId { get; init; }
+        public List<String>? PhotosToDelete { get; set; }
+        public List<String>? UpdatedInternsId { get; set; }
     }
 }

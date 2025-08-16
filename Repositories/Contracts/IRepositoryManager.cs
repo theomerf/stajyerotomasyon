@@ -10,6 +10,7 @@
         IEventRepository Event { get; }
         IReportRepository Report { get; }
         IWorkRepository Work { get; }
+        IMessageRepository Message { get; }
         void Save();
         Task SaveAsync();
     }

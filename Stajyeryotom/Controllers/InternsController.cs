@@ -234,5 +234,18 @@ namespace Stajyeryotom.Controllers
             var interns = await _manager.AuthService.GetInternsByIds(internsIds);
             return Json(interns);
         }
+
+        public async Task<IActionResult> ChangeStatus([FromQuery]string userName)
+        {
+            var result = await _manager.AuthService.ChangeStatus(userName);
+
+            return Json(new
+            {
+                success = true,
+                message = "Stajyer durumu başarıyla güncellendi.",
+                loadComponent = "Interns",
+                type = "success"
+            });
+        }
     }
 }

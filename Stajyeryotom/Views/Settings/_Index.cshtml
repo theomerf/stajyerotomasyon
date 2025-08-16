@@ -1,0 +1,76 @@
+﻿@{
+    Layout = Context.Request.Headers["HX-Request"] == "true" ? null : "_Layout";
+    var activeView = Context.Request.Cookies["View"] ?? "List";
+    var isCollapsed = Context.Request.Cookies["Collapsed"] ?? "true";
+}
+
+<div class="container reports-container" hx-on::load="initSettingsScript();">
+    <div class="row">
+        <div class="page-header @((isCollapsed == "true") ? "collapsed" : "")">
+            <div class="header-main">
+                <div class="header-content">
+                    <h1><i class="fas fa-cog"></i> Ayarlar</h1>
+                    <p>Otomasyon ayarlarınızı görüntüleyin ve yönetin.</p>
+                </div>
+            </div>
+
+            <div class="header-toggle-wrapper">
+                <button class="btn-toggle-header" hx-on:click="toggleHeaderCollapse(event)" title="Küçült/Genişlet">
+                    <i class="fas fa-chevron-up"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-4">
+        <div class="card">
+            <div class="card-header colored-header">
+                <h3><i class="fa-solid fa-cog" style="color: #ffffff;"></i> AYARLAR</h3>
+            </div>
+            <div class="card-body" style="padding:10px 25px 10px 25px;">
+                <div id="login-errors" class="text-danger validation-summary-errors" asp-validation-summary="All"></div>
+                <form method="post" id="settingsForm" class="hxform validation" >
+                    @Html.AntiForgeryToken()
+
+                    <div class="row">
+                        <div class="broadcast-section">
+                            <div class="broadcast-title">
+                                <i class="fas fa-bullhorn"></i>
+                                Görünüm Seçenekleri
+                            </div>
+                            <div class="broadcast-options">
+                                <div class="broadcast-option">
+                                    <input type="radio" id="broadcast-all" name="broadcast" class="broadcast-radio" value="List">
+                                    <label for="broadcast-all" class="broadcast-label">
+                                        <div class="radio-icon"></div>
+                                        <div class="broadcast-label-text">
+                                            <div class="broadcast-label-title">Liste</div>
+                                            <div class="broadcast-label-desc">İçerikler ilk açılışta liste olarak görünür</div>
+                                        </div>
+                                    </label>
+                                </div>
+
+                                <div class="broadcast-option">
+                                    <input type="radio" id="broadcast-users" name="broadcast" class="broadcast-radio" value="Grid">
+                                    <label for="broadcast-users" class="broadcast-label">
+                                        <div class="radio-icon"></div>
+                                        <div class="broadcast-label-text">
+                                            <div class="broadcast-label-title">Card</div>
+                                            <div class="broadcast-label-desc">İçerikler ilk açılışta card olarak görünür</div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row d-flex justify-content-center mb-4">
+                        <button type="button" class="form-submit-btn" hx-on:click="settingsFormSubmit(event);" style="width:400px;" id="submitBtn">
+                            <i class="fa-solid fa-floppy-disk"></i> Ayarları Kaydet
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/settings.js" asp-append-version="true"></script>

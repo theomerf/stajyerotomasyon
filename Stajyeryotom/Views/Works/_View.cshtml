@@ -1,0 +1,255 @@
+﻿@model WorkViewDto
+
+@{
+    Layout = Context.Request.Headers["HX-Request"] == "true" ? null : "_Layout";
+    var isCollapsed = Context.Request.Cookies["Collapsed"] ?? "true";
+    var percentage = Model.ReportsCount == 0 ? 0 : (Model.ReportsCount / Model.InternsCount) * 100;
+}
+
+@{
+    var statusClass = "";
+    string status = "";
+
+    switch (Model.Status)
+    {
+        case "Active":
+            statusClass = "status-approved";
+            status = "Aktif";
+            break;
+        case "Passive":
+            statusClass = "status-denied";
+            status = "Pasif";
+            break;
+    }
+}
+
+<div class="container">
+    <div class="row">
+        <div class="page-header">
+            <div class="header-main">
+                <div class="header-content">
+                    <h1>@Model.WorkName</h1>
+                </div>
+
+                <div class="header-actions">
+                    <a href="/Works/Index" hx-get="/Works/Index" hx-target="#content" hx-push-url="true" class="back-btn">
+                        <i class="fas fa-arrow-left"></i>Geri
+                    </a>
+                    <span class="applicationview-status-badge @statusClass" style="margin-right:-150px;">@status</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="card p-4 card-before">
+            <div class="card-body">
+                <div class="d-flex justify-content-center flex-wrap gap-3">
+                    @if (User.IsInRole("Admin"))
+                    {
+                        @if (Model.Status == "Active")
+                        {
+                            <form class="hxform" hx-post="/Works/ChangeStatus?workId=@(Model.WorkId)" hx-target="#content" hx-push-url="false">
+                                <button class="application-btn btn-export-intern">
+                                    <span><i class="fa-solid fa-xmark"></i></span> Pasif Yap
+                                </button>
+                            </form>
+                        }
+                        else
+                        {
+                            <form class="hxform" hx-post="/Works/ChangeStatus?workId=@(Model.WorkId)" hx-target="#content" hx-push-url="false">
+                                <button class="application-btn btn-export-intern">
+                                    <span><i class="fa-solid fa-check"></i></span> Aktif Yap
+                                </button>
+                            </form>
+                        }
+                        <form class="hxform" hx-post="/Works/DeleteWork?workId=@(Model.WorkId)" hx-target="#content" hx-push-url="false">
+                            <button class="application-btn btn-delete">
+                                <span><i class="fa-solid fa-trash"></i></span> Sil
+                            </button>
+                        </form>
+                    }
+                    else
+                    {
+                        <a href="/Reports/AddReport?workId=@(Model.WorkId)" hx-get="/Reports/AddReport?workId=@(Model.WorkId)" hx-target="#content" hx-push-url="true" class="application-btn btn-export-intern ms-1">
+                            <i class="fa-solid fa-file-pen"></i>
+                            Rapor Yaz
+                        </a>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col col-md-7">
+            <div class="card" style="height:500px;">
+                <div class="card-header colored-header">
+                    <h3><i class="fa-solid fa-image" style="color: #ffffff;"></i> Ödev Görselleri (@Model.ImageUrls?.Count)</h3>
+                </div>
+                <div class="cv-viewer">
+                    <div id="workImageSlider" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            @for (int i = 0; i < Model.ImageUrls?.Count; i++)
+                            {
+                                var img = Model.ImageUrls[i];
+                                <div class="carousel-item @(i == 0 ? "active" : "")">
+                                    <img src="~/images/works/@img" class="d-block w-100" style="height:400px; object-fit:contain;" />
+                                </div>
+                            }
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#workImageSlider" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Önceki</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#workImageSlider" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Sonraki</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col col-md-5">
+
+
+            <div class="card">
+                <div class="card-header colored-header">
+                    <h3><i class="fa-solid fa-circle-info" style="color: #ffffff;"></i> Ödev Detayları</h3>
+                </div>
+
+                <div class="card-body p-4">
+                    <div class="detail-group">
+                        <div class="detail-label">Görev Adı</div>
+                        <div class="detail-value">@Model.WorkName</div>
+                    </div>
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <div class="detail-group">
+                            <div class="detail-label">Rapor Sayısı</div>
+                            <div class="detail-value">@Model.ReportsCount</div>
+                        </div>
+
+                        <div class="detail-group">
+                            <div class="detail-label">Görev Verilen Sayısı</div>
+                            <div class="detail-value">@Model.InternsCount</div>
+                        </div>
+                    }
+
+                    <div class="detail-group">
+                        <div class="detail-label">Görevi Veren Kişi</div>
+                        <div class="detail-value">@Model.TaskMasterName</div>
+                    </div>
+
+                    <div class="detail-group">
+                        <div class="detail-label">Başlangıç Tarihi</div>
+                        <div class="detail-value">@Model.WorkStartDate</div>
+                    </div>
+
+                    <div class="detail-group">
+                        <div class="detail-label">Bitiş Tarihi</div>
+                        <div class="detail-value">@Model.WorkEndDate</div>
+                    </div>
+
+                    <div class="detail-group">
+                        <div class="detail-label">Açıklama</div>
+                        <div class="detail-description">
+                            <p>@Model.WorkDescription</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="my-5 d-flex justify-content-center text-center">
+        <div class="reports-title">
+            <h3 style="font-weight:700;color:white;border-radius:18px;padding:15px 50px 15px 50px;background: linear-gradient(90deg, rgba(42, 155, 91, 1) 0%, rgba(87, 199, 133, 1) 63%, rgba(83, 237, 114, 1) 100%);"><i class="fa-solid fa-file-lines" style="color: #ffffff;"></i>@(User.IsInRole("Admin") ? " RAPORLAR" : " RAPORLARIN")</h3>
+        </div>
+    </div>
+
+    @if (!Model.Reports!.Any())
+    {
+        <div class="row">
+            <div class="card card-before d-flex text-center py-5">
+                <div class="card-body">
+                    <div class="no-results-icon"><i class="fa-solid fa-xmark"></i></div>
+                    <h2 class="no-results-title">Rapor eklenmemiş</h2>
+                    <p class="no-results-text">Henüz eklenen bir rapor bulunamadı.</p>
+                </div>
+
+            </div>
+        </div>
+    }
+
+    <div class="row mb-4">
+
+
+        @foreach (var report in Model.Reports ?? new List<Report>())
+        {
+            <div class="col col-4">
+                <div class="card card-hover" style="min-height: 500px;">
+                    <div class="card-header colored-header-row">
+                        <p class="work-card-title">@report.ReportTitle</p>
+                        <p>@report.Status</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <p class="work-content">
+                                    @report.ReportContent
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-8">
+                                <div class="work-images-section">
+                                    <p class="work-images-label">Görev görselleri:</p>
+
+                                    <div class="work-images">
+                                        @foreach (var images in report.ImageUrls ?? new List<String>())
+                                        {
+
+                                            <div class="thumbnail-container">
+                                                <img src="/images/works/@images"
+                                                     alt="Görev görseli"
+                                                     class="image-thumbnail"
+                                                     onclick="openModal(this.src)">
+                                            </div>
+                                        }
+                                        @if (report.ImageUrls?.Count > 3)
+                                        {
+                                            <div class="image-count">+@(report.ImageUrls?.Count - 3)</div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="work-card-actions mt-5 justify-content-end">
+                                    <a href="/Reports/View/@(report.ReportId)" hx-get="/Reports/View/@(report.WorkId)" hx-target="#content" hx-push-url="true" class="btn-action btn-view ms-1" title="Görüntüle">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <form class="hxform" hx-post="/Reports/DeleteReport?reportId=@(report.ReportId)" hx-target="#content" hx-push-url="false">
+                                        <button type="submit" title="Sil" class="btn-action delete ms-1">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="work-info">
+                            <span><strong>Raporu yazan: @report.Account?.FirstName</strong></span>
+                            <div class="work-date-info">
+                                <span><i class="fas fa-calendar" style="color:forestgreen;"></i>@report.CreatedAt</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

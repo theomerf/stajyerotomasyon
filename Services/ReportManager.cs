@@ -28,6 +28,9 @@ namespace Services
             _manager.Report.Create(report);
             await _manager.SaveAsync();
 
+            _cache.Remove("reportsStats");
+            _cache.Remove("reportsCount");
+
             var result = new ResultDto()
             {
                 Success = true,
@@ -44,6 +47,9 @@ namespace Services
             _manager.Report.DeleteReport(report!);
             await _manager.SaveAsync();
 
+            _cache.Remove("reportsStats");
+            _cache.Remove("reportsCount");
+
             var result = new ResultDto()
             {
                 Success = true,
@@ -52,6 +58,39 @@ namespace Services
                 LoadComponent = "Reports"
             };
             return result;
+        }
+
+        public async Task<ResultDto> DeleteReportForUserAsync(int reportId, string userId)
+        {
+            var report = await GetReportByIdForServiceAsync(reportId);
+            if (report?.AccountId == userId) 
+            {
+                _manager.Report.DeleteReport(report!);
+                await _manager.SaveAsync();
+
+                _cache.Remove("reportsStats");
+                _cache.Remove("reportsCount");
+
+                var result = new ResultDto()
+                {
+                    Success = true,
+                    Message = "Raporunuz başarıyla silindi",
+                    ResultType = "success",
+                    LoadComponent = "Reports"
+                };
+                return result;
+            }
+            else
+            {
+                var result = new ResultDto()
+                {
+                    Success = false,
+                    Message = "Rapor silinirken hata oluştu",
+                    ResultType = "danger",
+                    LoadComponent = "Reports"
+                };
+                return result;
+            }
         }
 
         public async Task<IEnumerable<ReportDto?>> GetAllReportsAsync(ReportRequestParameters p)
@@ -80,27 +119,46 @@ namespace Services
             return statsDto;
         }
 
-        public Task<int> GetAllReportsCountAsync()
+        public async Task<int> GetAllReportsCountAsync()
         {
-            var count = _manager.Report.GetAllReportsCountAsync();
+            var count = await _manager.Report.GetAllReportsCountAsync();
             return count;
         }
 
-        public Task<int> GetReportsCountAsync(ReportRequestParameters p)
+        public async Task<string> GetReportsCountForSidebarAsync()
         {
-            var count = _manager.Report.GetReportsCountAsync(p);
+            string cacheKey = "reportsCount";
+
+            if (_cache.TryGetValue(cacheKey, out int? cachedData))
+            {
+                return cachedData.ToString() ?? "0";
+            }
+
+            var count = await _manager.Report.GetAllReportsCountAsync();
+
+            var cacheOptions = new MemoryCacheEntryOptions()
+                 .SetSlidingExpiration(TimeSpan.FromMinutes(30));
+
+            _cache.Set(cacheKey, count, cacheOptions);
+
+            return count.ToString();
+        }
+
+        public async Task<int> GetReportsCountAsync(ReportRequestParameters p)
+        {
+            var count = await _manager.Report.GetReportsCountAsync(p);
             return count;
         }
 
-        public async Task<int> GetAllReportsCountOfOneUser(string userId)
+        public async Task<int> GetAllReportsCountOfOneUserAsync(ReportRequestParameters p, string userId)
         {
-            var count = await _manager.Report.GetAllReportsCountOfOneUserAsync(userId);
+            var count = await _manager.Report.GetAllReportsCountOfOneUserAsync(p, userId);
             return count;
         }
 
-        public async Task<IEnumerable<ReportDto?>> GetAllReportsOfOneUserAsync(string userId)
+        public async Task<IEnumerable<ReportDto?>> GetAllReportsOfOneUserAsync(ReportRequestParameters p, string userId)
         {
-            var reports = await _manager.Report.GetAllReportsOfOneUserAsync(userId);
+            var reports = await _manager.Report.GetAllReportsOfOneUserAsync(p, userId);
             var reportsDto = _mapper.Map<IEnumerable<ReportDto>>(reports);
 
             return reportsDto;
@@ -125,9 +183,19 @@ namespace Services
             return reportDto;
         }
 
-        private Task<Report?> GetReportByIdForServiceAsync(int reportId)
+        public async Task<ReportViewDto?> GetReportByIdForViewAsync(int reportId)
         {
-            var report = _manager.Report.GetReportByIdAsync(reportId);
+            var report = await _manager.Report.GetReportByIdForViewAsync(reportId);
+            if (report == null)
+            {
+                throw new KeyNotFoundException($"{report} id'sine sahip rapor bulunamadı.");
+            }
+            return report;
+        }
+
+        private async Task<Report?> GetReportByIdForServiceAsync(int reportId)
+        {
+            var report = await _manager.Report.GetReportByIdAsync(reportId);
             if (report == null)
             {
                 throw new KeyNotFoundException($"{report} id'sine sahip rapor bulunamadı.");
@@ -151,6 +219,35 @@ namespace Services
             };
             return result;
 
+        }
+
+        public async Task<ResultDto> ChangeStatusAsync(int reportId)
+        {
+            var work = await _manager.Report.GetReportByIdForUpdateAsync(reportId);
+
+            if (work == null)
+                throw new KeyNotFoundException($"{reportId} id'sine sahip görev bulunamadı.");
+
+
+            work.Status = ReportStatus.Read;
+            _manager.Report.UpdateReport(work);
+            await _manager.SaveAsync();
+
+            _cache.Remove("reportsStats");
+
+            return new ResultDto
+            {
+                Success = true,
+                Message = "Görev durumu başarıyla güncellendi.",
+                ResultType = "success",
+            };
+        }
+
+        public async Task<string> GetAllReportsCountOfOneUserForSidebarAsync(string userId)
+        {
+            var count = await _manager.Report.GetAllReportsCountOfOneUserForSidebarAsync(userId);
+
+            return count.ToString();
         }
     }
 }
