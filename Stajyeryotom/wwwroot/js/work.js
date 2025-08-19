@@ -14,34 +14,3 @@
         }, 200);
     });
 }
-
-function openModal(imageSrc) {
-    const modal = document.getElementById('imageModal');
-    const modalImage = document.getElementById('modalImage');
-
-    modalImage.src = imageSrc;
-    modal.style.display = 'block';
-
-    document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape') {
-            closeModal();
-        }
-    });
-}
-
-function closeModal() {
-    const modal = document.getElementById('imageModal');
-    modal.style.display = 'none';
-
-    document.removeEventListener('keydown', function (e) {
-        if (e.key === 'Escape') {
-            closeModal();
-        }
-    });
-}
-
-document.getElementById('imageModal').addEventListener('click', function (e) {
-    if (e.target === this) {
-        closeModal();
-    }
-});

@@ -14,17 +14,6 @@
                     <h1><i class="fas fa-users"></i> Başvurular (@Model?.Pagination?.TotalItems)</h1>
                     <p>Staj başvurularını görüntüleyin ve yönetin.</p>
                 </div>
-
-                <div class="header-actions">
-                    <a href="/Applications/AddApplication" hx-get="/Applications/AddApplication" hx-target="#content" hx-push-url="true" class="btn btn-user-add">
-                        <i class="fa-solid fa-plus"></i>
-                        Yeni Başvuru Ekle
-                    </a>
-                    <a href="/Applications/ExportApplications" hx-get="/Applications/ExportApplications" hx-on:click="handleSidebarClickForComponents(event);" hx-target="#content" hx-push-url="true" class="btn btn-user-add" data-target="Company">
-                        <i class="fa-solid fa-file-export"></i>
-                        Dışa Aktar
-                    </a>
-                </div>
             </div>
 
             <div class="header-toggle-wrapper">

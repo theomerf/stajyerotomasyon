@@ -2,7 +2,7 @@
     var isCollapsed = Context.Request.Cookies["Collapsed"] ?? "true";
 }
 
-<div class="container" hx-on::load="initNavbar();">
+<div class="container">
     <div class="row">
         <div class="page-header @((isCollapsed == "true") ? "collapsed" : "")">
             <div class="header-main">
@@ -86,63 +86,6 @@
     </div>
     <div class="row g-3 mb-4">
         @await Component.InvokeAsync("DashboardCharts")
-    </div>
-    <div class="row">
-        <div class="card card-before">
-            <div class="card-body">
-                <h4><i class="fas fa-history"></i>Son Aktiviteler</h4>
-
-                <div class="activity-item">
-                    <div class="activity-icon">
-                        <i class="fas fa-user-plus"></i>
-                    </div>
-                    <div class="activity-content">
-                        <div class="activity-title">Ahmet Yılmaz - Yeni stajyer kaydı</div>
-                        <div class="activity-time">2 saat önce</div>
-                    </div>
-                </div>
-
-                <div class="activity-item">
-                    <div class="activity-icon">
-                        <i class="fas fa-check"></i>
-                    </div>
-                    <div class="activity-content">
-                        <div class="activity-title">Elif Demir - Staj başvurusu onaylandı</div>
-                        <div class="activity-time">5 saat önce</div>
-                    </div>
-                </div>
-
-                <div class="activity-item">
-                    <div class="activity-icon">
-                        <i class="fas fa-building"></i>
-                    </div>
-                    <div class="activity-content">
-                        <div class="activity-title">TechSoft A.Ş. - Yeni şirket ortaklığı</div>
-                        <div class="activity-time">1 gün önce</div>
-                    </div>
-                </div>
-
-                <div class="activity-item">
-                    <div class="activity-icon">
-                        <i class="fas fa-graduation-cap"></i>
-                    </div>
-                    <div class="activity-content">
-                        <div class="activity-title">Mehmet Kaya - Staj tamamlandı</div>
-                        <div class="activity-time">2 gün önce</div>
-                    </div>
-                </div>
-
-                <div class="activity-item">
-                    <div class="activity-icon">
-                        <i class="fas fa-file-alt"></i>
-                    </div>
-                    <div class="activity-content">
-                        <div class="activity-title">Zeynep Öztürk - Staj raporu yüklendi</div>
-                        <div class="activity-time">3 gün önce</div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
 

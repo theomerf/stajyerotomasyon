@@ -64,12 +64,12 @@ namespace Repositories.Extensions
             if(type == "Daily")
             {
                 return report
-                    .Where(r => r.Work == null);
+                    .Where(r => r.ReportType == ReportType.Daily);
             }
             else if(type == "Work")
             {
                 return report
-                    .Where(r => r.Work != null);
+                    .Where(r => r.ReportType == ReportType.Work);
             }
             else
             {

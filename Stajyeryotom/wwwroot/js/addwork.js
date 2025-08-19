@@ -116,20 +116,29 @@ function initializeBroadcastOptions() {
     });
 }
 
-function updateVisibility() {
+function updateVisibility(type = null) {
     const selectedBroadcast = document.querySelector('input[name="broadcast"]:checked');
     const userSearchSection = document.querySelector('.user-search-section');
     const departmentSection = document.querySelector('.select-section');
     const departmentSelect = document.getElementById('departmentSelect');
     const sectionsContainer = document.getElementById('sectionsContainer');
 
-    if (!selectedBroadcast) {
+    let value;
+
+    if (type) {
+        value = type;
+        // Eğer type parameter olarak geliyorsa, ilgili radio button'ı da seç
+        const broadcastRadio = document.querySelector(`input[name="broadcast"][value="${type}"]`);
+        if (broadcastRadio && !broadcastRadio.checked) {
+            broadcastRadio.checked = true;
+        }
+    } else if (selectedBroadcast) {
+        value = selectedBroadcast.value;
+    } else {
         userSearchSection.style.display = 'none';
         departmentSection.style.display = 'none';
         return;
     }
-
-    window.value = selectedBroadcast.value;
 
     switch (value) {
         case 'All':
@@ -146,15 +155,19 @@ function updateVisibility() {
             userSearchSection.style.display = 'none';
             departmentSection.style.display = 'block';
             sectionsContainer.style.display = 'none';
-            departmentSelect.parentElement.style.display = 'block';
+            if (departmentSelect && departmentSelect.parentElement) {
+                departmentSelect.parentElement.style.display = 'block';
+            }
             break;
 
         case 'Section':
             userSearchSection.style.display = 'none';
             departmentSection.style.display = 'block';
-            departmentSelect.parentElement.style.display = 'block';
-            if (departmentSelect.value) {
-                loadSections(departmentSelect.value, departmentSection.value);
+            if (departmentSelect && departmentSelect.parentElement) {
+                departmentSelect.parentElement.style.display = 'block';
+            }
+            if (departmentSelect && departmentSelect.value) {
+                loadSections(departmentSelect.value);
                 sectionsContainer.style.display = 'block';
             }
             break;
@@ -407,35 +420,71 @@ function showServerErrors(errors) {
 
 document.body.addEventListener("htmx:afterRequest", function (event) {
     if (event.detail.requestConfig.headers["Form-Send"] == "true") {
-        const selectElement = document.getElementById('departmentSelect');
-        const selectedSectionData = document.getElementById('dataHolder');
+        const selectedBroadcastData = document.getElementById('dataHolderForBroadcast');
+        const selectedDepartmentData = document.getElementById('dataHolderForDepartment');
+        const selectedSectionData = document.getElementById('dataHolderForSection');
 
-        if (selectElement && selectedSectionData) {
-            var selectedValue = selectElement.value;
-            var sectionId = selectedSectionData.dataset.section;
-            loadSections(selectedValue, sectionId);
-            return;
+        // Broadcast type'ı restore et
+        if (selectedBroadcastData && selectedBroadcastData.dataset.type) {
+            updateVisibility(selectedBroadcastData.dataset.type);
+
+            // Radio button'ı seç
+            const broadcastRadio = document.querySelector(`input[name="broadcast"][value="${selectedBroadcastData.dataset.type}"]`);
+            if (broadcastRadio) {
+                broadcastRadio.checked = true;
+            }
         }
-        else if (selectElement) {
-            var selectedValue = selectElement.value;
-            loadSections(selectedValue);
-            return;
+
+        // Department ve Section'ı restore et
+        if (selectedDepartmentData && selectedDepartmentData.dataset.department) {
+            const departmentSelect = document.getElementById('departmentSelect');
+            if (departmentSelect) {
+                departmentSelect.value = selectedDepartmentData.dataset.department;
+
+                // Section varsa onu da restore et
+                if (selectedSectionData && selectedSectionData.dataset.section) {
+                    loadSections(selectedDepartmentData.dataset.department, selectedSectionData.dataset.section);
+                } else {
+                    loadSections(selectedDepartmentData.dataset.department);
+                }
+            }
+        }
+
+        // Selected users'ları restore et (eğer varsa)
+        const selectedUsersData = document.getElementById('dataHolderForUsers');
+        if (selectedUsersData && selectedUsersData.dataset.users) {
+            try {
+                const users = JSON.parse(selectedUsersData.dataset.users);
+                selectedUsers = users;
+                updateSelectedUsersUI();
+            } catch (error) {
+                console.error('Users data parse error:', error);
+            }
         }
     }
-}, { once: true });
+});
 
 window.sectionsContainer = document.getElementById('sectionsContainer');
 window.sectionsGrid = document.getElementById('sectionsGrid');
 
 window.loadSections = function (departmentId, selectedSectionId = null) {
     const selectedBroadcast = document.querySelector('input[name="broadcast"]:checked');
-    window.sections = departmentSections[departmentId];
+    const selectedBroadcastData = document.getElementById('dataHolderForBroadcast');
+
+    let selectedBroadcastValue;
+    if (selectedBroadcast) {
+        selectedBroadcastValue = selectedBroadcast.value;
+    } else if (selectedBroadcastData && selectedBroadcastData.dataset.type) {
+        selectedBroadcastValue = selectedBroadcastData.dataset.type;
+    } else {
+        return;
+    }
+
+    window.sections = window.departmentSections ? window.departmentSections[departmentId] : null;
     window.sectionsContainer = document.getElementById('sectionsContainer');
     window.sectionsGrid = document.getElementById('sectionsGrid');
 
-    if (selectedBroadcast.value == 'Section') {
-
-
+    if (selectedBroadcastValue === 'Section') {
         if (sections && sections.length > 0) {
             sectionsGrid.innerHTML = '';
 
@@ -451,13 +500,14 @@ window.loadSections = function (departmentId, selectedSectionId = null) {
 
             sectionsContainer.style.display = 'block';
             sectionsContainer.style.animation = 'slideIn 0.5s ease-out';
+
             if (selectedSectionId) {
                 setTimeout(function () {
                     const sectionRadio = document.querySelector(`input[name="SectionId"][value="${selectedSectionId}"]`);
                     if (sectionRadio) {
                         sectionRadio.checked = true;
                     }
-                }, 50);
+                }, 100);
             }
         } else {
             sectionsContainer.style.display = 'none';
@@ -467,10 +517,13 @@ window.loadSections = function (departmentId, selectedSectionId = null) {
 
 window.departmentSelectHandler = function (e) {
     const departmentId = parseInt(e.target.value);
-    if (departmentId && window.departmentSections && departmentSections[departmentId]) {
+    if (departmentId && window.departmentSections && window.departmentSections[departmentId]) {
         loadSections(departmentId);
     } else {
-        sectionsContainer.style.display = 'none';
+        const sectionsContainer = document.getElementById('sectionsContainer');
+        if (sectionsContainer) {
+            sectionsContainer.style.display = 'none';
+        }
     }
 };
 

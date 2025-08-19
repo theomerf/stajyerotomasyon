@@ -350,6 +350,9 @@ namespace Stajyeryotom.Migrations
                     b.Property<string>("ReportTitle")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("ReportType")
+                        .HasColumnType("int");
+
                     b.Property<int>("Status")
                         .HasColumnType("int");
 

@@ -12,6 +12,8 @@ namespace Repositories.Contracts
         Task<IEnumerable<Report>> GetAllReportsOfOneWorkAsync(int workId);
         Task<int> GetAllReportsCountOfOneUserForSidebarAsync(string userId);
         Task<IEnumerable<Stats>> GetReportsStatusStatsAsync();
+        Task<Stats> GetUserReportsStatsAsync(string userId);
+        Task<Dictionary<String, int>> GetDailyReportsCountOfOneUser(string userId);
         Task<Report?> GetReportByIdForUpdateAsync(int reportId);
         Task<int> GetAllReportsCountAsync();
         Task<int> GetReportsCountAsync(ReportRequestParameters p);

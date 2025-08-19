@@ -1,1 +1,154 @@
-﻿RAPOR EKLE
+﻿@model ReportDtoForCreation
+
+@{
+    Layout = Context.Request.Headers["HX-Request"] == "true" ? null : "_Layout";
+    if (Model.WorkId != 0)
+    {
+        <div hx-on::load="selectWork(@Model.WorkId)"></div>
+    }
+}
+
+<div id="dataHolder" data-section="@(Model.WorkId)"></div>
+<div class="form-container" hx-on::load="initAddReportScripts();">
+    <div class="form-header">
+        <a href="javascript:void(0)" onclick="history.back()" hx-target="#content" hx-push-url="true" class="back-btn">
+            <i class="fas fa-arrow-left"></i>Geri
+        </a>
+        <h1><i class="fas fa-user-plus"></i> Rapor Ekleme</h1>
+        <p>Yeni rapor bilgilerinizi eksiksiz olarak doldurunuz</p>
+    </div>
+    <div class="form-body">
+        <div id="login-errors" class="text-danger validation-summary-errors" asp-validation-summary="All"></div>
+        <form method="post" id="reportForm" class="hxform validation addReportForm" hx-encoding="multipart/form-data" enctype="multipart/form-data" hx-push-url="false" hx-post="/Reports/AddReport" hx-target="#content">
+            @Html.AntiForgeryToken()
+
+            @if(Model.WorkName != null)
+            {
+                <input type="hidden" asp-for="WorkId" id="workIdHolder" value="@Model.WorkId" />
+                <div class="form-grid">
+                    <div class="form-group full-width">
+                        <label class="form-label" asp-for="WorkName">
+                            <i class="fas fa-user"></i>Görev Adı
+                        </label>
+                        <input type="text" class="form-control" hx-on:focus="handleInputFocus(event);" hx-on:blur="handleInputBlur(event);" asp-for="WorkName" style="text-transform:uppercase" readonly />
+                        <span asp-validation-for="WorkName" class="text-danger"></span>
+                    </div>
+                </div>
+            }
+
+            <div class="form-grid">
+                <div class="form-group full-width">
+                    <label class="form-label" asp-for="ReportTitle">
+                        <i class="fas fa-user"></i>Rapor Başlığı
+                    </label>
+                    <input type="text" class="form-control" hx-on:focus="handleInputFocus(event);" hx-on:blur="handleInputBlur(event);" asp-for="ReportTitle" placeholder="Rapor başlığını giriniz" required/>
+                    <span asp-validation-for="ReportTitle" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group full-width">
+                <div class="form-group full-width">
+                    <label class="form-label" asp-for="ReportContent">
+                        <i class="fas fa-user"></i>Rapor İçeriği
+                    </label>
+                    <textarea class="form-control description" hx-on:focus="handleInputFocus(event);" hx-on:blur="handleInputBlur(event);" asp-for="ReportContent" style="resize:none;" placeholder="Rapor içeriğini giriniz" required></textarea>
+                    <span asp-validation-for="ReportContent" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="photo-upload-section">
+                <div class="photo-upload-title">
+                    <i class="fas fa-camera"></i>
+                    Fotoğraf Ekle
+                </div>
+
+                <div class="photo-upload-area" onclick="document.getElementById('photo-input').click()">
+                    <div class="upload-icon">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                    </div>
+                    <div class="upload-text">Fotoğrafları buraya sürükleyin veya tıklayın</div>
+                    <div class="upload-subtext">PNG, JPG, GIF formatları desteklenir (Maks. 5MB)</div>
+                    <input type="file" id="photo-input" class="photo-input" multiple accept="image/*">
+                </div>
+
+                <div class="photo-preview-section">
+                    <div class="photo-thumbnails" id="photo-thumbnails">
+                    </div>
+                </div>
+            </div>
+
+            <div class="broadcast-section">
+                <div class="broadcast-title">
+                    <i class="fas fa-bullhorn"></i>
+                    Rapor Seçenekleri
+                </div>
+
+                <div class="broadcast-options">
+                    <div class="broadcast-option">
+                        <input type="radio" id="broadcast-all" name="broadcast" class="broadcast-radio" value="Daily">
+                        <label for="broadcast-all" class="broadcast-label">
+                            <div class="radio-icon"></div>
+                            <div class="broadcast-label-text">
+                                <div class="broadcast-label-title">Günlük Rapor</div>
+                                <div class="broadcast-label-desc">Rapor günlük rapor olarak gönderilir.</div>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div class="broadcast-option">
+                        <input type="radio" id="broadcast-users" name="broadcast" class="broadcast-radio" value="Work">
+                        <label for="broadcast-users" class="broadcast-label">
+                            <div class="radio-icon"></div>
+                            <div class="broadcast-label-text">
+                                <div class="broadcast-label-title">Görev Raporu</div>
+                                <div class="broadcast-label-desc">Rapor seçilen ödevin raporu olarak gönderilir.</div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group full-width select-section" id="workSelectionSection" style="display: none;">
+                <label class="form-label">
+                    <i class="fas fa-building"></i>Görev Seçimi
+                </label>
+
+                <div class="section-selection">
+                    <div id="sectionsContainer">
+                        <div class="section-title">
+                            <i class="fas fa-users"></i>Görev Seçiniz
+                        </div>
+                        <div class="sections-grid" id="sectionsGrid">
+                            @if (ViewBag.WorkNames != null)
+                            {
+                                @foreach (var work in ViewBag.WorkNames)
+                                {
+                                    <div class="work-option">
+                                        <input type="radio"
+                                               asp-for="WorkId"
+                                               value="@work.WorkId"
+                                               class="section-checkbox work-radio"
+                                               id="work-@work.WorkId" />
+                                        <label for="work-@work.WorkId" class="section-label">
+                                            @work.WorkName
+                                        </label>
+                                    </div>
+                                }
+                            }
+                        </div>
+                        <div class="helper-text">
+                            <i class="fas fa-info-circle"></i>Raporunu göndermek istediğiniz görevi seçiniz.
+                        </div>
+                    </div>
+                </div>
+                <span asp-validation-for="WorkId" class="text-danger"></span>
+            </div>
+
+            <button class="form-submit-btn" id="submitBtn">
+                <i class="fas fa-user-plus"></i> Rapor Oluştur
+            </button>
+        </form>
+    </div>
+</div>
+
+<script src="~/js/addreport.js" asp-append-version="true"></script>

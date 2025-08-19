@@ -22,7 +22,7 @@ namespace Services
             _cache = cache;
         }
 
-        public async Task<ResultDto> CreateReportAsync(ReportDto reportDto)
+        public async Task<ResultDto> CreateReportAsync(ReportDtoForCreation reportDto)
         {
             var report = _mapper.Map<Report>(reportDto);
             _manager.Report.Create(report);
@@ -98,6 +98,13 @@ namespace Services
             var reportsDto = await _manager.Report.GetAllReportsAsync(p);
 
             return reportsDto;
+        }
+
+        public async Task<StatsDto> GetUserReportsStatsAsync(string userId)
+        {
+            var stats = await _manager.Report.GetUserReportsStatsAsync(userId);
+            var statsDto = _mapper.Map<StatsDto>(stats);
+            return statsDto;
         }
 
         public async Task<IEnumerable<StatsDto>> GetReportsStatusStatsAsync()
@@ -183,6 +190,17 @@ namespace Services
             return reportDto;
         }
 
+        public async Task<ReportDtoForUpdate?> GetReportByIdForUpdateAsync(int reportId)
+        {
+            var report = await _manager.Report.GetReportByIdForUpdateAsync(reportId);
+            if (report == null)
+            {
+                throw new KeyNotFoundException($"{report} id'sine sahip rapor bulunamadı.");
+            }
+            var reportDto = _mapper.Map<ReportDtoForUpdate>(report);
+            return reportDto;
+        }
+
         public async Task<ReportViewDto?> GetReportByIdForViewAsync(int reportId)
         {
             var report = await _manager.Report.GetReportByIdForViewAsync(reportId);
@@ -203,9 +221,19 @@ namespace Services
             return report;
         }
 
-        public async Task<ResultDto> UpdateReportAsync(ReportDto reportDto)
+        public async Task<Dictionary<string, int>> GetDailyReportsCountOfOneUser(string userId)
+        {
+            var dailyReportsCount = await _manager.Report.GetDailyReportsCountOfOneUser(userId);
+
+            return dailyReportsCount;
+        }
+
+        public async Task<ResultDto> UpdateReportAsync(ReportDtoForUpdate reportDto)
         {
             var report = _mapper.Map<Report>(reportDto);
+
+            var intern = new Account { Id = reportDto.AccountId! };
+            _manager.Account.Attach(intern);
 
             _manager.Report.UpdateReport(report);
             await _manager.SaveAsync();
@@ -238,7 +266,7 @@ namespace Services
             return new ResultDto
             {
                 Success = true,
-                Message = "Görev durumu başarıyla güncellendi.",
+                Message = "Rapor durumu başarıyla güncellendi.",
                 ResultType = "success",
             };
         }

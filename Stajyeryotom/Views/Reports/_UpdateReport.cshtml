@@ -1,1 +1,95 @@
-﻿
+﻿@model ReportDtoForUpdate
+
+@{
+    Layout = Context.Request.Headers["HX-Request"] == "true" ? null : "_Layout";
+}
+
+<div class="form-container" hx-on::load="initUpdateReportScripts();">
+    <div class="form-header">
+        <a href="javascript:void(0)" onclick="history.back()" hx-target="#content" hx-push-url="true" class="back-btn">
+            <i class="fas fa-arrow-left"></i>Geri
+        </a>
+        <h1><i class="fas fa-user-plus"></i> Rapor Güncelleme</h1>
+        <p>@(Model.WorkName ?? "")</p>
+    </div>
+    <div class="form-body">
+        <div id="login-errors" class="text-danger validation-summary-errors" asp-validation-summary="All"></div>
+        <form method="post" id="messageForm" class="hxform validation updateReportForm" hx-push-url="false" hx-encoding="multipart/form-data" enctype="multipart/form-data" hx-post="/Reports/UpdateReport" hx-target="#content">
+            @Html.AntiForgeryToken()
+
+            <input type="hidden" asp-for="ReportId"/>
+            @for (int i = 0; i < Model.ImageUrls?.Count; i++)
+            {
+                <input type="hidden" name="ImageUrls[@i]" value="@Model.ImageUrls[i]" />
+            }
+
+            @if (Model.WorkName != null)
+            {
+                <input type="hidden" asp-for="WorkId" value="@Model.WorkId" />
+                <div class="form-grid">
+                    <div class="form-group full-width">
+                        <label class="form-label" asp-for="WorkName">
+                            <i class="fas fa-user"></i>Görev Adı
+                        </label>
+                        <input type="text" class="form-control" hx-on:focus="handleInputFocus(event);" hx-on:blur="handleInputBlur(event);" asp-for="WorkName" style="text-transform:uppercase" readonly />
+                        <span asp-validation-for="WorkName" class="text-danger"></span>
+                    </div>
+                </div>
+            }
+
+            <div class="form-grid">
+                <div class="form-group full-width">
+                    <label class="form-label" asp-for="ReportTitle">
+                        <i class="fas fa-user"></i>Rapor Başlığı
+                    </label>
+                    <input type="text" class="form-control" hx-on:focus="handleInputFocus(event);" hx-on:blur="handleInputBlur(event);" asp-for="ReportTitle" placeholder="Rapor başlığını giriniz" />
+                    <span asp-validation-for="ReportTitle" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group full-width">
+                <div class="form-group full-width">
+                    <label class="form-label" asp-for="ReportContent">
+                        <i class="fas fa-user"></i>Rapor İçeriği
+                    </label>
+                    <textarea class="form-control description" hx-on:focus="handleInputFocus(event);" hx-on:blur="handleInputBlur(event);" asp-for="ReportContent" style="resize:none" placeholder="Rapor içeriğini giriniz"></textarea>
+                    <span asp-validation-for="ReportContent" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="photo-upload-section">
+                <div class="photo-upload-title">
+                    <i class="fas fa-camera"></i>
+                    Fotoğraf Ekle
+                </div>
+
+                <div class="photo-upload-area" onclick="document.getElementById('photo-input').click()">
+                    <div class="upload-icon">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                    </div>
+                    <div class="upload-text">Fotoğrafları buraya sürükleyin veya tıklayın</div>
+                    <div class="upload-subtext">PNG, JPG, GIF formatları desteklenir (Maks. 5MB)</div>
+                    <input type="file" id="photo-input" class="photo-input" multiple accept="image/*">
+                </div>
+
+                <div class="photo-preview-section">
+                    <div class="photo-thumbnails" id="photo-thumbnails">
+                    </div>
+                </div>
+            </div>
+
+            <button class="form-submit-btn" id="submitBtn">
+                <i class="fas fa-user-plus"></i> Raporu Güncelle
+            </button>
+        </form>
+    </div>
+</div>
+
+<script>
+    window.updateWorkModel = {
+        workPhotos: @Html.Raw(Json.Serialize(Model?.ImageUrls ?? new List<string>())),
+        reportType: @Html.Raw(Json.Serialize(Model?.ReportType))
+    };
+</script>
+
+<script src="~/js/updatereport.js" asp-append-version="true"></script>

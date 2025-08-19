@@ -726,6 +726,12 @@
         box-shadow: 0 30px 80px rgba(0, 0, 0, 0.15);
     }
 
+    .stajyer-card.nohover:hover {
+        transform: none;
+        box-shadow: none;
+    }
+
+
 .card-item-header {
     background: linear-gradient(135deg, rgba(42, 155, 91, 0.05) 0%, rgba(83, 237, 114, 0.05) 100%);
     padding: 2.5rem 2rem 1.5rem;
@@ -743,26 +749,22 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: rgba(42, 155, 91, 1);
-    font-size: 2rem;
-    font-weight: 700;
     border: 4px solid rgba(42, 155, 91, 0.1);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
-    overflow: hidden;
+    margin-left: auto;
 }
 
-    .student-avatar-large::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(135deg, rgba(42, 155, 91, 0.2) 0%, rgba(83, 237, 114, 0.2) 100%);
-        opacity: 0;
-        transition: opacity 0.3s ease;
-    }
+.student-avatar-large::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
 
 .stajyer-card:hover .student-avatar-large::before {
     opacity: 1;
@@ -771,6 +773,46 @@
 .stajyer-card:hover .student-avatar-large {
     transform: scale(1.15);
     border-color: rgba(42, 155, 91, 0.3);
+}
+
+.profile-avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.profile-upload-btn {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    width: 30px;
+    height: 30px;
+    background: linear-gradient(135deg, #2a9b5b, #53ed72);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(42, 155, 91, 0.3);
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+    .profile-upload-btn:hover {
+        transform: scale(1.1);
+        box-shadow: 0 6px 20px rgba(42, 155, 91, 0.4);
+    }
+
+    .profile-upload-btn i {
+        color: white;
+        font-size: 18px;
+    }
+
+.profile-avatar-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
 }
 
 .card-progress .progress-circle {

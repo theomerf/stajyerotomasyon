@@ -1,0 +1,62 @@
+﻿@model AccountDto
+
+<div class="stajyer-card nohover" style="">
+    <div class="card-item-header">
+        <h3>Profil Bilgileri</h3>
+        <div class="student-avatar-large">
+            <div class="profile-avatar-container">
+                <img src="~/images/@(Model.ProfilePictureUrl ?? "profile_pictures/default.png")" alt="Profil Fotoğrafı" class="profile-avatar">
+                <span class="profile-upload-btn" onclick="document.getElementById('fileInput').click();">
+                    <i class="fas fa-camera"></i>
+                </span>
+                <input type="file"
+                       id="fileInput"
+                       name="file"
+                       class="hxform updateAvatarForm"
+                       style="display: none;"
+                       accept="image/*"
+                       hx-target="#userdetails"
+                       hx-post="/Account/UpdateAvatar"
+                       hx-trigger="input changed delay:500ms"
+                       hx-encoding="multipart/form-data" />
+            </div>
+        </div>
+    </div>
+
+    <div class="card-content">
+        <h3 class="mb-5">@String.Concat(Model.FirstName + " " + Model.LastName)</h3>
+
+        <div class="card-info">
+            <div class="info-item">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <span><strong style="color:forestgreen;">Kullanıcı No:</strong> @Model.UserName</span>
+            </div>
+
+            <div class="info-item">
+                <i class="fa-solid fa-envelope"></i>
+                <span><strong style="color:forestgreen;">E-Posta:</strong> @Model.Email</span>
+            </div>
+
+            <div class="info-item">
+                <i class="fa-solid fa-phone"></i>
+                <span><strong style="color:forestgreen;">Telefon No:</strong> @Model.PhoneNumber</span>
+            </div>
+
+            <div class="info-item">
+                <i class="fa-solid fa-cake-candles"></i>
+                <span><strong style="color:forestgreen;">Doğum Tarihi:</strong> @DateOnly.FromDateTime(Model.BirthDate ?? new DateTime())</span>
+            </div>
+
+
+            <div class="info-item">
+                <i class="fas fa-calendar"></i>
+                <span><strong style="color:forestgreen;">Son Giriş Tarihi:</strong> @DateOnly.FromDateTime(Model.LastLoginDate!.Value)</span>
+            </div>
+
+            <div class="info-item">
+                <i class="fas fa-calendar"></i>
+                <span><strong style="color:forestgreen;">Staj Başlangıç - Bitiş Tarihi:</strong> @($"{DateOnly.FromDateTime(Model.InternshipStartDate)} - {DateOnly.FromDateTime(Model.InternshipEndDate)}")</span>
+            </div>
+        </div>
+    </div>
+</div>

@@ -11,6 +11,8 @@ namespace Services.Contracts
         Task<WorkDtoForUpdate?> GetWorkForUpdateByIdAsync(int workId);
         Task<IEnumerable<WorkDto?>> GetAllWorksOfOneUserAsync(string userId);
         Task<WorkViewDto?> GetWorkByIdForViewOfOneUserAsync(int workId, string userId);
+        Task<IEnumerable<WorkDtoForReports?>> GetAllWorkNamesOfOneUserAsync(string userId);
+        Task<StatsDto> GetUserWorksStatsAsync(string userId);
         Task<WorkViewDto?> GetWorkByIdForViewAsync(int workId);
         Task<int> GetAllWorksCountAsync();
         Task<int> GetWorksCountAsync(WorkRequestParameters p);

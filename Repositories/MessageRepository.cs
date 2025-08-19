@@ -65,6 +65,21 @@ namespace Repositories
 
             return count;
         }
+        public async Task<Stats> GetUserMessagesStatsAsync(string userId)
+        {
+            var stats = await FindAllByCondition(w => w.Interns!.Any(i => i.Id == userId), false)
+                .GroupBy(_ => 1)
+                .Select(g => new Stats()
+                {
+                    Key = g.Key.ToString(),
+                    TotalCount = g.Count(),
+                    ThisMonthsCount = 0,
+                    LastMonthsCount = 0,
+                })
+                .FirstOrDefaultAsync();
+
+            return stats ?? new Stats();
+        }
 
         public async Task<Message?> GetMessageForUpdateByIdAsync(int workId)
         {

@@ -18,6 +18,7 @@ namespace Entities.Dtos
         public String? SectionName { get; init; }
         public String? Status { get; init; }
         public DateTime CreatedAt { get; init; } = DateTime.Now;
+        public String? AccountProfilePictureUrl { get; init; }
         public String? AccountFirstName { get; init; }
         public String? AccountLastName { get; init; }
         public String? WorkName{ get; init; }

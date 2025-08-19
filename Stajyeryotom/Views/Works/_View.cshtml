@@ -32,7 +32,7 @@
                 </div>
 
                 <div class="header-actions">
-                    <a href="/Works/Index" hx-get="/Works/Index" hx-target="#content" hx-push-url="true" class="back-btn">
+                    <a href="javascript:void(0)" onclick="history.back()" hx-target="#content" hx-push-url="true" class="back-btn">
                         <i class="fas fa-arrow-left"></i>Geri
                     </a>
                     <span class="applicationview-status-badge @statusClass" style="margin-right:-150px;">@status</span>
@@ -71,10 +71,13 @@
                     }
                     else
                     {
-                        <a href="/Reports/AddReport?workId=@(Model.WorkId)" hx-get="/Reports/AddReport?workId=@(Model.WorkId)" hx-target="#content" hx-push-url="true" class="application-btn btn-export-intern ms-1">
-                            <i class="fa-solid fa-file-pen"></i>
-                            Rapor Yaz
-                        </a>
+                        if (Model.WorkEndDate > DateTime.Now)
+                        {
+                            <a href="/Reports/AddReport?workId=@(Model.WorkId)" hx-get="/Reports/AddReport?workId=@(Model.WorkId)" hx-target="#content" hx-push-url="true" class="application-btn btn-export-intern ms-1">
+                                <i class="fa-solid fa-file-pen"></i>
+                                Rapor Yaz
+                            </a>
+                        }
                     }
 
                 </div>
@@ -193,10 +196,9 @@
                 <div class="card card-hover" style="min-height: 500px;">
                     <div class="card-header colored-header-row">
                         <p class="work-card-title">@report.ReportTitle</p>
-                        <p>@report.Status</p>
                     </div>
                     <div class="card-body">
-                        <div class="row">
+                        <div class="row" style="height:150px;">
                             <div class="col-12">
                                 <p class="work-content">
                                     @report.ReportContent
@@ -206,14 +208,14 @@
                         <div class="row mt-3">
                             <div class="col-8">
                                 <div class="work-images-section">
-                                    <p class="work-images-label">Görev görselleri:</p>
+                                    <p class="work-images-label" style="width:65%;">Rapor görselleri:</p>
 
                                     <div class="work-images">
                                         @foreach (var images in report.ImageUrls ?? new List<String>())
                                         {
 
                                             <div class="thumbnail-container">
-                                                <img src="/images/works/@images"
+                                                <img src="/images/reports/@images"
                                                      alt="Görev görseli"
                                                      class="image-thumbnail"
                                                      onclick="openModal(this.src)">
@@ -228,7 +230,7 @@
                             </div>
                             <div class="col-4">
                                 <div class="work-card-actions mt-5 justify-content-end">
-                                    <a href="/Reports/View/@(report.ReportId)" hx-get="/Reports/View/@(report.WorkId)" hx-target="#content" hx-push-url="true" class="btn-action btn-view ms-1" title="Görüntüle">
+                                    <a href="/Reports/View/@(report.ReportId)" hx-get="/Reports/View/@(report.ReportId)" hx-target="#content" hx-push-url="true" class="btn-action btn-view ms-1" title="Görüntüle">
                                         <i class="fas fa-eye"></i>
                                     </a>
                                     <form class="hxform" hx-post="/Reports/DeleteReport?reportId=@(report.ReportId)" hx-target="#content" hx-push-url="false">

@@ -72,9 +72,12 @@
                             }
                             else
                             {
-                                <a href="/Reports/AddReport?workId=@(work.WorkId)" title="Rapor Ekle" hx-get="/Reports/AddReport?workId=@(work.WorkId)" hx-target="#content" hx-push-url="true" class="btn-action edit ms-1">
-                                    <i class="fa-solid fa-file-pen"></i>
-                                </a>
+                                if (work.WorkEndDate > DateTime.Now)
+                                {
+                                    <a href="/Reports/AddReport?workId=@(work.WorkId)" title="Rapor Ekle" hx-get="/Reports/AddReport?workId=@(work.WorkId)" hx-target="#content" hx-push-url="true" class="btn-action edit ms-1">
+                                        <i class="fa-solid fa-file-pen"></i>
+                                    </a>
+                                }
                             }
                         </div>
                     </div>

@@ -4,6 +4,7 @@ using Entities.RequestParameters;
 using Microsoft.EntityFrameworkCore;
 using Repositories.Contracts;
 using Repositories.Extensions;
+using System.Globalization;
 
 namespace Repositories
 {
@@ -46,12 +47,29 @@ namespace Repositories
                     SectionName = r.Account.Section.SectionName,
                     CreatedAt = r.CreatedAt,
                     AccountFirstName = r.Account!.FirstName,
+                    AccountProfilePictureUrl = r.Account.ProfilePictureUrl,
                     AccountLastName = r.Account.LastName,
                     WorkName = r.Work != null ? r.Work.WorkName : ""
                 })
                 .ToListAsync();
 
             return reports;
+        }
+
+        public async Task<Stats> GetUserReportsStatsAsync(string userId)
+        {
+            var stats = await FindByCondition(r => r.AccountId == userId, false)
+                .GroupBy(_ => 1)
+                .Select(g => new Stats()
+                {
+                    Key = g.Key.ToString(),
+                    TotalCount = g.Count(),
+                    ThisMonthsCount = 0,
+                    LastMonthsCount = 0,
+                })
+                .FirstOrDefaultAsync();
+
+            return stats ?? new Stats();
         }
 
         public async Task<IEnumerable<Stats>> GetReportsStatusStatsAsync()
@@ -106,6 +124,7 @@ namespace Repositories
                     ReportTitle = r.ReportTitle,
                     Status = r.Status.ToString(),
                     CreatedAt = r.CreatedAt,
+                    AccountProfilePictureUrl = r.Account!.ProfilePictureUrl,
                     AccountFirstName = r.Account!.FirstName,
                     AccountLastName = r.Account.LastName,
                     WorkName = r.Work != null ? r.Work.WorkName : ""
@@ -175,6 +194,8 @@ namespace Repositories
         public async Task<Report?> GetReportByIdForUpdateAsync(int reportId)
         {
             var reports = await FindByCondition(r => r.ReportId == reportId, true)
+                .Include(r => r.Work)
+                .Include(r => r.Account)
                 .FirstOrDefaultAsync();
 
             return reports;
@@ -204,6 +225,38 @@ namespace Repositories
                 .FirstOrDefaultAsync();
 
             return reports;
+        }
+
+        public async Task<Dictionary<String, int>> GetDailyReportsCountOfOneUser(string userId)
+        {
+            var startOfMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            var now = DateTime.Now;
+
+            var rawData = await FindAll(false)
+                .Where(r => r.CreatedAt >= startOfMonth && r.CreatedAt <= now && r.AccountId == userId)
+                .GroupBy(u => new { u.CreatedAt.Year, u.CreatedAt.Month, u.CreatedAt.Day })
+                .Select(g => new
+                {
+                    Day = g.Key.Day,
+                    Count = g.Count()
+                })
+                .ToListAsync();
+
+            var culture = new CultureInfo("tr-TR");
+            var result = new Dictionary<String, int>();
+
+            for (int day = 1; day <= now.Day; day++)
+            {
+                int weekDay = ((day - 1) % 7) + 1;
+                DayOfWeek dayOfWeek = (DayOfWeek)((weekDay % 7));
+                string dayName = culture.DateTimeFormat.GetDayName(dayOfWeek);
+                string key = day.ToString("D2") + " " + dayName;
+                int count = rawData.FirstOrDefault(x => x.Day == day)?.Count ?? 0;
+                result[key] = count;
+            }
+
+
+            return result;
         }
 
         public void UpdateReport(Report report)

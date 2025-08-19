@@ -9,7 +9,7 @@ using System.Security.Claims;
 
 namespace Stajyeryotom.Controllers
 {
-    
+
     public class AccountController : Controller
     {
         private readonly UserManager<Account> _userManager;
@@ -120,7 +120,8 @@ namespace Stajyeryotom.Controllers
                 {
                     var errors = ModelState
                         .Where(x => x.Value?.Errors.Count > 0)
-                        .Select(x => new {
+                        .Select(x => new
+                        {
                             Key = x.Key,
                             Errors = x.Value?.Errors.Select(e => e.ErrorMessage).ToList()
                         })
@@ -170,6 +171,69 @@ namespace Stajyeryotom.Controllers
         public IActionResult AccessDenied()
         {
             return PartialView("_AccessDenied");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateAvatar(IFormFile? file = null)
+        {
+            if (file != null)
+            {
+                string? userName = User.FindFirstValue(ClaimTypes.Name);
+                var userDto = await _manager.AuthService.GetOneUserForUpdateAsync(userName);
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                if (userDto.ProfilePictureUrl != null)
+                {
+                    string oldPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", userDto.ProfilePictureUrl);
+                    if (System.IO.File.Exists(oldPath))
+                    {
+                        System.IO.File.Delete(oldPath);
+                    }
+                }
+
+                userDto.ProfilePictureUrl = $"profile_pictures/{userId}.png";
+
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/profile_pictures", $"{userId}.png");
+                using (var stream = new FileStream(path, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+                var result = await _manager.AuthService.UpdateAvatarAsync(userDto);
+                var html = await HttpContext.RenderViewComponentAsync("UserDetails");
+
+
+                if (result.Succeeded)
+                {
+                    return Json(new
+                    {
+                        success = true,
+                        message = "Profil fotoğrafı başarıyla güncellendi.",
+                        html = $"<div id='userdetails' hx-swap-oob='true'>{html}</div>",
+                        type = "success"
+                    });
+                }
+                else
+                {
+                    return Json(new
+                    {
+                        success = false,
+                        message = "Hatalı işlem.",
+                        loadComponent = "Home",
+                        type = "error"
+                    });
+                }
+
+            }
+            else
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = "Hatalı işlem.",
+                    loadComponent = "Home",
+                    type = "error"
+                });
+            }
         }
     }
 }

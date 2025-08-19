@@ -87,6 +87,14 @@ namespace Services
             return result;
         }
 
+        public async Task<StatsDto> GetUserWorksStatsAsync(string userId)
+        {
+            var stats = await _manager.Work.GetUserWorksStatsAsync(userId);
+            var statsDto = _mapper.Map<StatsDto>(stats);
+
+            return statsDto;
+        }
+
         public async Task<WorkViewDto?> GetWorkByIdForViewOfOneUserAsync(int workId, string userId) 
         {
             var work = await _manager.Work.GetWorkByIdForViewOfOneUserAsync(workId, userId);
@@ -147,6 +155,13 @@ namespace Services
             var worksDto = _mapper.Map<IEnumerable<WorkDto>>(works);
 
             return worksDto;
+        }
+
+        public async Task<IEnumerable<WorkDtoForReports?>> GetAllWorkNamesOfOneUserAsync(string userId)
+        {
+            var works = await _manager.Work.GetAllWorkNamesOfOneUserAsync(userId);
+
+            return works;
         }
 
         public async Task<WorkDto?> GetWorkByIdAsync(int workId)

@@ -153,6 +153,5 @@ window.loadHistogram = function () {
     });
 }
 
-
 window.loadCharts();
 window.loadHistogram();

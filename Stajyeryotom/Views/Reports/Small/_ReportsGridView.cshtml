@@ -7,7 +7,7 @@
             <div class="stajyer-card">
                 <div class="card-item-header">
                     <div class="student-avatar-large">
-                        <i class="fas fa-user"></i>
+                        <img src="~/images/@(report.AccountProfilePictureUrl ?? "profile_pictures/default.png")" alt="Profil Fotoğrafı" class="profile-avatar">
                     </div>
                 </div>
 
@@ -59,10 +59,13 @@
                         <i class="fas fa-eye"></i>
                         Görüntüle
                     </a>
-                    <a href="/Reports/UpdateReport/@(report.ReportId)" hx-get="/Reports/UpdateReport/@(report.ReportId)" hx-target="#content" hx-push-url="true" class="btn-action edit px-2" title="Düzenle">
-                        <i class="fas fa-edit"></i>
-                        Düzenle
-                    </a>
+                    @if (User.IsInRole("Stajyer") && report.Status == ReportStatus.NotRead.ToString())
+                    {
+                        <a href="/Reports/UpdateReport?reportId=@(report.ReportId)" hx-get="/Reports/UpdateReport?reportId=@(report.ReportId)" hx-target="#content" hx-push-url="true" class="btn-action edit px-2" title="Düzenle">
+                            <i class="fas fa-edit"></i>
+                            Düzenle
+                        </a>
+                    }
                     <form asp-action="DeleteReport" asp-route-reportId="@report.ReportId" class="hxform" hx-post="/Reports/DeleteReport?reportId=@(report.ReportId)" hx-target="#content" hx-push-url="true">
                         <button type="submit" class="btn-action delete">
                             <i class="fas fa-trash"></i>Sil

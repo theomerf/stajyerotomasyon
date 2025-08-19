@@ -35,7 +35,7 @@ namespace Entities.Dtos
         public DateTime InternshipEndDate { get; init; } = new DateTime(DateTime.Now.Year, 1, 1);
         public bool EmailConfirmed { get; init; } = true;
         public DateTime? BirthDate { get; init; }
-        public String? ProfilePictureUrl { get; init; }
+        public String? ProfilePictureUrl { get; set; }
 
         [Required(ErrorMessage = "Bölüm seçimi gerekli.")]
         public int? SectionId { get; init; }

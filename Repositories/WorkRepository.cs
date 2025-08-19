@@ -64,6 +64,22 @@ namespace Repositories
             return count;
         }
 
+        public async Task<Stats> GetUserWorksStatsAsync(string userId)
+        {
+            var stats = await FindAllByCondition(w => w.Interns!.Any(i => i.Id == userId) && w.Status == WorkStatus.Active, false)
+                .GroupBy(_ => 1)
+                .Select(g => new Stats()
+                {
+                    Key = g.Key.ToString(),
+                    TotalCount = g.Count(),
+                    ThisMonthsCount = 0,
+                    LastMonthsCount = 0,
+                })
+                .FirstOrDefaultAsync();
+
+            return stats ?? new Stats();
+        }
+
         public async Task<int> GetAllWorksCountOfOneUserAsync(string userId)
         {
             var count = await FindAllByCondition(w => w.Interns!.Any(i => i.Id == userId), false)
@@ -90,6 +106,24 @@ namespace Repositories
                      InternsCount = w.Interns!.Count(),
                      ReportsCount = w.Reports!.Count(),
                      Status = w.Status.ToString(),
+                })
+                .ToListAsync();
+
+            return works;
+        }
+
+        public async Task<IEnumerable<WorkDtoForReports?>> GetAllWorkNamesOfOneUserAsync(string userId)
+        {
+            var works = await FindAllByCondition(w => w.Interns!.Any(i => i.Id == userId), false)
+                .Include(w => w.TaskMaster!)
+                .Include(w => w.Reports)
+                .Include(w => w.Interns!)
+                .Select(w => new WorkDtoForReports()
+                {
+                    WorkId = w.WorkId,
+                    WorkName = w.WorkName,
+                    WorkStartDate = w.WorkStartDate!.Value,
+                    WorkEndDate = w.WorkEndDate!.Value,
                 })
                 .ToListAsync();
 

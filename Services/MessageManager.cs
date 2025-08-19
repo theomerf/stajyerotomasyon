@@ -102,6 +102,13 @@ namespace Services
 
             return message;
         }
+        public async Task<StatsDto> GetUserMessagesStatsAsync(string userId)
+        {
+            var stats = await _manager.Message.GetUserMessagesStatsAsync(userId);
+            var statsDto = _mapper.Map<StatsDto>(stats);
+
+            return statsDto;
+        }
 
         public async Task<IEnumerable<MessageDto>> GetAllMessagesAsync()
         {

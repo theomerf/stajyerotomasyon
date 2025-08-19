@@ -75,7 +75,7 @@
             <div class="reports-table-row">
                 <div class="cell student-info">
                     <div class="student-avatar">
-                        <i class="fas fa-user"></i>
+                        <img src="~/images/@(report.AccountProfilePictureUrl ?? "profile_pictures/default.png")" alt="Profil Fotoğrafı" class="profile-avatar">
                     </div>
                     <div class="student-details">
                         <h4>@String.Concat(report.AccountFirstName + " " + report.AccountLastName)</h4>
@@ -84,7 +84,7 @@
                 <div class="cell">
                     <div class="department-info">
                         <strong>@report.ReportTitle</strong>
-                        <span>@(report.WorkName == "" ? "Günlük Rapor" : "")</span>
+                        <span>@(report.WorkName == "" ? "Günlük Rapor" : report.WorkName)</span>
                     </div>
                 </div>
                 <div class="cell">
@@ -119,9 +119,9 @@
                         <a href="/Reports/View/@(report.ReportId)" hx-get="/Reports/View/@(report.ReportId)" hx-target="#content" hx-push-url="true" class="btn-action btn-view" title="Görüntüle">
                             <i class="fas fa-eye"></i>
                         </a>
-                        @if (User.IsInRole("Stajyer"))
+                        @if (User.IsInRole("Stajyer") && report.Status == ReportStatus.NotRead.ToString())
                         {
-                            <a href="/Reports/UpdateReport/@(report.ReportId)" hx-get="/Reports/UpdateReport/@(report.ReportId)" hx-target="#content" hx-push-url="true" class="btn-action edit" title="Düzenle">
+                            <a href="/Reports/UpdateReport?reportId=@(report.ReportId)" hx-get="/Reports/UpdateReport?reportId=@(report.ReportId)" hx-target="#content" hx-push-url="true" class="btn-action edit" title="Düzenle">
                                 <i class="fas fa-edit"></i>
                             </a>
                         }

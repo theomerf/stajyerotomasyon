@@ -13,8 +13,9 @@ namespace Entities.Dtos
         [DataType(DataType.Text)]
         [Required(ErrorMessage = "Rapor içeriği gerekli.")]
         public String? ReportContent { get; init; }
-        public List<String>? ImageUrls { get; init; }
-        public Account? Account { get; set; }
+        public List<String>? ImageUrls { get; set; }
+        public ReportType ReportType { get; set; }
+        public Account? Account { get; init; }
         public String? AccountId { get; set; }
         public Work? Work { get; set; }
         public int? WorkId { get; set; }

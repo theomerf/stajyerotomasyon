@@ -543,10 +543,6 @@ window.updateWorkFormSubmitHandler = function (event) {
         });
     }
 
-    for (let [key, value] of event.detail.parameters.entries()) {
-        console.log(key, value);
-    }
-
     const submitBtn = document.getElementById('submitBtn');
     if (submitBtn) {
         submitBtn.classList.add('loading');

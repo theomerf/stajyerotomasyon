@@ -1,11 +1,14 @@
 ﻿using Entities.Dtos;
+using Entities.Models;
 using Entities.RequestParameters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.Contracts;
 using Stajyeryotom.Infrastructure.Extensions;
 using Stajyeryotom.Models;
+using System;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Stajyeryotom.Controllers
@@ -20,7 +23,7 @@ namespace Stajyeryotom.Controllers
             _manager = manager;
         }
 
-        public async Task<IActionResult> Index([FromQuery]ReportRequestParameters query)
+        public async Task<IActionResult> Index([FromQuery] ReportRequestParameters query)
         {
             var cookiePageSize = int.Parse(Request.Cookies["PageSize"] ?? "6");
             query.PageSize = cookiePageSize;
@@ -71,7 +74,7 @@ namespace Stajyeryotom.Controllers
 
         }
 
-        public async Task<IActionResult> View([FromRoute(Name = "id")]int id)
+        public async Task<IActionResult> View([FromRoute(Name = "id")] int id)
         {
             var model = await _manager.ReportService.GetReportByIdForViewAsync(id);
 
@@ -127,19 +130,133 @@ namespace Stajyeryotom.Controllers
 
         }
 
-        public async Task<IActionResult> AddReport([FromQuery] int? workId = null)
+        public async Task<IActionResult> AddReport([FromQuery] int? workId)
         {
-            if (workId != null) 
-            {
-                var report = await _manager.WorkService.GetWorkByIdAsync(workId.Value);
-            }
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var workNames = await _manager.WorkService.GetAllWorkNamesOfOneUserAsync(userId!);
+            ViewBag.WorkNames = workNames;
 
-            return PartialView("_AddReport");
+            if (workId != null)
+            {
+                if(workNames.Where(w => w!.WorkId == workId).Select(w => w!.WorkEndDate).FirstOrDefault() > DateTime.Now)
+                {
+                    var model = new ReportDtoForCreation()
+                    {
+                        WorkId = workId,
+                        WorkName = workNames.Where(w => w!.WorkId == workId).Select(w => w!.WorkName).FirstOrDefault(),
+                    };
+
+
+                    return PartialView("_AddReport", model);
+                }
+                else
+                {
+                    return Forbid();
+                }
+
+            }
+            else
+            {
+                var model = new ReportDtoForCreation();
+                return PartialView("_AddReport", model);
+            }
         }
 
-        public async Task<IActionResult> UpdateReport([FromRoute] int reportId)
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public async Task<IActionResult> AddReport([FromForm] ReportDtoForCreation reportDto, [FromForm] List<IFormFile>? files = null)
         {
-            return PartialView("_UpdateReport");
+            if (reportDto.ImageUrls == null)
+            {
+                reportDto.ImageUrls = new List<string>();
+            }
+
+            if (files != null)
+            {
+                foreach (var file in files)
+                {
+                    string fileName = $"{Guid.NewGuid().ToString()}.png";
+                    string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/reports", fileName);
+
+                    using (var stream = new FileStream(path, FileMode.Create))
+                    {
+                        await file.CopyToAsync(stream);
+                    }
+
+                    reportDto.ImageUrls.Add(fileName);
+                }
+            }
+
+            reportDto.AccountId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var result = await _manager.ReportService.CreateReportAsync(reportDto);
+
+            return Json(new
+            {
+                success = result.Success,
+                type = result.ResultType,
+                loadComponent = result.LoadComponent,
+                message = result.Message,
+            });
+        }
+
+        public async Task<IActionResult> UpdateReport([FromQuery] int reportId)
+        {
+            var model = await _manager.ReportService.GetReportByIdForUpdateAsync(reportId);
+            if(model?.Status == ReportStatus.NotRead.ToString())
+            {
+                return PartialView("_UpdateReport", model);
+            }
+            else
+            {
+                return Forbid();
+            }
+        }
+
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public async Task<IActionResult> UpdateReport(ReportDtoForUpdate reportDto, [FromForm] List<IFormFile>? files = null)
+        {
+            if (reportDto.ImageUrls == null)
+            {
+                reportDto.ImageUrls = new List<string>();
+            }
+
+            if (files != null)
+            {
+                foreach (var file in files)
+                {
+                    string fileName = $"{Guid.NewGuid()}.png";
+                    string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/reports", fileName);
+                    using (var stream = new FileStream(path, FileMode.Create))
+                    {
+                        await file.CopyToAsync(stream);
+                    }
+                    reportDto.ImageUrls?.Add(fileName);
+                }
+            }
+
+            if (reportDto.PhotosToDelete != null)
+            {
+                foreach (var fileName in reportDto.PhotosToDelete)
+                {
+                    string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/reports", fileName);
+                    if (System.IO.File.Exists(path))
+                    {
+                        System.IO.File.Delete(path);
+                    }
+                }
+                reportDto.ImageUrls = reportDto.ImageUrls?.Where(x => reportDto.PhotosToDelete.Contains(x) == false).ToList();
+            }
+
+            reportDto.AccountId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var result = await _manager.ReportService.UpdateReportAsync(reportDto);
+            return Json(new
+            {
+                success = result.Success,
+                type = result.ResultType,
+                loadComponent = result.LoadComponent,
+                message = result.Message,
+            });
         }
     }
 }

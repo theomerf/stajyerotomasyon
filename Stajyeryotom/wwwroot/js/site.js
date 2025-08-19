@@ -22,7 +22,7 @@ window.reloadSidebar = function () {
 
 window.toastInstance = null;
 
-window.showToast = function(message, type) {
+window.showToast = function (message, type) {
     if (toastInstance) {
         toastInstance.hide();
     }
@@ -84,168 +84,188 @@ window.toggleHeaderCollapse = function (event) {
     }
 }
 
-// Form dönüşü içerik ve toast yükleme işlevi
+if (!window.htmxListenersAdded) {
 
-document.body.addEventListener('htmx:configRequest', function (evt) {
-    const triggeredElement = evt.detail.elt;
-    if (triggeredElement && triggeredElement.classList.contains("hxform")) {
-        evt.detail.headers['Form-Send'] = 'true';
-    }
-    if (triggeredElement && triggeredElement.classList.contains("date-send")) {
-        evt.detail.headers['Date-Send'] = 'true';
-    }
-    if (triggeredElement && triggeredElement.classList.contains("pagination-send")) {
-        evt.detail.headers['Pagination-Send'] = 'true';
-    }
-    if (triggeredElement && triggeredElement.classList.contains("workUpdateForm")) {
-        window.updateWorkFormSubmitHandler(evt);
-    }
-    if (triggeredElement && triggeredElement.classList.contains("workAddForm")) {
-        window.addWorkFormSubmitHandler(evt);
-    }
-    if (triggeredElement && triggeredElement.classList.contains("messageAddForm")) {
-        window.addMessageFormSubmitHandler(evt);
-    }
-    if (triggeredElement && triggeredElement.classList.contains("messageUpdateForm")) {
-        window.updateMessageFormSubmitHandler(evt);
-    }
-});
+    // Form dönüşü içerik ve toast yükleme işlevi
 
-document.body.addEventListener("htmx:afterRequest", function (event) {
-    if (event.detail.requestConfig.headers["Form-Send"] == "true") {
-        const xhr = event.detail.xhr;
+    document.body.addEventListener('htmx:configRequest', function (evt) {
+        if (!window.eventTriggered) {
+            const triggeredElement = evt.detail.elt;
+            if (triggeredElement && triggeredElement.classList.contains("hxform")) {
+                evt.detail.headers['Form-Send'] = 'true';
+            }
+            if (triggeredElement && triggeredElement.classList.contains("date-send")) {
+                evt.detail.headers['Date-Send'] = 'true';
+            }
+            if (triggeredElement && triggeredElement.classList.contains("pagination-send")) {
+                evt.detail.headers['Pagination-Send'] = 'true';
+            }
+            if (triggeredElement && triggeredElement.classList.contains("workUpdateForm")) {
+                window.updateWorkFormSubmitHandler(evt);
+            }
+            if (triggeredElement && triggeredElement.classList.contains("workAddForm")) {
+                window.addWorkFormSubmitHandler(evt);
+            }
+            if (triggeredElement && triggeredElement.classList.contains("messageAddForm")) {
+                window.addMessageFormSubmitHandler(evt);
+            }
+            if (triggeredElement && triggeredElement.classList.contains("messageUpdateForm")) {
+                window.updateMessageFormSubmitHandler(evt);
+            }
+            if (triggeredElement && triggeredElement.classList.contains("addReportForm")) {
+                window.addReportFormSubmitHandler(evt);
+            }
+            if (triggeredElement && triggeredElement.classList.contains("updateReportForm")) {
+                window.updateReportFormSubmitHandler(evt);
+            }
+        }
+    });
 
-        if (xhr.getResponseHeader("content-type")?.includes("application/json")) {
-            const response = JSON.parse(xhr.responseText);
 
-            if (response.success && response.html) {
-                const tempDiv = document.createElement("div");
-                tempDiv.innerHTML = response.html;
+    document.body.addEventListener("htmx:afterRequest", function (event) {
+        if (event.detail.requestConfig.headers["Form-Send"] == "true") {
+            const xhr = event.detail.xhr;
 
-                const oobContent = tempDiv.querySelector("[hx-swap-oob]");
-                if (oobContent) {
-                    const targetId = oobContent.id;
-                    const target = document.getElementById(targetId);
-                    if (target) {
-                        target.innerHTML = oobContent.innerHTML;
-                        htmx.process(target);
-                        $.validator.unobtrusive.parse(".validation");
+            if (xhr.getResponseHeader("content-type")?.includes("application/json")) {
+                const response = JSON.parse(xhr.responseText);
+
+                if (response.success && response.html) {
+                    const tempDiv = document.createElement("div");
+                    tempDiv.innerHTML = response.html;
+
+                    const oobContent = tempDiv.querySelector("[hx-swap-oob]");
+                    if (oobContent) {
+                        const targetId = oobContent.id;
+                        const target = document.getElementById(targetId);
+                        if (target) {
+                            target.innerHTML = oobContent.innerHTML;
+                            htmx.process(target);
+                            $.validator.unobtrusive.parse(".validation");
+                        }
                     }
-                }
-                reloadSidebar();
-                window.toastInstance = null;
-                showToast(response.message, response.type);
-                if (event.detail.requestConfig.headers["Date-Send"] == "true") {
+                    reloadSidebar();
+                    window.toastInstance = null;
+                    showToast(response.message, response.type);
+                    if (event.detail.requestConfig.headers["Date-Send"] == "true") {
+                        window.eventTriggered = false;
+                        return;
+                    }
+                    else {
+                        window.scrollBy({ top: -100, behavior: 'smooth' })
+                    }
+
+                    window.eventTriggered = false;
                     return;
                 }
-                else {
-                    window.scrollBy({ top: -100, behavior: 'smooth' })
+                else if (response.success) {
+                    if (response.message) {
+                        window.toastInstance = null;
+                        showToast(response.message, "success");
+                    }
+                    if (response.loadComponent) {
+                        document.querySelector(`.sidebar-nav-item[data-target='${response.loadComponent}'] a`)?.click();
+                        if (event.detail.requestConfig.headers["Note-Send"] != "true") {
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }
+                    }
+                    reloadSidebar();
+                    window.eventTriggered = false;
+                    return;
                 }
+                else if (response.html) {
+                    const tempDiv = document.createElement("div");
+                    tempDiv.innerHTML = response.html;
 
-                return;
-            }
-            else if (response.success) {
-                if (response.message) {
+                    const oobContent = tempDiv.querySelector("[hx-swap-oob]");
+                    if (oobContent) {
+                        const targetId = oobContent.id;
+                        const target = document.getElementById(targetId);
+                        if (target) {
+                            target.innerHTML = oobContent.innerHTML;
+                            htmx.process(target);
+                            $.validator.unobtrusive.parse(".validation");
+                        }
+                    }
                     window.toastInstance = null;
-                    showToast(response.message, "success");
+                    window.scrollTo({ top: 0, behavior: 'smooth' })
+                    setTimeout(showToast(response.message, response.type || "danger"), 100);
+                    window.eventTriggered = false;
+                    return;
                 }
-                if (response.loadComponent) {
-                    document.querySelector(`.sidebar-nav-item[data-target='${response.loadComponent}'] a`)?.click();
-                    if (event.detail.requestConfig.headers["Note-Send"] != "true") {
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }
-                }
-                reloadSidebar();
-                return;
+
+
             }
-            else if (response.html) {
-                const tempDiv = document.createElement("div");
-                tempDiv.innerHTML = response.html;
-
-                const oobContent = tempDiv.querySelector("[hx-swap-oob]");
-                if (oobContent) {
-                    const targetId = oobContent.id;
-                    const target = document.getElementById(targetId);
-                    if (target) {
-                        target.innerHTML = oobContent.innerHTML;
-                        htmx.process(target);
-                        $.validator.unobtrusive.parse(".validation");
-                    }
-                }
-                window.toastInstance = null;
-                window.scrollTo({ top: 0, behavior: 'smooth' })
-                setTimeout(showToast(response.message, response.type || "danger"), 100);
-                return;
-            }
-
-
         }
-    }
-    else if (event.detail.requestConfig.headers["Pagination-Send"] == "true") {
-        document.querySelector('.scroll-target')?.scrollIntoView({
-            behavior: 'smooth',
-            block: 'center'
+        else if (event.detail.requestConfig.headers["Pagination-Send"] == "true") {
+            document.querySelector('.scroll-target')?.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+            });
+            window.eventTriggered = false;
+            return;
+        }
+        else if (event.detail.requestConfig.headers["Filter-Send"] != "true" && event.detail.requestConfig.headers["Date-Send"] != "true") {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            window.eventTriggered = false;
+            return;
+        }
+    });
+
+    // Ajax ile uyumlu jquery script çalıştırma işlevi ve sidebar aktif element işlevi
+
+    document.body.addEventListener("htmx:afterSwap", function (event) {
+        const $scripts = $(event.target).find('script');
+
+        const path = window.location.pathname;
+        let firstSegment = path.split('/')[1];
+
+        const roleMeta = document.querySelector('meta[name="user-role"]');
+        const role = roleMeta ? roleMeta.getAttribute('content') : null;
+
+        if (firstSegment === "Home") {
+            firstSegment = role === "Admin" ? "HomeAdmin" : "Home";
+        }
+
+        const sidebarItems = document.querySelectorAll('.sidebar-nav-item');
+
+        sidebarItems.forEach(item => {
+            if (item.dataset.target === firstSegment) {
+                item.classList.add('active');
+            } else {
+                item.classList.remove('active');
+            }
         });
-    }
-    else if (event.detail.requestConfig.headers["Filter-Send"] != "true" && event.detail.requestConfig.headers["Date-Send"] != "true") {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        return;
-    }
-});
+        $scripts.each(function () {
+            $.globalEval(this.innerText || this.textContent || '');
+        });
+    });
 
-// Ajax ile uyumlu jquery script çalıştırma işlevi ve sidebar aktif element işlevi
+    // İlk Sayfa açılışında AdminHome ve Home yönlendirmesi
 
-document.body.addEventListener("htmx:afterSwap", function (event) {
-    const $scripts = $(event.target).find('script');
+    document.addEventListener("DOMContentLoaded", function () {
+        const path = window.location.pathname;
+        let firstSegment = path.split('/')[1];
 
-    const path = window.location.pathname;
-    let firstSegment = path.split('/')[1];
+        const roleMeta = document.querySelector('meta[name="user-role"]');
+        const role = roleMeta ? roleMeta.getAttribute('content') : null;
 
-    const roleMeta = document.querySelector('meta[name="user-role"]');
-    const role = roleMeta ? roleMeta.getAttribute('content') : null;
-
-    if (firstSegment === "Home") {
-        firstSegment = role === "Admin" ? "HomeAdmin" : "Home";
-    }
-
-    const sidebarItems = document.querySelectorAll('.sidebar-nav-item');
-
-    sidebarItems.forEach(item => {
-        if (item.dataset.target === firstSegment) {
-            item.classList.add('active');
-        } else {
-            item.classList.remove('active');
+        if (firstSegment === "Home") {
+            firstSegment = role === "Admin" ? "HomeAdmin" : "Home";
         }
+
+        const sidebarItems = document.querySelectorAll('.sidebar-nav-item');
+
+        sidebarItems.forEach(item => {
+            if (item.dataset.target === firstSegment) {
+                item.classList.add('active');
+            } else {
+                item.classList.remove('active');
+            }
+        });
     });
-    $scripts.each(function () {
-        $.globalEval(this.innerText || this.textContent || '');
-    });
-});
 
-
-// İlk Sayfa açılışında AdminHome ve Home yönlendirmesi
-
-document.addEventListener("DOMContentLoaded", function () {
-    const path = window.location.pathname;
-    let firstSegment = path.split('/')[1];
-
-    const roleMeta = document.querySelector('meta[name="user-role"]');
-    const role = roleMeta ? roleMeta.getAttribute('content') : null;
-
-    if (firstSegment === "Home") {
-        firstSegment = role === "Admin" ? "HomeAdmin" : "Home";
-    }
-
-    const sidebarItems = document.querySelectorAll('.sidebar-nav-item');
-
-    sidebarItems.forEach(item => {
-        if (item.dataset.target === firstSegment) {
-            item.classList.add('active');
-        } else {
-            item.classList.remove('active');
-        }
-    });
-});
+    window.htmxListenersAdded = true;
+}
 
 // Genel form focus style işlemleri
 
@@ -262,8 +282,71 @@ window.handleInputBlur = function (event) {
     if (label) label.style.color = '#2a4d3a';
 }
 
+// Modal açma ve kapama işlemleri
+function openModal(imageSrc) {
+    const modal = document.getElementById('imageModal');
+    const modalImage = document.getElementById('modalImage');
+
+    modalImage.src = imageSrc;
+    modal.style.display = 'block';
+
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
+            closeModal();
+        }
+    });
+}
+
+function closeModal() {
+    const modal = document.getElementById('imageModal');
+    modal.style.display = 'none';
+
+    document.removeEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
+            closeModal();
+        }
+    });
+}
+
+window.initNavbarScripts = function () {
+    const userDropdownToggle = document.querySelector(".user-dropdown .dropdown-toggle");
+
+    window.dropdownClick = function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const toggle = e.currentTarget;
+        const dropdownMenu = toggle.nextElementSibling;
+
+        if (!dropdownMenu) return;
+
+        document.querySelectorAll('.user-dropdown .dropdown-menu.show').forEach(menu => {
+            if (menu !== dropdownMenu) menu.classList.remove('show');
+        });
+
+        dropdownMenu.classList.toggle('show');
+    };
+
+    document.addEventListener('click', function (e) {
+        document.querySelectorAll('.user-dropdown .dropdown-menu.show').forEach(menu => {
+            if (!menu.parentElement.contains(e.target)) {
+                menu.classList.remove('show');
+            }
+        });
+    });
+
+    window.hideDropdown = function () {
+        const userDropdownMenu = document.querySelector(".dropdown-menu");
+        if (userDropdownMenu) {
+            userDropdownMenu.classList.remove('show');
+        }
+    }
+
+}
+
+window.initNavbarScripts();
 
 
 
 
-            
+

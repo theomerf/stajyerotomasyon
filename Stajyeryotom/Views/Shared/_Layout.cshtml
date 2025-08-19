@@ -33,7 +33,7 @@
     <div class="container-fluid p-0">
         <main role="main" class="flex-grow-1" id="main-content">
             <div class="wrapper" id="wrapper">
-                <div class="navbar">
+                <div class="navbar" id="navbar">
                     <partial name="_Navbar"></partial>
                 </div>
 
@@ -41,8 +41,7 @@
                     <div class="sidebar" id="sidebar">
                         @await Html.PartialAsync("_Sidebar");
                     </div>
-                    <div class="content" id="content">
-                        <script asp-append-version="true" src="~/js/site.js"></script>
+                    <div class="content" id="content" hx-history-elt>
                         @RenderBody()
                     </div>
                 </div>
@@ -59,11 +58,16 @@
         </main>
     </div>
 
+    <div id="imageModal" class="image-modal" onclick="closeModal()">
+        <span class="close-modal" onclick="closeModal()">&times;</span>
+        <img id="modalImage" class="modal-content-img" src="" alt="Büyük görsel">
+    </div>
+
 
     <footer class="mt-auto">
         <partial name="_Footer" />
     </footer>
-
+    <script asp-append-version="true" src="~/js/site.js"></script>
     <script asp-append-version="true" src="~/lib/jquery/jquery.min.js"></script>
     <script asp-append-version="true" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script asp-append-version="true" src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>

@@ -1,4 +1,4 @@
-﻿<nav class="navbar navbar-expand-lg navbar-dark custom-navbar shadow-sm sticky-top" hx-on::load="initNavbarScripts();">
+﻿<nav class="navbar navbar-expand-lg navbar-dark custom-navbar shadow-sm sticky-top">
     <div class="container-fluid">
         <a class="ps-4 navbar-brand ajax-link fw-bold text-white d-flex align-items-center" asp-action="Index">
             <div class="brand-logo">
@@ -19,28 +19,32 @@
 
             <div class="nav-item">
                 <div class="dropdown user-dropdown">
-                    <a class="nav-link dropdown-toggle text-white fw-semibold d-flex align-items-center" id="navbarDropdown"
-                       role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle text-white fw-semibold d-flex align-items-center"
+                       id="navbarDropdown"
+                       role="button"
+                       aria-expanded="false"
+                       hx-on:click="dropdownClick(event);">
                         <div class="avatar-wrapper mx-2">
-                            <img src="/images/profile_pictures/default.png"
+                            <img src="/images/@await Component.InvokeAsync("NavbarAvatar")"
                                  alt="Avatar" class="rounded-circle" width="32" height="32">
                         </div>
                         <span class="d-none d-lg-inline">@User?.FindFirst("FullName")?.Value</span>
                     </a>
+
                     <div class="dropdown-menu user-dropdown-menu" aria-labelledby="navbarDropdown">
                         <div class="user-info p-3 text-center">
                             <div class="avatar-lg mx-auto mb-3">
-                                <img src="/images/profile_pictures/default.png" alt="Avatar" class="rounded-circle img-thumbnail">
+                                <img src="/images/@await Component.InvokeAsync("NavbarAvatar")" alt="Avatar" class="rounded-circle img-thumbnail">
                             </div>
                             <h6 class="mb-0">Kullanıcı No: @User?.Identity?.Name</h6>
                             <small class="text-muted">@(User!.IsInRole("Admin") ? "Admin" : "Stajyer")</small>
                         </div>
                         <div class="dropdown-divider"></div>
                         <div class="dropdown-items-wrapper">
-                            <a asp-controller="Account" asp-action="Profile" class="ajax-link dropdown-item">
+                            <a href="/Home/Index" class="dropdown-item" hx-on:click="hideDropdown();" hx-get="/Home/Index" hx-target="#indexSection" hx-push-url="true">
                                 <i class="fa-solid fa-user me-2"></i> Profilim
                             </a>
-                            <a href="/Settings/Index" class="dropdown-item" hx-get="/Settings/Index" hx-target="#content" hx-push-url="true">
+                            <a href="/Settings/Index" class="dropdown-item" hx-on:click="hideDropdown();" hx-get="/Settings/Index" hx-target="#content" hx-push-url="true">
                                 <i class="fa-solid fa-gear me-2"></i> Ayarlar
                             </a>
                             <div class="dropdown-divider"></div>
@@ -60,5 +64,3 @@
         </div>
     </div>
 </nav>
-
-<script src="~/js/navbar.js" asp-append-version="true"></script>

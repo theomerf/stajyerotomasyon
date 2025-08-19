@@ -14,6 +14,7 @@ namespace Services.Contracts
         Task<string> GetAllMessagesCountAsync();
         Task<MessageDto?> GetMessageByIdAsync(int messageId);
         Task<string> GetAllMessagesCountForOneUserAsync(string userId);
+        Task<StatsDto> GetUserMessagesStatsAsync(string userId);
         Task<IEnumerable<MessageDto>> GetAllMessagesForOneUserAsync(string userId);
         Task<MessageDtoForUpdate?> GetMessageForUpdateByIdAsync(int messageId);
         Task<ResultDto> CreateMessageAsync(MessageDtoForCreation messageDto);

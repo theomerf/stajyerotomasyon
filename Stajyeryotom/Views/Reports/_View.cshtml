@@ -33,7 +33,7 @@
                 </div>
 
                 <div class="header-actions">
-                    <a href="/Reports/Index" hx-get="/Reports/Index" hx-target="#content" hx-push-url="true" class="back-btn">
+                    <a href="javascript:void(0)" onclick="history.back()" hx-target="#content" hx-push-url="true" class="back-btn">
                         <i class="fas fa-arrow-left"></i>Geri
                     </a>
                     <span class="applicationview-status-badge @statusClass" style="margin-right:-150px;">@status</span>
@@ -63,7 +63,7 @@
                         {
                             @if(Model.Status == ReportStatus.NotRead.ToString())
                             {
-                                <a href="/Reports/UpdateReport/@(Model.ReportId)" hx-get="/Reports/UpdateReport/@(Model.ReportId)" hx-target="#content" hx-push-url="true" class="application-btn btn-approve">
+                                <a href="/Reports/UpdateReport/@(Model.ReportId)" hx-get="/Reports/UpdateReport?reportId=@(Model.ReportId)" hx-target="#content" hx-push-url="true" class="application-btn btn-approve">
                                     <i class="fas fa-edit"></i>
                                     Düzenle
                                 </a>
@@ -96,7 +96,7 @@
     <div class="mb-4">
         <div class="card" style="height:500px;">
             <div class="card-header colored-header">
-                <h3><i class="fa-solid fa-image" style="color: #ffffff;"></i> Ödev Görselleri (@Model.ImageUrls?.Count)</h3>
+                <h3><i class="fa-solid fa-image" style="color: #ffffff;"></i> Rapor Görselleri (@Model.ImageUrls?.Count)</h3>
             </div>
             <div class="cv-viewer">
                 <div id="workImageSlider" class="carousel slide" data-bs-ride="carousel">
@@ -105,7 +105,7 @@
                         {
                             var img = Model.ImageUrls[i];
                             <div class="carousel-item @(i == 0 ? "active" : "")">
-                                <img src="~/images/works/@img" class="d-block w-100" style="height:400px; object-fit:contain;" />
+                                <img src="~/images/reports/@img" class="d-block w-100" style="height:400px; object-fit:contain;" />
                             </div>
                         }
                     </div>

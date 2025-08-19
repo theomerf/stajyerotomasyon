@@ -12,6 +12,7 @@ namespace Repositories.Contracts
         Task<IEnumerable<Message>> GetAllMessagesAsync();
         Task<int> GetAllMessagesCountAsync();
         Task<Message?> GetMessageByIdAsync(int messageId);
+        Task<Stats> GetUserMessagesStatsAsync(string userId);
         Task<int> GetAllMessagesCountForOneUserAsync(string userId);
         Task<IEnumerable<Message>> GetAllMessagesForOneUserAsync(string userId);
         Task<Message?> GetMessageForUpdateByIdAsync(int workId);

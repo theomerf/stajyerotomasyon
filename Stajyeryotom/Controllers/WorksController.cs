@@ -82,13 +82,21 @@ namespace Stajyeryotom.Controllers
             ViewBag.DepartmentSections = departmentSections;
             ViewBag.DepartmentSectionsJson = System.Text.Json.JsonSerializer.Serialize(departmentSections);
 
-            return PartialView("_AddWork");
+            var model = new WorkDtoForCreation();
+
+            return PartialView("_AddWork", model);
         }
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> AddWork([FromForm] WorkDtoForCreation workDto, [FromForm] List<IFormFile>? files = null)
         {
+            if (!ModelState.IsValid)
+            {
+                await PrepareDropdownsAsync(workDto.DepartmentId!.Value, workDto.SectionId!.Value);
+                var html = await this.RenderViewAsync("_AddWork", workDto, true);
+                return Json(new { success = false, html = $"<div id='content' hx-swap-oob='true'>{html}</div>", message = "Görev oluşturulurken form hatası oluştu.", type = "warning" });
+            }
             if (workDto.ImageUrls == null)
             {
                 workDto.ImageUrls = new List<string>();
@@ -121,6 +129,27 @@ namespace Stajyeryotom.Controllers
                 loadComponent = result.LoadComponent,
                 message = result.Message,
             });
+        }
+
+        private async Task PrepareDropdownsAsync(int selectedDepartmentId, int selectedSectionId)
+        {
+            var departments = await _manager.DepartmentService.GetAllDepartmentsAsync();
+            ViewBag.Departments = departments;
+
+            var sections = await _manager.SectionService.GetAllSectionsAsync();
+            var departmentSections = sections
+                .GroupBy(s => s.DepartmentId)
+                .ToDictionary(
+                    g => g.Key,
+                    g => g.Select(s => new { id = s.SectionId, name = s.SectionName }).ToList()
+                );
+
+            ViewBag.DepartmentSections = departmentSections;
+            ViewBag.DepartmentSectionsJson = System.Text.Json.JsonSerializer.Serialize(departmentSections);
+
+            ViewBag.DepartmentList = new SelectList(departments, "DepartmentId", "DepartmentName", selectedDepartmentId);
+            ViewBag.SelectedDepartmentId = selectedDepartmentId;
+            ViewBag.SelectedSectionId = selectedSectionId;
         }
 
         [Authorize(Roles = "Admin")]
