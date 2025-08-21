@@ -1,5 +1,6 @@
 ﻿@{
     Layout = "_Layout";
+    ViewData["Title"] = "Ana Sayfa";
 }
 @if (User.IsInRole("Admin"))
 {
@@ -14,8 +15,4 @@ else
 	<script asp-append-version="true" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 	<script asp-append-version="true" src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
 	<script asp-append-version="true" src="~/js/chartForUser.js"></script>
-}
-
-@{
-    ViewData["Title"] = "Yönetim Paneli";
 }

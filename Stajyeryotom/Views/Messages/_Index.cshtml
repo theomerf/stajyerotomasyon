@@ -24,7 +24,7 @@
                 <div class="header-actions">
                     @if (User.IsInRole("Admin"))
                     {
-                        <a href="/Messages/AddMessage" hx-get="/Messages/AddMessage" hx-target="#content" hx-push-url="true" class="btn btn-user-add">
+                        <a href="/Messages/AddMessage" hx-get="/Messages/AddMessage" hx-on:click="window.isSidebarClick=true;" hx-target="#content" hx-push-url="true" class="btn btn-user-add">
                             <i class="fa-solid fa-plus"></i>
                             Yeni Mesaj Ekle
                         </a>

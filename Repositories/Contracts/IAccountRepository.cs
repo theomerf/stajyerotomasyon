@@ -15,6 +15,7 @@ namespace Repositories.Contracts
         Task<List<String>> GetAllInternsId();
         Task<IEnumerable<AccountDtoForSearch>> SearchInterns(string userName);
         Task<List<string?>> GelAllInternsOfSection(int sectionId);
+        Task<String?> GetOneUserForNavbarAsync(string userName);
         Task<List<string>> GelAllInternsOfDepartment(int departmentId);
         Task<Stats> GetEndedInternshipStatsAsync();
         Task<int> GetUsersCountAsync();

@@ -330,3 +330,15 @@ document.addEventListener('DOMContentLoaded', function loadFromUrl() {
     }
 
 }); 
+
+window.updateSortButtons = function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    const currentSort = urlParams.get('SortBy');
+
+    if (currentSort) {
+        document.querySelectorAll(`[data-sort="${currentSort}"]`).forEach(btn => {
+            btn.classList.add('active');
+        });
+        updateClearButtons();
+    }
+}

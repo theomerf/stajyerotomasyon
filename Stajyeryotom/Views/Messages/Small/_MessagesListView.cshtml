@@ -57,7 +57,7 @@
                 {
                     <div class="cell">
                         <div class="action-buttons">
-                            <a href="/Messages/UpdateMessages?messageId=@(message.MessageId)" title="Düzenle" hx-get="/Messages/UpdateMessage?messageId=@(message.MessageId)" hx-target="#content" hx-push-url="true" class="btn-action edit">
+                            <a href="/Messages/UpdateMessages?messageId=@(message.MessageId)" title="Düzenle" hx-get="/Messages/UpdateMessage?messageId=@(message.MessageId)" hx-on:click="window.isSidebarClick=true;" hx-target="#content" hx-push-url="true" class="btn-action edit">
                                 <i class="fas fa-edit"></i>
                             </a>
                             <form method="post" class="hxform" hx-post="/Message/DeleteMessage?messageId=@(message.MessageId)" hx-target="#content" hx-push-url="false">

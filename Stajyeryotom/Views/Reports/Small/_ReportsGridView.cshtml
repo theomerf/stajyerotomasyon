@@ -1,83 +1,112 @@
-﻿<div class="stajyer-grid">
-    @{
-        var dateTime = DateTime.Now;
-        foreach (var report in Model?.List ?? new List<ReportDto>())
+﻿@{
+    var activeView = Context.Request.Cookies["View"] ?? "List";
+
+    var query = Context.Request.Query;
+
+    string BuildPageUrl(string baseUrl)
+    {
+        var queryParams = new List<string>();
+
+        foreach (var key in query.Keys)
         {
+            queryParams.Add($"{key}={query[key]}");
+        }
 
-            <div class="stajyer-card">
-                <div class="card-item-header">
-                    <div class="student-avatar-large">
-                        <img src="~/images/@(report.AccountProfilePictureUrl ?? "profile_pictures/default.png")" alt="Profil Fotoğrafı" class="profile-avatar">
-                    </div>
-                </div>
-
-                <div class="card-content">
-                    <h3 class="mb-5">@String.Concat(report.AccountFirstName + " " + report.AccountLastName)</h3>
-
-                    <div class="card-info">
-                        <div class="info-item">
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                            <span><strong>@report.ReportTitle</strong><br>@(report.WorkName == "" ? "Günlük Rapor" : "")</span>
-                        </div>
-
-                        @if (User.IsInRole("Admin"))
-                        {
-                            <div class="info-item">
-                                <i class="fas fa-building"></i>
-                                <span><strong>@report.DepartmentName</strong><br>@report.SectionName</span>
-                            </div>
-                        }
-                        <div class="info-item">
-                            <i class="fas fa-calendar"></i>
-                            <span>@DateOnly.FromDateTime(report.CreatedAt)</span>
-                        </div>
-                    </div>
-
-                    <div class="card-status">
-                        @{
-                            string status = "";
-
-                            switch (@report.Status)
-                            {
-                                case "Read":
-                                    status = "Okundu";
-                                    break;
-                                case "NotRead":
-                                    status = "Okunmadı";
-                                    break;
-                                default:
-                                    status = "";
-                                    break;
-                            }
-                        }
-                        <span class="status-badge @report.Status">@status</span>
-                    </div>
-                </div>
-
-                <div class="card-actions">
-                    <a href="/Reports/View/@(report.ReportId)" hx-get="/Reports/View/@(report.ReportId)" hx-target="#content" hx-push-url="true" class="btn-action btn-view px-3" title="Görüntüle">
-                        <i class="fas fa-eye"></i>
-                        Görüntüle
-                    </a>
-                    @if (User.IsInRole("Stajyer") && report.Status == ReportStatus.NotRead.ToString())
-                    {
-                        <a href="/Reports/UpdateReport?reportId=@(report.ReportId)" hx-get="/Reports/UpdateReport?reportId=@(report.ReportId)" hx-target="#content" hx-push-url="true" class="btn-action edit px-2" title="Düzenle">
-                            <i class="fas fa-edit"></i>
-                            Düzenle
-                        </a>
-                    }
-                    <form asp-action="DeleteReport" asp-route-reportId="@report.ReportId" class="hxform" hx-post="/Reports/DeleteReport?reportId=@(report.ReportId)" hx-target="#content" hx-push-url="true">
-                        <button type="submit" class="btn-action delete">
-                            <i class="fas fa-trash"></i>Sil
-                        </button>
-                    </form>
-                </div>
-            </div>
+        if (queryParams.Count != 0)
+        {
+            var separator = baseUrl.Contains("?") ? "&" : "?";
+            return baseUrl + separator + string.Join("&", queryParams);
+        }
+        else
+        {
+            return baseUrl;
         }
     }
-</div>
-<div class="row">
-    <div>
-        <partial name="Small/_Pagination" />
+}
+
+<div class="view-content grid-view @((activeView == "Grid" || activeView == "grid") ? "active" : "")">
+    <div class="stajyer-grid">
+        @{
+            var dateTime = DateTime.Now;
+            foreach (var report in Model?.List ?? new List<ReportDto>())
+            {
+
+                <div class="stajyer-card">
+                    <div class="card-item-header">
+                        <div class="student-avatar-large">
+                            <img src="~/images/@(report.AccountProfilePictureUrl ?? "profile_pictures/default.png")" alt="Profil Fotoğrafı" class="profile-avatar">
+                        </div>
+                    </div>
+
+                    <div class="card-content">
+                        <h3 class="mb-5">@String.Concat(report.AccountFirstName + " " + report.AccountLastName)</h3>
+
+                        <div class="card-info">
+                            <div class="info-item">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                <span><strong>@report.ReportTitle</strong><br>@(report.WorkName == "" ? "Günlük Rapor" : "")</span>
+                            </div>
+
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <div class="info-item">
+                                    <i class="fas fa-building"></i>
+                                    <span><strong>@report.DepartmentName</strong><br>@report.SectionName</span>
+                                </div>
+                            }
+                            <div class="info-item">
+                                <i class="fas fa-calendar"></i>
+                                <span>@DateOnly.FromDateTime(report.CreatedAt)</span>
+                            </div>
+                        </div>
+
+                        <div class="card-status">
+                            @{
+                                string status = "";
+
+                                switch (@report.Status)
+                                {
+                                    case "Read":
+                                        status = "Okundu";
+                                        break;
+                                    case "NotRead":
+                                        status = "Okunmadı";
+                                        break;
+                                    default:
+                                        status = "";
+                                        break;
+                                }
+                            }
+                            <span class="status-badge @report.Status">@status</span>
+                        </div>
+                    </div>
+
+                    <div class="card-actions">
+                        <a href="/Reports/View/@(report.ReportId)" hx-get="/Reports/View/@(report.ReportId)" hx-on:click="window.isSidebarClick=true;" hx-target="#content" hx-push-url="true" class="btn-action btn-view px-3" title="Görüntüle">
+                            <i class="fas fa-eye"></i>
+                            Görüntüle
+                        </a>
+                        @if (User.IsInRole("Stajyer") && report.Status == ReportStatus.NotRead.ToString())
+                        {
+                            <a href="/Reports/UpdateReport?reportId=@(report.ReportId)" hx-get="/Reports/UpdateReport?reportId=@(report.ReportId)" hx-on:click="window.isSidebarClick=true;" hx-target="#content" hx-push-url="true" class="btn-action edit px-2" title="Düzenle">
+                                <i class="fas fa-edit"></i>
+                                Düzenle
+                            </a>
+                        }
+                        <form class="hxform" hx-post="@BuildPageUrl($"/Reports/DeleteReport?reportId={report.ReportId}")" hx-target="#reportsContent" hx-push-url="false">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" hx-on:click="window.isSidebarClick=true;;setTimeout(() => {updateSortButtons();}, 100);" class="btn-action delete">
+                                <i class="fas fa-trash"></i>Sil
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+    <div class="row">
+        <div>
+            <partial name="Small/_Pagination" />
+        </div>
     </div>
 </div>

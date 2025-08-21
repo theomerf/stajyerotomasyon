@@ -56,15 +56,37 @@ namespace Stajyeryotom.Controllers
 
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public async Task<IActionResult> DeleteApplication([FromQuery] int applicationId)
+        public async Task<IActionResult> DeleteApplication([FromQuery] int applicationId, [FromQuery] ApplicationRequestParameters query)
         {
             var result = await _manager.ApplicationService.DeleteApplicationAsync(applicationId);
+
+            var cookiePageSize = int.Parse(Request.Cookies["PageSize"] ?? "6");
+            query.PageSize = cookiePageSize;
+
+            var applications = await _manager.ApplicationService.GetAllApplicationsAsync(query);
+            var totalCount = await _manager.ApplicationService.GetApplicationsCountAsync(query);
+
+            var paginaton = new Pagination()
+            {
+                CurrentPage = query.PageNumber,
+                ItemsPerPage = query.PageSize,
+                TotalItems = totalCount
+            };
+
+            var model = new ListViewModel<ApplicationDto>()
+            {
+                List = applications as List<ApplicationDto>,
+                Pagination = paginaton,
+            };
+
+            var htmlList = await this.RenderViewAsync("Small/_ApplicationsListView", model, true);
+            var htmlGrid = await this.RenderViewAsync("Small/_ApplicationsGridView", model, true);
 
             return Json(new
             {
                 success = result.Success,
                 message = result.Message,
-                loadComponent = result.LoadComponent,
+                html = $"<div id='applicationsContent' hx-swap-oob='true'>{htmlList}{htmlGrid}</div>",
                 type = result.ResultType,
             });
         }

@@ -124,7 +124,7 @@
             
             <div class="form-group">
                 <label for="eventType">Etkinlik Türü:</label>
-                <select asp-for="Event.Type" id="eventType">
+                <select asp-for="Event.Type" id="eventType" required>
                     <option>Lütfen etkinlik türü seçiniz...</option>
                     <option value="Event">Etkinlik</option>
                     <option value="Education">Eğitim</option>
@@ -136,13 +136,13 @@
             
             <div class="form-group">
                 <label asp-for="Event.Description">Açıklama:</label>
-                <textarea asp-for="Event.Description" id="eventDescription" rows="3"></textarea>
+                <textarea asp-for="Event.Description" id="eventDescription" rows="3" required></textarea>
                 <span asp-validation-for="Event.Description" class="text-danger"></span>
             </div>
             
             <div class="button-group">
-                <button type="button" class="btn btn-cancel" onclick="closeModal()">İptal</button>
-                <button type="submit" onclick="closeModal()" class="btn btn-save">Kaydet</button>
+                <button type="button" class="btn btn-cancel" onclick="closeModalForCalendar()">İptal</button>
+                <button type="submit" onclick="closeModalForCalendar()" class="btn btn-save">Kaydet</button>
             </div>
         </form>
     </div>

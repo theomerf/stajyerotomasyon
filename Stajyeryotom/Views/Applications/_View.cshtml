@@ -56,7 +56,7 @@
                     @if (Model.Status == "Approved" && Model.IsExported != true)
                     {
                         <form asp-action="ExportToInterns" asp-route-applicationId="@Model.ApplicationId" class="hxform" hx-post="/Applications/ExportToInterns?applicationId=@(Model.ApplicationId)&status=Approved" hx-target="#content" hx-push-url="true">
-                            <button hx-on:click="handleSidebarClickForComponents(event);" data-target="Interns" class="application-btn btn-export-intern">
+                            <button data-target="Interns" hx-on:click="window.isSidebarClick=true;" class="application-btn btn-export-intern">
                                 <span><i class="fa-solid fa-file-export"></i></span> Stajyerlere Aktar
                             </button>
                         </form>

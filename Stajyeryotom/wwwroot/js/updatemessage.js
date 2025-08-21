@@ -66,8 +66,6 @@ function initializeDataForUpdate() {
             }
         }
     }
-
-    loadExistingPhotos();
 }
 function loadSelectedUsers() {
     const messageInternsId = window.updateMessageModel?.internsId;

@@ -1,18 +1,4 @@
-﻿// İleri geri gitme işlevi
-
-window.addEventListener('popstate', function (event) {
-    if (event.state && event.state.view) {
-        loadContent(event.state.view);
-
-        $('.sidebar-nav-item.active').removeClass('active');
-        $('.sidebar-nav-item').each(function () {
-            if ($(this).data('target') === event.state.view) {
-                $(this).addClass('active');
-                return false;
-            }
-        });
-    }
-});
+﻿window.isSidebarClick;
 
 window.reloadSidebar = function () {
     htmx.ajax('GET', '/Home/Sidebar', { target: '#sidebar' });
@@ -151,7 +137,7 @@ if (!window.htmxListenersAdded) {
                         return;
                     }
                     else {
-                        window.scrollBy({ top: -100, behavior: 'smooth' })
+                        window.scrollBy({ top: -10, behavior: 'smooth' });
                     }
 
                     window.eventTriggered = false;
@@ -204,11 +190,6 @@ if (!window.htmxListenersAdded) {
             window.eventTriggered = false;
             return;
         }
-        else if (event.detail.requestConfig.headers["Filter-Send"] != "true" && event.detail.requestConfig.headers["Date-Send"] != "true") {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            window.eventTriggered = false;
-            return;
-        }
     });
 
     // Ajax ile uyumlu jquery script çalıştırma işlevi ve sidebar aktif element işlevi
@@ -224,6 +205,11 @@ if (!window.htmxListenersAdded) {
 
         if (firstSegment === "Home") {
             firstSegment = role === "Admin" ? "HomeAdmin" : "Home";
+        }
+
+        if (window.isSidebarClick) {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            window.isSidebarClick = false;
         }
 
         const sidebarItems = document.querySelectorAll('.sidebar-nav-item');

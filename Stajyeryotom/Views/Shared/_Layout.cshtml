@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="user-role" content="@(User.IsInRole("Admin") ? "Admin" : "Stajyer")">
-    <title>Stajyer Y. Otom - @ViewData["Title"]</title>
+    <title>Stajyer Y. Otom</title>
     <link rel="stylesheet" asp-append-version="true" href="~/lib/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" asp-append-version="true" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link rel="stylesheet" asp-append-version="true" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.0/nouislider.min.css">
@@ -38,8 +38,8 @@
                 </div>
 
                 <div class="main">
-                    <div class="sidebar" id="sidebar">
-                        @await Html.PartialAsync("_Sidebar");
+                    <div id="sidebar">
+                        @await Html.PartialAsync("_Sidebar")
                     </div>
                     <div class="content" id="content" hx-history-elt>
                         @RenderBody()

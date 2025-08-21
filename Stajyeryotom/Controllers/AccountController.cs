@@ -41,8 +41,17 @@ namespace Stajyeryotom.Controllers
             if (ModelState.IsValid && model.Name != null)
             {
                 var user = await _userManager.FindByNameAsync(model.Name);
+
                 if (user != null && user.UserName != null && model.Password != null)
                 {
+                    if(user.IsActive == false)
+                    {
+                        return Json(new
+                        {
+                            success = false,
+                            message = "Kullanıcı hesabı pasif durumda."
+                        });
+                    }
                     await _signInManager.SignOutAsync();
                     var result = await _signInManager.PasswordSignInAsync(
                         user.UserName,

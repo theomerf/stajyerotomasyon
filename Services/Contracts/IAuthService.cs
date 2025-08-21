@@ -12,6 +12,7 @@ namespace Services.Contracts
         Task<List<string?>> GelAllInternsOfSection(int sectionId);
         Task<List<string?>> GelAllInternsOfDepartment(int departmentId);
         Task<StatsDto> GetEndedInternshipStatsAsync();
+        Task<String?> GetOneUserForNavbarAsync(string userName);
         Task<StatsDto> GetInternshipStatsAsync();
         Task<string> GetAllUsersCountAsync();
         Task<IdentityResult> CreateUserAsync(AccountDtoForCreation userDto);

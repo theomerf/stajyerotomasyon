@@ -230,14 +230,9 @@
     else
     {
         <div class="scroll-target"></div>
-        <div class="row">
-            <div class="view-content list-view @((activeView == "List" || activeView == "list") ? "active" : "")">
-                <partial name="Small/_ApplicationsListView" />
-            </div>
-
-            <div class="view-content grid-view @((activeView == "Grid" || activeView == "grid") ? "active" : "")">
-                <partial name="Small/_ApplicationsGridView" />
-            </div>
+        <div class="row" id="applicationsContent">
+            <partial name="Small/_ApplicationsListView" />
+            <partial name="Small/_ApplicationsGridView" />
         </div>
     }
 

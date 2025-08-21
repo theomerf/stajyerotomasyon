@@ -18,11 +18,11 @@
                 </div>
 
                 <div class="header-actions">
-                    <a href="/Interns/AddIntern" hx-get="/Interns/AddIntern" hx-target="#content" hx-push-url="true" class="btn btn-user-add">
+                    <a href="/Interns/AddIntern" hx-get="/Interns/AddIntern" hx-on:click="window.isSidebarClick=true;" hx-target="#content" hx-push-url="true" class="btn btn-user-add">
                         <i class="fas fa-user-plus"></i>
                         Yeni Stajyer Ekle
                     </a>
-                    <a href="/Company/AddUser" hx-get="/Company/AddUser" hx-on:click="handleSidebarClickForComponents(event);" hx-target="#content" hx-push-url="true" class="btn btn-user-add" data-target="Company">
+                    <a href="/Company/AddUser" hx-get="/Company/AddUser" hx-on:click="window.isSidebarClick=true;" hx-target="#content" hx-push-url="true" class="btn btn-user-add" data-target="Company">
                         <i class="fas fa-user-cog"></i>
                         Yeni Kullanıcı Oluştur
                     </a>
@@ -191,13 +191,8 @@
     {
         <div class="scroll-target"></div>
         <div class="row" id="internsContent">
-            <div class="view-content list-view @((activeView == "List" || activeView == "list") ? "active" : "")">
-                <partial name="Small/_InternsListView" />
-            </div>
-
-            <div class="view-content grid-view @((activeView == "Grid" || activeView == "grid") ? "active" : "")">
-                <partial name="Small/_InternsGridView" />
-            </div>
+            <partial name="Small/_InternsListView" />
+            <partial name="Small/_InternsGridView" />
         </div>
     }
 </div>

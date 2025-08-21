@@ -1,4 +1,4 @@
-﻿function openModal(date) {
+﻿function openModalForCalendar(date) {
     const modal = document.getElementById('eventModal');
     const modalTitle = document.getElementById('modalTitle');
     const selectedDateInput = document.getElementById('selectedDate');
@@ -66,7 +66,7 @@ function updateNextButtonUrl() {
 
 }
 
-function closeModal() {
+function closeModalForCalendar() {
     document.getElementById('eventModal').style.display = 'none';
 }
 
@@ -97,11 +97,4 @@ window.changeSelects = function () {
 function hideTooltip() {
     document.getElementById('tooltip').classList.remove('show');
 }
-
-window.addEventListener('click', function (e) {
-    const modal = document.getElementById('eventModal');
-    if (e.target === modal) {
-        closeModal();
-    }
-});
 

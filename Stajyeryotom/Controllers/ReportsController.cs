@@ -68,10 +68,6 @@ namespace Stajyeryotom.Controllers
                 };
                 return PartialView("_Index", model);
             }
-
-
-
-
         }
 
         public async Task<IActionResult> View([FromRoute(Name = "id")] int id)
@@ -100,17 +96,36 @@ namespace Stajyeryotom.Controllers
 
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public async Task<IActionResult> DeleteReport([FromQuery] int reportId)
+        public async Task<IActionResult> DeleteReport([FromQuery] int reportId, [FromQuery] ReportRequestParameters query)
         {
             if (User.IsInRole("Admin"))
             {
                 var result = await _manager.ReportService.DeleteReportAsync(reportId);
 
+                var reports = await _manager.ReportService.GetAllReportsAsync(query);
+                var totalCount = await _manager.ReportService.GetReportsCountAsync(query);
+
+                var paginaton = new Pagination()
+                {
+                    CurrentPage = query.PageNumber,
+                    ItemsPerPage = query.PageSize,
+                    TotalItems = totalCount
+                };
+
+                var model = new ListViewModel<ReportDto>()
+                {
+                    List = reports as List<ReportDto>,
+                    Pagination = paginaton,
+                };
+
+                var htmlList = await this.RenderViewAsync("Small/_ReportsListView", model, true);
+                var htmlGrid = await this.RenderViewAsync("Small/_ReportsGridView", model, true);
+
                 return Json(new
                 {
                     success = result.Success,
                     message = result.Message,
-                    loadComponent = result.LoadComponent,
+                    html = $"<div id='reportsContent' hx-swap-oob='true'>{htmlList}{htmlGrid}</div>",
                     type = result.ResultType,
                 });
             }
@@ -119,11 +134,30 @@ namespace Stajyeryotom.Controllers
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 var result = await _manager.ReportService.DeleteReportForUserAsync(reportId, userId!);
 
+                var reports = await _manager.ReportService.GetAllReportsOfOneUserAsync(query, userId!);
+                var totalCount = await _manager.ReportService.GetAllReportsCountOfOneUserAsync(query, userId!);
+
+                var paginaton = new Pagination()
+                {
+                    CurrentPage = query.PageNumber,
+                    ItemsPerPage = query.PageSize,
+                    TotalItems = totalCount
+                };
+
+                var model = new ListViewModel<ReportDto>()
+                {
+                    List = reports as List<ReportDto>,
+                    Pagination = paginaton,
+                };
+
+                var htmlList = await this.RenderViewAsync("Small/_ReportsListView", model, true);
+                var htmlGrid = await this.RenderViewAsync("Small/_ReportsGridView", model, true);
+
                 return Json(new
                 {
                     success = result.Success,
                     message = result.Message,
-                    loadComponent = result.LoadComponent,
+                    html = $"<div id='reportsContent' hx-swap-oob='true'>{htmlList}{htmlGrid}</div>",
                     type = result.ResultType,
                 });
             }

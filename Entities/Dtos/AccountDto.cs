@@ -28,11 +28,11 @@ namespace Entities.Dtos
 
         [DataType(DataType.Text)]
         [Required(ErrorMessage = "Staj bitiş tarihi gerekli.")]
-        public DateTime InternshipStartDate { get; init; } = new DateTime(DateTime.Now.Year, 1, 1);
+        public DateTime InternshipStartDate { get; init; } = DateTime.Now.Date;
 
         [DataType(DataType.Text)]
         [Required(ErrorMessage = "Staj başlangıç tarihi gerekli.")]
-        public DateTime InternshipEndDate { get; init; } = new DateTime(DateTime.Now.Year, 1, 1);
+        public DateTime InternshipEndDate { get; init; } = DateTime.Now.Date;
         public bool EmailConfirmed { get; init; } = true;
         public DateTime? BirthDate { get; init; }
         public String? ProfilePictureUrl { get; set; }

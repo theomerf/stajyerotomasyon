@@ -40,7 +40,7 @@
     </div>
     <div class="row g-3 mb-4">
         <div class="col col-md-3">
-            <a href="/Reports/AddReport" hx-get="/Reports/AddReport" hx-target="#content" hx-push-url="true">
+            <a href="/Reports/AddReport" hx-get="/Reports/AddReport" hx-on:click="window.isSidebarClick=true;" hx-target="#content" hx-push-url="true">
                 <div class="card action-card">
                     <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
                         <div class="card-icon">
@@ -53,7 +53,7 @@
             </a>
         </div>
         <div class="col col-md-3">
-            <a href="/Messages/Index" hx-get="/Messages/Index" hx-target="#content" hx-push-url="true">
+            <a href="/Messages/Index" hx-get="/Messages/Index" hx-on:click="window.isSidebarClick=true;" hx-target="#content" hx-push-url="true">
                 <div class="card action-card">
                     <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
                         <div class="card-icon">
@@ -66,7 +66,7 @@
             </a>
         </div>
         <div class="col col-md-3">
-            <a href="/Calendar/Index" hx-get="/Calendar/Index" hx-target="#content" hx-push-url="true">
+            <a href="/Calendar/Index" hx-get="/Calendar/Index" hx-on:click="window.isSidebarClick=true;" hx-target="#content" hx-push-url="true">
                 <div class="card action-card">
                     <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
                         <div class="card-icon">
@@ -79,7 +79,7 @@
             </a>
         </div>
         <div class="col col-md-3">
-            <a href="/Settings/Index" hx-get="/Settings/Index" hx-target="#content" hx-push-url="true">
+            <a href="/Settings/Index" hx-get="/Settings/Index" hx-on:click="window.isSidebarClick=true;" hx-target="#content" hx-push-url="true">
                 <div class="card action-card">
                     <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
                         <div class="card-icon">

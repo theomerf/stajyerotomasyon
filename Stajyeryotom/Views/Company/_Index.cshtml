@@ -28,7 +28,7 @@
     </div>
 
         <div class="row mb-4">
-        <div class="col-md-3">
+        <div class="col-md-4">
             <div class="card p-4 card-before card-hover">
                 <div class="card-body">
                     <div class="row stat-card-header">
@@ -48,7 +48,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
             <div class="card p-4 card-before card-hover">
                 <div class="card-body">
                     <div class="row stat-card-header">
@@ -63,12 +63,11 @@
                     </div>
                     <div class="row">
                         <div class="card-title stat-card-title-small">Toplam Bölüm</div>
-
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
             <div class="card p-4 card-before card-hover">
                 <div class="card-body">
                     <div class="row stat-card-header">
@@ -83,27 +82,6 @@
                     </div>
                     <div class="row">
                         <div class="card-title stat-card-title-small">Toplam Admin</div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-           <div class="card p-4 card-before card-hover">
-                <div class="card-body">
-                    <div class="row stat-card-header">
-                        <div class="col col-md-9">
-                            <div class="card-text stat-card-value">null</div>
-                        </div>
-                        <div class="col col-md-3">
-                            <div class="card-icon">
-                                <i class="fas fa-briefcase"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="card-title stat-card-title-small">Aktif Pozisyon</div>
-
                     </div>
                 </div>
             </div>
@@ -111,8 +89,8 @@
     </div>
 
     <div class="row gy-3">
-        <div class="col-md-3">
-            <a class="company-btn" href="/Company/AddDepartment" hx-get="/Company/AddDepartment" hx-target="#content" hx-push-url="true">
+        <div class="col-md-4">
+            <a class="company-btn" href="/Company/AddDepartment" hx-get="/Company/AddDepartment" hx-on:click="window.isSidebarClick=true;" hx-target="#content" hx-push-url="true">
                 <div class="company-card">
                     <div class="company-card-icon">🏢</div>
                     <h4 class="company-card-title">Departman Oluştur</h4>
@@ -120,8 +98,8 @@
                 </div>
             </a>
         </div>
-        <div class="col-md-3">
-            <a class="company-btn" href="/Company/AddSection" hx-get="/Company/AddSection" hx-target="#content" hx-push-url="true">
+        <div class="col-md-4">
+            <a class="company-btn" href="/Company/AddSection" hx-get="/Company/AddSection" hx-on:click="window.isSidebarClick=true;" hx-target="#content" hx-push-url="true">
                 <div class="company-card">
                     <div class="company-card-icon">🎯</div>
                     <h3 class="company-card-title">Bölüm Oluştur</h3>
@@ -129,40 +107,12 @@
                 </div>
             </a>
         </div>
-        <div class="col-md-3">
-            <a class="company-btn" href="/Company/AddUser" hx-get="/Company/AddUser" hx-target="#content" hx-push-url="true">
+        <div class="col-md-4">
+            <a class="company-btn" href="/Company/AddUser" hx-get="/Company/AddUser" hx-on:click="window.isSidebarClick=true;" hx-target="#content" hx-push-url="true">
                 <div class="company-card">
                     <div class="company-card-icon">👥</div>
                     <h3 class="company-card-title">Kullanıcı oluştur</h3>
                     <p class="company-card-desc">Kullanıcıları oluşturun, bilgilerini güncelleyin ve takip edin</p>
-                </div>
-            </a>
-        </div>
-        <div class=col-md-3>
-            <a class="company-btn" href="/Company/AddSection" hx-get="/Company/AddSection" hx-target="#content" hx-push-url="true">
-                <div class="company-card">
-                    <div class="company-card-icon">📊</div>
-                    <h3 class="company-card-title">Pozisyon Yönetimi</h3>
-                    <p class="company-card-desc">İş pozisyonlarını tanımlayın ve çalışanlara atayın</p>
-                </div>
-            </a>
-        </div>
-        <div class=col-md-3>
-
-            <a class="company-btn" href="/Company/AddSection" hx-get="/Company/AddSection" hx-target="#content" hx-push-url="true">
-                <div class="company-card">
-                    <div class="company-card-icon">⚙️</div>
-                    <h3 class="company-card-title">Sistem Ayarları</h3>
-                    <p class="company-card-desc">Şirket bilgilerini ve sistem ayarlarını yapılandırın</p>
-                </div>
-            </a>
-        </div>
-        <div class=col-md-3>
-            <a class="company-btn" href="/Company/AddSection" hx-get="/Company/AddSection" hx-target="#content" hx-push-url="true">
-                <div class="company-card">
-                    <div class="company-card-icon">📈</div>
-                    <h3 class="company-card-title">Raporlar</h3>
-                    <p class="company-card-desc">Şirket verilerini analiz edin ve detaylı raporlar alın</p>
                 </div>
             </a>
         </div>

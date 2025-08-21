@@ -45,6 +45,15 @@ namespace Repositories
             return interns;
         }
 
+        public async Task<String?> GetOneUserForNavbarAsync(string userName)
+        {
+            var user = await FindByCondition(u => u.UserName == userName, true)
+                .Select(u => u.ProfilePictureUrl)
+                .FirstOrDefaultAsync();
+
+            return user;
+        }
+
         public async Task<List<string?>> GelAllInternsOfSection(int sectionId)
         {
             var internRoleId = await _context.Roles

@@ -216,7 +216,7 @@ namespace Repositories.Extensions
                             .OrderByDescending(a => a.CreatedDate) as IQueryable<T>)!;
 
                     default:
-                        return query;
+                        return query.SortBy("ApplicationId", true);
                 }
             }
 

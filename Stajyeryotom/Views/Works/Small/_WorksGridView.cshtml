@@ -56,12 +56,12 @@
                     </div>
                     <div class="col-4">
                         <div class="work-card-actions mt-5 justify-content-end">
-                            <a href="/Works/View/@(work.WorkId)" hx-get="/Works/View/@(work.WorkId)" hx-target="#content" hx-push-url="true" class="btn-action btn-view ms-1" title="Görüntüle">
+                            <a href="/Works/View/@(work.WorkId)" hx-get="/Works/View/@(work.WorkId)" hx-on:click="window.isSidebarClick=true;" hx-target="#content" hx-push-url="true" class="btn-action btn-view ms-1" title="Görüntüle">
                                 <i class="fas fa-eye"></i>
                             </a>
                             @if (User.IsInRole("Admin"))
                             {
-                                <a href="/Works/UpdateWork?workId=@(work.WorkId)" title="Düzenle" hx-get="/Works/UpdateWork?workId=@(work.WorkId)" hx-target="#content" hx-push-url="true" class="btn-action edit ms-1">
+                                <a href="/Works/UpdateWork?workId=@(work.WorkId)" title="Düzenle" hx-get="/Works/UpdateWork?workId=@(work.WorkId)" hx-on:click="window.isSidebarClick=true;" hx-target="#content" hx-push-url="true" class="btn-action edit ms-1">
                                     <i class="fas fa-edit"></i>
                                 </a>
                                 <form asp-action="DeleteWork" asp-route-applicationId="@work.WorkId" class="hxform" hx-post="/Works/DeleteWork?workId=@(work.WorkId)" hx-target="#content" hx-push-url="false">
@@ -74,7 +74,7 @@
                             {
                                 if (work.WorkEndDate > DateTime.Now)
                                 {
-                                    <a href="/Reports/AddReport?workId=@(work.WorkId)" title="Rapor Ekle" hx-get="/Reports/AddReport?workId=@(work.WorkId)" hx-target="#content" hx-push-url="true" class="btn-action edit ms-1">
+                                    <a href="/Reports/AddReport?workId=@(work.WorkId)" title="Rapor Ekle" hx-get="/Reports/AddReport?workId=@(work.WorkId)" hx-on:click="window.isSidebarClick=true;" hx-target="#content" hx-push-url="true" class="btn-action edit ms-1">
                                         <i class="fa-solid fa-file-pen"></i>
                                     </a>
                                 }

@@ -7,6 +7,7 @@ using Services.Contracts;
 using Stajyeryotom.Infrastructure.Extensions;
 using Stajyeryotom.Models;
 using System.Net;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 
 namespace Stajyeryotom.Controllers
@@ -198,17 +199,39 @@ namespace Stajyeryotom.Controllers
 
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public async Task<IActionResult> DeleteIntern([FromQuery] string userName)
+        public async Task<IActionResult> DeleteIntern([FromQuery] string userName, [FromQuery] AccountRequestParameters query)
         {
             var result = await _manager.AuthService.DeleteOneUserAsync(userName);
             if (result.Succeeded)
             {
+                var cookiePageSize = int.Parse(Request.Cookies["PageSize"] ?? "6");
+                query.PageSize = cookiePageSize;
+
+                var interns = await _manager.AuthService.GetAllInternsAsync(query);
+                var totalCount = await _manager.AuthService.GetAllInternsCountAsync(query);
+
+                var paginaton = new Pagination()
+                {
+                    CurrentPage = query.PageNumber,
+                    ItemsPerPage = query.PageSize,
+                    TotalItems = totalCount
+                };
+
+                var model = new ListViewModel<AccountDto>()
+                {
+                    List = interns as List<AccountDto>,
+                    Pagination = paginaton,
+                };
+
+                var htmlList = await this.RenderViewAsync("Small/_InternsListView", model, true);
+                var htmlGrid = await this.RenderViewAsync("Small/_InternsGridView", model, true);
+
                 return Json(new
                 {
-                    success = true,
+                    success = "Success",
                     message = "Stajyer başarıyla silindi.",
-                    loadComponent = "Interns",
-                    type = "success"
+                    html = $"<div id='internsContent' hx-swap-oob='true'>{htmlList}{htmlGrid}</div>",
+                    type = "Success"
                 });
             }
             else
@@ -235,16 +258,39 @@ namespace Stajyeryotom.Controllers
             return Json(interns);
         }
 
-        public async Task<IActionResult> ChangeStatus([FromQuery]string userName)
+        public async Task<IActionResult> ChangeStatus([FromQuery]string userName, [FromQuery]AccountRequestParameters query)
         {
             var result = await _manager.AuthService.ChangeStatus(userName);
 
+            var cookiePageSize = int.Parse(Request.Cookies["PageSize"] ?? "6");
+
+            query.PageSize = cookiePageSize;
+
+            var interns = await _manager.AuthService.GetAllInternsAsync(query);
+            var totalCount = await _manager.AuthService.GetAllInternsCountAsync(query);
+
+            var paginaton = new Pagination()
+            {
+                CurrentPage = query.PageNumber,
+                ItemsPerPage = query.PageSize,
+                TotalItems = totalCount
+            };
+
+            var model = new ListViewModel<AccountDto>()
+            {
+                List = interns as List<AccountDto>,
+                Pagination = paginaton,
+            };
+
+            var htmlList = await this.RenderViewAsync("Small/_InternsListView", model, true);
+            var htmlGrid = await this.RenderViewAsync("Small/_InternsGridView", model, true);
+
             return Json(new
             {
-                success = true,
+                success = "Success",
                 message = "Stajyer durumu başarıyla güncellendi.",
-                loadComponent = "Interns",
-                type = "success"
+                html = $"<div id='internsContent' hx-swap-oob='true'>{htmlList}{htmlGrid}</div>",
+                type = "Success"
             });
         }
     }

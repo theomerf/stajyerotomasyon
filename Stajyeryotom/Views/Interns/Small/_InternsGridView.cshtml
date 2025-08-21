@@ -1,105 +1,141 @@
-﻿<div class="stajyer-grid">
-    @{
-        var dateTime = DateTime.Now;
-        foreach (var intern in Model?.List ?? new List<AccountDto>())
+﻿@{
+    var activeView = Context.Request.Cookies["View"] ?? "List";
+
+    var query = Context.Request.Query;
+
+    string BuildPageUrl(string baseUrl)
+    {
+        var queryParams = new List<string>();
+
+        foreach (var key in query.Keys)
         {
+            queryParams.Add($"{key}={query[key]}");
+        }
 
-            <div class="stajyer-card">
-                <div class="card-item-header">
-                    <div class="student-avatar-large">
-                        <img src="~/images/@(intern.ProfilePictureUrl ?? "profile_pictures/default.png")" alt="Profil Fotoğrafı" class="profile-avatar">
-                    </div>
-                    <div class="card-progress">
-                        @{
-                            double rawProgress = (1 - (intern.InternshipEndDate - dateTime).TotalDays / (intern.InternshipEndDate - intern.InternshipStartDate).TotalDays) * 100;
-                            double clampedProgress = Math.Min(Math.Max(rawProgress, 0), 100);
-                            string progress = Math.Round(clampedProgress).ToString();
-                        }
-                        <div class="progress-circle" data-progress="@progress">
-                            <svg class="progress-ring" width="60" height="60">
-                                <circle class="progress-ring-bg" cx="30" cy="30" r="25"></circle>
-                                <circle class="progress-ring-fill" cx="30" cy="30" r="25"></circle>
-                            </svg>
-                            <span class="progress-text">%@progress</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card-content">
-                    <h3>@intern.FirstName @intern.LastName</h3>
-                    <p class="email">@intern.Email</p>
-
-                    <div class="card-info">
-                        <div class="info-item">
-                            <i class="fas fa-building"></i>
-                            <span><strong>@intern.DepartmentName</strong><br>@intern.SectionName</span>
-                        </div>
-
-                        <div class="info-item">
-                            <i class="fas fa-calendar"></i>
-                            <span>@DateOnly.FromDateTime(intern.InternshipStartDate) - @DateOnly.FromDateTime(intern.InternshipEndDate)</span>
-                        </div>
-                    </div>
-
-                    <div class="card-status">
-                        @{
-                            string statusClass = "";
-                            string statusText = "";
-
-                            if (intern.InternshipStartDate > DateTime.Now)
-                            {
-                                statusClass = "notstarted";
-                                statusText = "BAŞLAMADI";
-                            }
-                            else if (intern.InternshipEndDate >= DateTime.Now)
-                            {
-                                statusClass = "active";
-                                statusText = "AKTİF";
-                            }
-                            else
-                            {
-                                statusClass = "completed";
-                                statusText = "TAMAMLANDI";
-                            }
-                        }
-                        <span class="status-badge @statusClass">@statusText</span>
-                    </div>
-                </div>
-
-                <div class="card-actions">
-                    @if (intern.IsActive)
-                    {
-                        <form class="hxform" hx-post="/Interns/ChangeStatus?userName=@(intern.UserName)" hx-target="#content" hx-push-url="true">
-                            <button type="submit" title="Pasif Hale Getir" class="btn-action changeStatus p-2">
-                                <i class="fa-solid fa-xmark"></i>
-                                Pasif
-                            </button>
-                        </form>
-                    }
-                    else
-                    {
-                        <form class="hxform" hx-post="/Interns/ChangeStatus?userName=@(intern.UserName)" hx-target="#content" hx-push-url="true">
-                            <button type="submit" title="Aktif Hale Getir" class="btn-action changeStatus">
-                                <i class="fa-solid fa-check"></i>
-                                Aktif
-                            </button>
-                        </form>
-                    }
-                    <a href="/Interns/UpdateIntern?userName=@(intern.UserName)" hx-get="/Interns/UpdateIntern?userName=@(intern.UserName)" hx-target="#content" hx-push-url="true" class="btn-action edit p-2">
-                        <i class="fas fa-edit"></i>
-                        Düzenle
-                    </a>
-                    <form class="hxform" hx-post="/Interns/DeleteIntern?userName=@(intern.UserName)" hx-target="#content" hx-push-url="true">
-                        <button type="submit" class="btn-action delete">
-                            <i class="fas fa-trash"></i>Sil
-                        </button>
-
-                    </form>
-                </div>
-            </div>
+        if (queryParams.Count != 0)
+        {
+            var separator = baseUrl.Contains("?") ? "&" : "?";
+            return baseUrl + separator + string.Join("&", queryParams);
+        }
+        else
+        {
+            return baseUrl;
         }
     }
-</div>
-<div class="row">
-    <partial name="Small/_Pagination" />
+}
+
+<div class="view-content grid-view @((activeView == "Grid" || activeView == "grid") ? "active" : "")">
+    <div class="stajyer-grid">
+        @{
+            var dateTime = DateTime.Now;
+            foreach (var intern in Model?.List ?? new List<AccountDto>())
+            {
+
+                <div class="stajyer-card">
+                    <div class="card-item-header">
+                        <div class="student-avatar-large">
+                            <img src="~/images/@(intern.ProfilePictureUrl ?? "profile_pictures/default.png")" alt="Profil Fotoğrafı" class="profile-avatar">
+                        </div>
+                        <div class="card-progress">
+                            @{
+                                double rawProgress = (1 - (intern.InternshipEndDate - dateTime).TotalDays / (intern.InternshipEndDate - intern.InternshipStartDate).TotalDays) * 100;
+                                double clampedProgress = Math.Min(Math.Max(rawProgress, 0), 100);
+                                string progress = Math.Round(clampedProgress).ToString();
+                            }
+                            <div class="progress-circle" data-progress="@progress">
+                                <svg class="progress-ring" width="60" height="60">
+                                    <circle class="progress-ring-bg" cx="30" cy="30" r="25"></circle>
+                                    <circle class="progress-ring-fill" cx="30" cy="30" r="25"></circle>
+                                </svg>
+                                <span class="progress-text">%@progress</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-content">
+                        <h3>@intern.FirstName @intern.LastName</h3>
+                        <p class="email">@intern.Email</p>
+
+                        <div class="card-info">
+                            <div class="info-item">
+                                <i class="fas fa-building"></i>
+                                <span><strong>@intern.DepartmentName</strong><br>@intern.SectionName</span>
+                            </div>
+
+                            <div class="info-item">
+                                <i class="fas fa-calendar"></i>
+                                <span>@DateOnly.FromDateTime(intern.InternshipStartDate) - @DateOnly.FromDateTime(intern.InternshipEndDate)</span>
+                            </div>
+                        </div>
+
+                        <div class="card-status">
+                            @{
+                                string statusClass = "";
+                                string statusText = "";
+
+                                if (intern.IsActive == false)
+                                {
+                                    statusClass = "passive";
+                                    statusText = "PASİF";
+                                }
+                                else if (intern.InternshipStartDate > DateTime.Now)
+                                {
+                                    statusClass = "notstarted";
+                                    statusText = "BAŞLAMADI";
+                                }
+                                else if (intern.InternshipEndDate >= DateTime.Now)
+                                {
+                                    statusClass = "active";
+                                    statusText = "AKTİF";
+                                }
+                                else
+                                {
+                                    statusClass = "completed";
+                                    statusText = "TAMAMLANDI";
+                                }
+                            }
+                            <span class="status-badge @statusClass">@statusText</span>
+                        </div>
+                    </div>
+
+                    <div class="card-actions">
+                        @if (intern.IsActive)
+                        {
+                            <form class="hxform" hx-post="@BuildPageUrl($"/Interns/ChangeStatus?userName={intern.UserName}")" hx-target="#internsContent" hx-push-url="false">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" title="Pasif Hale Getir" hx-on:click="window.isSidebarClick=true;setTimeout(() => {initProgressCircles();updateSortButtons();}, 100);" class="btn-action changeStatus p-2">
+                                    <i class="fa-solid fa-xmark"></i>
+                                    Pasif
+                                </button>
+                            </form>
+                        }
+                        else
+                        {
+                            <form class="hxform" hx-post="@BuildPageUrl($"/Interns/ChangeStatus?userName={intern.UserName}")" hx-target="#internsContent" hx-push-url="false">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" title="Aktif Hale Getir" hx-on:click="window.isSidebarClick=true;setTimeout(() => {initProgressCircles();updateSortButtons();}, 100);" class="btn-action changeStatus">
+                                    <i class="fa-solid fa-check"></i>
+                                    Aktif
+                                </button>
+                            </form>
+                        }
+                        <a href="/Interns/UpdateIntern?userName=@(intern.UserName)" hx-get="/Interns/UpdateIntern?userName=@(intern.UserName)" hx-on:click="window.isSidebarClick=true;" hx-target="#content" hx-push-url="true" class="btn-action edit p-2">
+                            <i class="fas fa-edit"></i>
+                            Düzenle
+                        </a>
+                        <form class="hxform" hx-post="@BuildPageUrl($"/Interns/DeleteIntern?userName={intern.UserName}")" hx-target="#internsContent" hx-push-url="false">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" hx-on:click="window.isSidebarClick=true;setTimeout(() => {initProgressCircles();updateSortButtons();}, 100);" class="btn-action delete">
+                                <i class="fas fa-trash"></i>Sil
+                            </button>
+
+                        </form>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+    <div class="row">
+        <partial name="Small/_Pagination" />
+    </div>
 </div>

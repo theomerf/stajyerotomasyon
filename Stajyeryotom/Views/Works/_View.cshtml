@@ -230,7 +230,7 @@
                             </div>
                             <div class="col-4">
                                 <div class="work-card-actions mt-5 justify-content-end">
-                                    <a href="/Reports/View/@(report.ReportId)" hx-get="/Reports/View/@(report.ReportId)" hx-target="#content" hx-push-url="true" class="btn-action btn-view ms-1" title="Görüntüle">
+                                    <a href="/Reports/View/@(report.ReportId)" hx-get="/Reports/View/@(report.ReportId)" hx-on:click="window.isSidebarClick=true;" hx-target="#content" hx-push-url="true" class="btn-action btn-view ms-1" title="Görüntüle">
                                         <i class="fas fa-eye"></i>
                                     </a>
                                     <form class="hxform" hx-post="/Reports/DeleteReport?reportId=@(report.ReportId)" hx-target="#content" hx-push-url="false">

@@ -35,11 +35,5 @@
 </div>
 
 <script>
-    const departmentSections = @Html.Raw(Json.Serialize(ViewBag.DepartmentSections))
-
-    document.getElementById('departmentForm').addEventListener('submit', function() {
-        const submitBtn = document.getElementById('submitBtn');
-        submitBtn.classList.add('loading');
-        submitBtn.innerHTML = '<span style="opacity: 0;">Departman Oluştur</span>';
-    });
+    window.departmentSections = @Html.Raw(Json.Serialize(ViewBag.DepartmentSections))
 </script>

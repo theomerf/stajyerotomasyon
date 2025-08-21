@@ -29,3 +29,8 @@
         document.cookie = name + "=" + value + expires + "; path=/";
     }
 }
+
+document.addEventListener('DOMContentLoaded', function ()
+{
+    initSettingsScript();
+});

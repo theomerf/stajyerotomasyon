@@ -1,17 +1,23 @@
-﻿<nav class="navbar navbar-expand-lg navbar-dark custom-navbar shadow-sm sticky-top">
+﻿@{
+    @inject IServiceManager _manager;
+    var userName = User.Identity?.Name;
+    var urlContent = await _manager.AuthService.GetOneUserForNavbarAsync(userName!);
+    var url = urlContent ?? "profile_pictures/default.png";
+}
+
+<nav class="navbar navbar-expand-lg navbar-dark custom-navbar shadow-sm sticky-top">
     <div class="container-fluid">
-        <a class="ps-4 navbar-brand ajax-link fw-bold text-white d-flex align-items-center" asp-action="Index">
+        <a class="ps-4 navbar-brand ajax-link fw-bold text-white d-flex align-items-center" href="/Home/Index" hx-get="/Home/Index" hx-on:click="window.isSidebarClick=true;" hx-target="#indexSection" hx-push-url="true">
             <div class="brand-logo">
                 <i class="fas fa-graduation-cap"></i>
 
             </div>
             <h4 class="mx-2">Stajyer Portal</h4>
         </a>
-
         <div class="d-flex align-items-center pe-5">
             @if (User?.Identity?.IsAuthenticated == true)
             {
-                <a href="/Messages/Index" hx-get="/Messages/Index" title="Bildirimler" class="nav-link text-white nav-icon-link position-relative me-2" hx-target="#content" hx-push-url="true">
+                <a href="/Messages/Index" hx-get="/Messages/Index" hx-on:click="window.isSidebarClick=true;" title="Bildirimler" class="nav-link text-white nav-icon-link position-relative me-2" hx-target="#content" hx-push-url="true">
                     <i class="fas fa-envelope"></i>
                     <span class="position-absolute start-100 translate-middle badge rounded-pill bg-danger notification-badge">@await Component.InvokeAsync("MessagesCount")</span>
                 </a>
@@ -25,7 +31,7 @@
                        aria-expanded="false"
                        hx-on:click="dropdownClick(event);">
                         <div class="avatar-wrapper mx-2">
-                            <img src="/images/@await Component.InvokeAsync("NavbarAvatar")"
+                            <img src="/images/@url"
                                  alt="Avatar" class="rounded-circle" width="32" height="32">
                         </div>
                         <span class="d-none d-lg-inline">@User?.FindFirst("FullName")?.Value</span>
@@ -34,17 +40,18 @@
                     <div class="dropdown-menu user-dropdown-menu" aria-labelledby="navbarDropdown">
                         <div class="user-info p-3 text-center">
                             <div class="avatar-lg mx-auto mb-3">
-                                <img src="/images/@await Component.InvokeAsync("NavbarAvatar")" alt="Avatar" class="rounded-circle img-thumbnail">
+
+                                <img src="/images/@url" alt="Avatar" class="rounded-circle img-thumbnail">
                             </div>
                             <h6 class="mb-0">Kullanıcı No: @User?.Identity?.Name</h6>
                             <small class="text-muted">@(User!.IsInRole("Admin") ? "Admin" : "Stajyer")</small>
                         </div>
                         <div class="dropdown-divider"></div>
                         <div class="dropdown-items-wrapper">
-                            <a href="/Home/Index" class="dropdown-item" hx-on:click="hideDropdown();" hx-get="/Home/Index" hx-target="#indexSection" hx-push-url="true">
+                            <a href="/Home/Index" class="dropdown-item" hx-on:click="window.isSidebarClick=true;hideDropdown();" hx-get="/Home/Index" hx-target="#indexSection" hx-push-url="true">
                                 <i class="fa-solid fa-user me-2"></i> Profilim
                             </a>
-                            <a href="/Settings/Index" class="dropdown-item" hx-on:click="hideDropdown();" hx-get="/Settings/Index" hx-target="#content" hx-push-url="true">
+                            <a href="/Settings/Index" hx-get="/Settings/Index" class="dropdown-item" hx-on:click="window.isSidebarClick=true;hideDropdown();" hx-target="#content" hx-push-url="true">
                                 <i class="fa-solid fa-gear me-2"></i> Ayarlar
                             </a>
                             <div class="dropdown-divider"></div>

@@ -1,18 +1,18 @@
 ﻿<div class="sidebar">
 
-	<nav class="sidebar-nav">
+	<nav class="sidebar-nav" >
 		<ul class="sidebar-nav-list">
 			@if (User.IsInRole("Admin"))
 			{
 				<li class="sidebar-nav-item" data-target="HomeAdmin">
-					<a href="/Home/Index" hx-get="/Home/Index" hx-target="#indexSection" hx-push-url="true" class="sidebar-nav-link">
+					<a href="/Home/Index" hx-get="/Home/Index" hx-on:click="window.isSidebarClick=true;" hx-target="#indexSection" hx-push-url="true" class="sidebar-nav-link">
 						<i class="fas fa-home"></i>
 						<span class="sidebar-nav-text">Ana Sayfa</span>
 					</a>
 				</li>
 
 				<li class="sidebar-nav-item" data-target="Interns">
-					<a href="/Interns/Index" hx-get="/Interns/Index" hx-target="#content" hx-push-url="true" class="sidebar-nav-link">
+					<a href="/Interns/Index" hx-get="/Interns/Index" hx-on:click="window.isSidebarClick=true;" hx-target="#content" hx-push-url="true" class="sidebar-nav-link">
 						<i class="fas fa-user-graduate"></i>
 						<span class="sidebar-nav-text">Stajyerler</span>
 						<span class="sidebar-badge">@await Component.InvokeAsync("InternsCount")</span>
@@ -20,7 +20,7 @@
 				</li>
 
 				<li class="sidebar-nav-item" data-target="Applications">
-					<a href="/Applications/Index" hx-get="/Applications/Index" hx-target="#content" hx-push-url="true" class="sidebar-nav-link">
+					<a href="/Applications/Index" hx-get="/Applications/Index" hx-on:click="window.isSidebarClick=true;" hx-target="#content" hx-push-url="true" class="sidebar-nav-link">
 						<i class="fas fa-file-alt"></i>
 						<span class="sidebar-nav-text">Başvurular</span>
 						<span class="sidebar-badge">@await Component.InvokeAsync("ApplicationsCount")</span>
@@ -28,7 +28,7 @@
 				</li>
 
 				<li class="sidebar-nav-item" data-target="Works">
-					<a href="/Works/Index" hx-get="/Works/Index" hx-target="#content" hx-push-url="true" class="sidebar-nav-link">
+					<a href="/Works/Index" hx-get="/Works/Index" hx-on:click="window.isSidebarClick=true;" hx-target="#content" hx-push-url="true" class="sidebar-nav-link">
 						<i class="fa-solid fa-briefcase"></i>
 						<span class="sidebar-nav-text">Görevler</span>
 						<span class="sidebar-badge">@await Component.InvokeAsync("WorksCount")</span>
@@ -36,7 +36,7 @@
 				</li>
 
 				<li class="sidebar-nav-item" data-target="Reports">
-					<a href="/Reports/Index" hx-get="/Reports/Index" hx-target="#content" hx-push-url="true" class="sidebar-nav-link">
+					<a href="/Reports/Index" hx-get="/Reports/Index" hx-on:click="window.isSidebarClick=true;" hx-target="#content" hx-push-url="true" class="sidebar-nav-link">
 						<i class="fas fa-chart-bar"></i>
 						<span class="sidebar-nav-text">Raporlar</span>
 						<span class="sidebar-badge">@await Component.InvokeAsync("ReportsCount")</span>
@@ -44,7 +44,7 @@
 				</li>
 
 				<li class="sidebar-nav-item" data-target="Company">
-					<a href="/Company/Index" hx-get="/Company/Index" hx-target="#content" hx-push-url="true" class="sidebar-nav-link">
+					<a href="/Company/Index" hx-get="/Company/Index" hx-on:click="window.isSidebarClick=true;" hx-target="#content" hx-push-url="true" class="sidebar-nav-link">
 						<i class="fas fa-building"></i>
 						<span class="sidebar-nav-text">Şirket Düzeni</span>
 					</a>
@@ -53,14 +53,14 @@
 			else
 			{
 				<li class="sidebar-nav-item" data-target="Home">
-					<a href="/Home/Index" hx-get="/Home/Index" hx-target="#indexSection" hx-push-url="true" class="sidebar-nav-link">
+					<a href="/Home/Index" hx-get="/Home/Index" hx-on:click="window.isSidebarClick=true;" hx-target="#indexSection" hx-push-url="true" class="sidebar-nav-link">
 						<i class="fas fa-home"></i>
 						<span class="sidebar-nav-text">Ana Sayfa</span>
 					</a>
 				</li>
 
 				<li class="sidebar-nav-item" data-target="Works">
-					<a href="/Works/Index" hx-get="/Works/Index" hx-target="#content" hx-push-url="true" class="sidebar-nav-link">
+					<a href="/Works/Index" hx-get="/Works/Index" hx-on:click="window.isSidebarClick=true;" hx-target="#content" hx-push-url="true" class="sidebar-nav-link">
 						<i class="fa-solid fa-briefcase"></i>
 						<span class="sidebar-nav-text">Görevler</span>
 						<span class="sidebar-badge">@await Component.InvokeAsync("WorksCount")</span>
@@ -68,7 +68,7 @@
 				</li>
 
 				<li class="sidebar-nav-item" data-target="Reports">
-					<a href="/Reports/Index" hx-get="/Reports/Index" hx-target="#content" hx-push-url="true" class="sidebar-nav-link">
+					<a href="/Reports/Index" hx-get="/Reports/Index" hx-on:click="window.isSidebarClick=true;" hx-target="#content" hx-push-url="true" class="sidebar-nav-link">
 						<i class="fas fa-chart-bar"></i>
 						<span class="sidebar-nav-text">Raporlar</span>
 						<span class="sidebar-badge">@await Component.InvokeAsync("ReportsCount")</span>
@@ -77,14 +77,14 @@
 			}
 
 			<li class="sidebar-nav-item" data-target="Calendar">
-				<a href="/Calendar/Index" hx-get="/Calendar/Index" hx-target="#content" hx-push-url="true" class="sidebar-nav-link">
+				<a href="/Calendar/Index" hx-get="/Calendar/Index" hx-on:click="window.isSidebarClick=true;" hx-target="#content" hx-push-url="true" class="sidebar-nav-link">
 					<i class="fas fa-calendar-alt"></i>
 					<span class="sidebar-nav-text">Takvim</span>
 				</a>
 			</li>
 
 			<li class="sidebar-nav-item" data-target="Messages">
-				<a href="/Messages/Index" hx-get="/Messages/Index" hx-target="#content" hx-push-url="true" class="sidebar-nav-link">
+				<a href="/Messages/Index" hx-get="/Messages/Index" hx-on:click="window.isSidebarClick=true;" hx-target="#content" hx-push-url="true" class="sidebar-nav-link">
 					<i class="fas fa-envelope"></i>
 					<span class="sidebar-nav-text">Mesajlar</span>
 					<span class="sidebar-badge">@await Component.InvokeAsync("MessagesCount")</span>
@@ -96,7 +96,7 @@
 
 		<ul class="sidebar-nav-list">
 			<li class="sidebar-nav-item" data-target="Settings">
-				<a href="/Settings/Index" hx-get="/Settings/Index" hx-target="#content" hx-push-url="true" class="sidebar-nav-link">
+				<a href="/Settings/Index" hx-get="/Settings/Index" hx-on:click="window.isSidebarClick=true;" hx-target="#content" hx-push-url="true" class="sidebar-nav-link">
 					<i class="fas fa-cog"></i>
 					<span class="sidebar-nav-text">Ayarlar</span>
 				</a>

@@ -1,12 +1,7 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\omerf\\OneDrive\\Masa\u00FCst\u00FC\\Staj\\Stajyeryotom\\",
-  "Documents": [
-    {
-      "AbsoluteMoniker": "D:0:0:{78B0A0A4-E616-46CB-B9E4-929181F82866}|Stajyeryotom\\Stajyeryotom.csproj|c:\\users\\omerf\\onedrive\\masa\u00FCst\u00FC\\staj\\stajyeryotom\\stajyeryotom\\views\\applications\\_index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{78B0A0A4-E616-46CB-B9E4-929181F82866}|Stajyeryotom\\Stajyeryotom.csproj|solutionrelative:stajyeryotom\\views\\applications\\_index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    }
-  ],
+  "Documents": [],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -14,7 +9,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": -1,
           "Children": [
             {
               "$type": "Bookmark",
@@ -27,19 +22,6 @@
             {
               "$type": "Bookmark",
               "Name": "ST:1:0:{e8034f19-ab72-4f06-83fd-f6832b41aa63}"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "_Index.cshtml",
-              "DocumentMoniker": "C:\\Users\\omerf\\OneDrive\\Masa\u00FCst\u00FC\\Staj\\Stajyeryotom\\Stajyeryotom\\Views\\Applications\\_Index.cshtml",
-              "RelativeDocumentMoniker": "Stajyeryotom\\Views\\Applications\\_Index.cshtml",
-              "ToolTip": "C:\\Users\\omerf\\OneDrive\\Masa\u00FCst\u00FC\\Staj\\Stajyeryotom\\Stajyeryotom\\Views\\Applications\\_Index.cshtml",
-              "RelativeToolTip": "Stajyeryotom\\Views\\Applications\\_Index.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAWAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-08-19T13:30:49.815Z",
-              "EditorCaption": ""
             }
           ]
         }

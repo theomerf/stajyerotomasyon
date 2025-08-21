@@ -21,10 +21,10 @@ namespace Entities.Dtos
         public List<String>? ImageUrls { get; set; }
         [DataType(DataType.DateTime)]
         [Required(ErrorMessage = "Görev başlangıç tarihi gerekli.")]
-        public DateTime WorkStartDate { get; init; }
+        public DateTime WorkStartDate { get; init; } = DateTime.Now.Date;
         [DataType(DataType.DateTime)]
         [Required(ErrorMessage = "Görev bitiş tarihi gerekli.")]
-        public DateTime WorkEndDate { get; init; }
+        public DateTime WorkEndDate { get; init; } = DateTime.Now.Date;
         public String? TaskMasterId { get; set; }
         public String? BroadcastType { get; init; }
         public int? DepartmentId { get; init; }

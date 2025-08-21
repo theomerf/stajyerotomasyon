@@ -1,28 +1,7 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\omerf\\OneDrive\\Masa\u00FCst\u00FC\\Staj\\Stajyeryotom\\",
-  "Documents": [
-    {
-      "AbsoluteMoniker": "D:0:0:{78B0A0A4-E616-46CB-B9E4-929181F82866}|Stajyeryotom\\Stajyeryotom.csproj|c:\\users\\omerf\\onedrive\\masa\u00FCst\u00FC\\staj\\stajyeryotom\\stajyeryotom\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{78B0A0A4-E616-46CB-B9E4-929181F82866}|Stajyeryotom\\Stajyeryotom.csproj|solutionrelative:stajyeryotom\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{78B0A0A4-E616-46CB-B9E4-929181F82866}|Stajyeryotom\\Stajyeryotom.csproj|c:\\users\\omerf\\onedrive\\masa\u00FCst\u00FC\\staj\\stajyeryotom\\stajyeryotom\\views\\shared\\components\\userdetails\\default.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{78B0A0A4-E616-46CB-B9E4-929181F82866}|Stajyeryotom\\Stajyeryotom.csproj|solutionrelative:stajyeryotom\\views\\shared\\components\\userdetails\\default.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{78B0A0A4-E616-46CB-B9E4-929181F82866}|Stajyeryotom\\Stajyeryotom.csproj|c:\\users\\omerf\\onedrive\\masa\u00FCst\u00FC\\staj\\stajyeryotom\\stajyeryotom\\wwwroot\\js\\site.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{78B0A0A4-E616-46CB-B9E4-929181F82866}|Stajyeryotom\\Stajyeryotom.csproj|solutionrelative:stajyeryotom\\wwwroot\\js\\site.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{78B0A0A4-E616-46CB-B9E4-929181F82866}|Stajyeryotom\\Stajyeryotom.csproj|c:\\users\\omerf\\onedrive\\masa\u00FCst\u00FC\\staj\\stajyeryotom\\stajyeryotom\\views\\home\\_internindex.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{78B0A0A4-E616-46CB-B9E4-929181F82866}|Stajyeryotom\\Stajyeryotom.csproj|solutionrelative:stajyeryotom\\views\\home\\_internindex.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{78B0A0A4-E616-46CB-B9E4-929181F82866}|Stajyeryotom\\Stajyeryotom.csproj|c:\\users\\omerf\\onedrive\\masa\u00FCst\u00FC\\staj\\stajyeryotom\\stajyeryotom\\infrastructure\\extensions\\viewcomponenthelperextension.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{78B0A0A4-E616-46CB-B9E4-929181F82866}|Stajyeryotom\\Stajyeryotom.csproj|solutionrelative:stajyeryotom\\infrastructure\\extensions\\viewcomponenthelperextension.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    }
-  ],
+  "Documents": [],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -30,22 +9,8 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 7,
+          "SelectedChildIndex": -1,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "site.js",
-              "DocumentMoniker": "C:\\Users\\omerf\\OneDrive\\Masa\u00FCst\u00FC\\Staj\\Stajyeryotom\\Stajyeryotom\\wwwroot\\js\\site.js",
-              "RelativeDocumentMoniker": "Stajyeryotom\\wwwroot\\js\\site.js",
-              "ToolTip": "C:\\Users\\omerf\\OneDrive\\Masa\u00FCst\u00FC\\Staj\\Stajyeryotom\\Stajyeryotom\\wwwroot\\js\\site.js",
-              "RelativeToolTip": "Stajyeryotom\\wwwroot\\js\\site.js",
-              "ViewState": "AgIAAHgAAAAAAAAAAAAAAIIAAAAiAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2025-08-19T07:43:30.771Z",
-              "IsPinned": true,
-              "EditorCaption": ""
-            },
             {
               "$type": "Bookmark",
               "Name": "ST:2:0:{e8034f19-ab72-4f06-83fd-f6832b41aa63}"
@@ -57,58 +22,6 @@
             {
               "$type": "Bookmark",
               "Name": "ST:1:0:{e8034f19-ab72-4f06-83fd-f6832b41aa63}"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "_InternIndex.cshtml",
-              "DocumentMoniker": "C:\\Users\\omerf\\OneDrive\\Masa\u00FCst\u00FC\\Staj\\Stajyeryotom\\Stajyeryotom\\Views\\Home\\_InternIndex.cshtml",
-              "RelativeDocumentMoniker": "Stajyeryotom\\Views\\Home\\_InternIndex.cshtml",
-              "ToolTip": "C:\\Users\\omerf\\OneDrive\\Masa\u00FCst\u00FC\\Staj\\Stajyeryotom\\Stajyeryotom\\Views\\Home\\_InternIndex.cshtml",
-              "RelativeToolTip": "Stajyeryotom\\Views\\Home\\_InternIndex.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAuAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-08-19T08:01:49.891Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "ViewComponentHelperExtension.cs",
-              "DocumentMoniker": "C:\\Users\\omerf\\OneDrive\\Masa\u00FCst\u00FC\\Staj\\Stajyeryotom\\Stajyeryotom\\Infrastructure\\Extensions\\ViewComponentHelperExtension.cs",
-              "RelativeDocumentMoniker": "Stajyeryotom\\Infrastructure\\Extensions\\ViewComponentHelperExtension.cs",
-              "ToolTip": "C:\\Users\\omerf\\OneDrive\\Masa\u00FCst\u00FC\\Staj\\Stajyeryotom\\Stajyeryotom\\Infrastructure\\Extensions\\ViewComponentHelperExtension.cs",
-              "RelativeToolTip": "Stajyeryotom\\Infrastructure\\Extensions\\ViewComponentHelperExtension.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAB5AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-19T07:57:54.734Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Default.cshtml",
-              "DocumentMoniker": "C:\\Users\\omerf\\OneDrive\\Masa\u00FCst\u00FC\\Staj\\Stajyeryotom\\Stajyeryotom\\Views\\Shared\\Components\\UserDetails\\Default.cshtml",
-              "RelativeDocumentMoniker": "Stajyeryotom\\Views\\Shared\\Components\\UserDetails\\Default.cshtml",
-              "ToolTip": "C:\\Users\\omerf\\OneDrive\\Masa\u00FCst\u00FC\\Staj\\Stajyeryotom\\Stajyeryotom\\Views\\Shared\\Components\\UserDetails\\Default.cshtml",
-              "RelativeToolTip": "Stajyeryotom\\Views\\Shared\\Components\\UserDetails\\Default.cshtml",
-              "ViewState": "AgIAAA8AAAAAAAAAAAAAABEAAAA1AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-08-19T06:53:20.993Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "AccountController.cs",
-              "DocumentMoniker": "C:\\Users\\omerf\\OneDrive\\Masa\u00FCst\u00FC\\Staj\\Stajyeryotom\\Stajyeryotom\\Controllers\\AccountController.cs",
-              "RelativeDocumentMoniker": "Stajyeryotom\\Controllers\\AccountController.cs",
-              "ToolTip": "C:\\Users\\omerf\\OneDrive\\Masa\u00FCst\u00FC\\Staj\\Stajyeryotom\\Stajyeryotom\\Controllers\\AccountController.cs",
-              "RelativeToolTip": "Stajyeryotom\\Controllers\\AccountController.cs",
-              "ViewState": "AgIAAL8AAAAAAAAAAAAswLEAAAAIAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-19T06:49:50.224Z",
-              "EditorCaption": ""
             }
           ]
         }

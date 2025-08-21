@@ -206,7 +206,6 @@ namespace Services
 
         public async Task<IEnumerable<AccountDto>> GetAllInternsAsync(AccountRequestParameters p)
         {
-            Console.WriteLine("------------------------BACKENDE STAJYER SORGUSU GÖNDERİLDİ-------------------");
             var interns = await _manager.Account.GetAllInternsAsync(p);
             var internsDto = _mapper.Map<IEnumerable<AccountDto>>(interns);
             return internsDto;
@@ -241,6 +240,13 @@ namespace Services
                 return userDto;
             }
             throw new Exception("Kullanıcı bulunamadı.");
+        }
+
+        public async Task<String?> GetOneUserForNavbarAsync(string userName)
+        {
+            var url = await _manager.Account.GetOneUserForNavbarAsync(userName);
+
+            return url;
         }
 
         public async Task<AccountDtoForUpdate> GetOneUserForUpdateAsync(string? userName)

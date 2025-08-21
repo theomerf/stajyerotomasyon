@@ -16,7 +16,7 @@
              {
                  if (User.IsInRole("Admin"))
                  {
-                     @:onclick="openModal('@day.Date.ToString("yyyy-MM-dd")')"
+                     @:onclick="openModalForCalendar('@day.Date.ToString("yyyy-MM-dd")')"
                  }
              }
              @if (day.Events.Any())
