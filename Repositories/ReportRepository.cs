@@ -247,14 +247,13 @@ namespace Repositories
 
             for (int day = 1; day <= now.Day; day++)
             {
-                int weekDay = ((day - 1) % 7) + 1;
-                DayOfWeek dayOfWeek = (DayOfWeek)((weekDay % 7));
+                var date = new DateTime(now.Year, now.Month, day);
+                DayOfWeek dayOfWeek = date.DayOfWeek;
                 string dayName = culture.DateTimeFormat.GetDayName(dayOfWeek);
                 string key = day.ToString("D2") + " " + dayName;
                 int count = rawData.FirstOrDefault(x => x.Day == day)?.Count ?? 0;
                 result[key] = count;
             }
-
 
             return result;
         }

@@ -184,7 +184,6 @@ C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Stajyeryotom\obj\Debug\net9
 C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Stajyeryotom\obj\Debug\net9.0\compressed\tsoxf7nieb-74k21dpdc7.gz
 C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Stajyeryotom\obj\Debug\net9.0\compressed\g2s3vz5m0f-j1z3u1l3co.gz
 C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Stajyeryotom\obj\Debug\net9.0\compressed\2o56dib60u-4xx8cziofr.gz
-C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Stajyeryotom\obj\Debug\net9.0\compressed\hxe3pposhk-molkitujjv.gz
 C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Stajyeryotom\obj\Debug\net9.0\compressed\a2ja27nvg2-dpswe2fs2r.gz
 C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Stajyeryotom\obj\Debug\net9.0\compressed\02vs6wi1l9-xac9ajkqjj.gz
 C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Stajyeryotom\obj\Debug\net9.0\compressed\ob3zk483mp-2t05x9ye0y.gz
@@ -367,5 +366,7 @@ C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Stajyeryotom\obj\Debug\net9
 C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Stajyeryotom\obj\Debug\net9.0\compressed\qsvf8npzxy-w7e1599xoq.gz
 C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Stajyeryotom\obj\Debug\net9.0\compressed\9govn4z556-z0rj8ab82x.gz
 C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Stajyeryotom\obj\Debug\net9.0\compressed\77q9hebc9r-1kbwoxi2gw.gz
-C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Stajyeryotom\obj\Debug\net9.0\compressed\y4vkwh92y1-lug3qd169o.gz
 C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Stajyeryotom\obj\Debug\net9.0\compressed\fsie8alt8k-cb62ch5k8n.gz
+C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Stajyeryotom\obj\Debug\net9.0\compressed\y4vkwh92y1-wkyad331bl.gz
+C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Stajyeryotom\obj\Debug\net9.0\compressed\hxe3pposhk-gsm8um1uua.gz
+C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Stajyeryotom\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Stajyeryotom")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a3c500d6c44239a44eaa1e218bac9256ca88766a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a2469880ac9e2939eba29b14126de353ce030e62")]
 [assembly: System.Reflection.AssemblyProductAttribute("Stajyeryotom")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Stajyeryotom")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

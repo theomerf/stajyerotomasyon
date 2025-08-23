@@ -13,17 +13,17 @@
         <div class="stat-card-header">
             <div class="stat-card-title">Toplam</div>
             <div class="stat-card-icon">
-                <i class="fas fa-chart-bar"></i>
+                <i class="fas fa-file-text"></i>
             </div>
         </div>
         <div class="stat-card-value">@totalCount </div>
     </div>
-    @foreach (var stats in Model)
+    @foreach (var stat in Model)
     {
         var title = "";
         var iconClass = "";
 
-        switch (stats.Key)
+        switch (stat.Key)
         {
             case "Read":
                 title = "Okunan";
@@ -42,10 +42,10 @@
                     <i class="fas @iconClass"></i>
                 </div>
             </div>
-            <div class="stat-card-value">@stats.TotalCount</div>
-            <div class="stat-card-change @(stats.SignedPercentage.Contains("+") ? "positive" : "negative")">
-                <i class="fas fa-arrow-up"></i>
-                <span>@stats.SignedPercentage% bu ay (@stats.SignedDifference)</span>
+            <div class="stat-card-value">@stat.TotalCount</div>
+            <div class="stat-card-change @(stat.SignedPercentage.Contains("+") ? "positive" : "negative")">
+                <i class="fas @(stat.SignedPercentage.Contains("+") ? "fa-arrow-up" : "fa-arrow-down")"></i>
+                <span>@stat.SignedPercentage% bu ay (@stat.SignedDifference)</span>
             </div>
         </div>
     }

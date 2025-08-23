@@ -13,7 +13,7 @@
         <div class="page-header @((isCollapsed == "true") ? "collapsed" : "")">
             <div class="header-main">
                 <div class="header-content">
-                    <h1><i class="fas fa-users"></i> Stajyerler (@Model?.Pagination?.TotalItems)</h1>
+                    <h1><i class="fas fa-user-graduate"></i> Stajyerler (@Model?.Pagination?.TotalItems)</h1>
                     <p>Sistemdeki tüm stajyerleri görüntüleyin ve yönetin.</p>
                 </div>
 
@@ -23,7 +23,7 @@
                         Yeni Stajyer Ekle
                     </a>
                     <a href="/Company/AddUser" hx-get="/Company/AddUser" hx-on:click="window.isSidebarClick=true;" hx-target="#content" hx-push-url="true" class="btn btn-user-add" data-target="Company">
-                        <i class="fas fa-user-cog"></i>
+                        <i class="fas fa-user-plus"></i>
                         Yeni Kullanıcı Oluştur
                     </a>
                 </div>

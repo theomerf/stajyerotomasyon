@@ -10,10 +10,10 @@
 			<div class="col-md-4 mb-4">
 				<h5 class="fw-bold">Hızlı Erişim</h5>
 				<ul class="list-unstyled">
-					<li><a href="/Home/Index" hx-get="/Home/Index" hx-target="#indexSection" hx-push-url="true" class="text-light text-decoration-none">Ana Sayfa</a></li>
-					<li><a href="/Settings/Index" hx-get="/Settings/Index" hx-target="#content" hx-push-url="true" class="text-light text-decoration-none">Ayarlar</a></li>
-					<li><a href="/Works/Index" hx-get="/Works/Index" hx-target="#content" hx-push-url="true" class="text-light text-decoration-none">Görevler</a></li>
-					<li><a href="/Reports/Index" hx-get="/Reports/Index" hx-target="#content" hx-push-url="true" class="text-light text-decoration-none">Raporlar</a></li>
+					<li><a href="/Home/Index" hx-get="/Home/Index" hx-target="#indexSection" hx-on:click="window.isSidebarClick=true;" hx-push-url="true" class="text-light text-decoration-none">Ana Sayfa</a></li>
+					<li><a href="/Settings/Index" hx-get="/Settings/Index" hx-target="#content" hx-on:click="window.isSidebarClick=true;" hx-push-url="true" class="text-light text-decoration-none">Ayarlar</a></li>
+					<li><a href="/Works/Index" hx-get="/Works/Index" hx-target="#content" hx-on:click="window.isSidebarClick=true;" hx-push-url="true" class="text-light text-decoration-none">Görevler</a></li>
+					<li><a href="/Reports/Index" hx-get="/Reports/Index" hx-target="#content" hx-on:click="window.isSidebarClick=true;" hx-push-url="true" class="text-light text-decoration-none">Raporlar</a></li>
 				</ul>
 			</div>
 
