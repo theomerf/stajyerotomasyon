@@ -5,7 +5,7 @@
     var isCollapsed = Context.Request.Cookies["Collapsed"] ?? "true";
 }
 
-<div class="container" hx-on::load="initWorkCircles();">
+<div class="container">
     <div class="row">
         <div class="page-header @((isCollapsed == "true") ? "collapsed" : "")">
             <div class="header-main">

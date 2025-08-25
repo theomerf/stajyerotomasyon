@@ -213,6 +213,15 @@ namespace Services
 
             _mapper.Map(workDto, existingWork);
 
+            if(existingWork!.Status == WorkStatus.Passive && workDto.WorkEndDate > DateTime.Now)
+            {
+                existingWork.Status = WorkStatus.Active;
+            }
+            else if(existingWork!.Status == WorkStatus.Active && workDto.WorkEndDate < DateTime.Now)
+            {
+                existingWork.Status = WorkStatus.Passive;
+            }
+
             if (existingWork == null)
                 throw new KeyNotFoundException($"{workDto.WorkId} id'sine sahip görev bulunamadı.");
 

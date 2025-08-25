@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Services.Contracts;
+using Stajyeryotom.Infrastructure.Extensions;
 using System.Security.Claims;
 
 namespace Stajyeryotom.Controllers
@@ -55,6 +56,12 @@ namespace Stajyeryotom.Controllers
         [HttpPost]
         public async Task<IActionResult> AddMessage([FromForm] MessageDtoForCreation messageDto)
         {
+            if (!ModelState.IsValid)
+            {
+                var html = await this.RenderViewAsync("_AddMessage", messageDto, true);
+                return Json(new { success = false, html = $"<div id='content' hx-swap-oob='true'>{html}</div>", message = "Mesaj oluşturulurken form hatası oluştu.", type = "warning" });
+            }
+
             var result = await _manager.MessageService.CreateMessageAsync(messageDto);
 
             return Json(new

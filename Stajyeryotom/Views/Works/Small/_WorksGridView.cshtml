@@ -1,12 +1,28 @@
 ﻿@foreach (var work in Model?.List ?? new List<WorkDto>())
 {
 
-    var percentage = work.ReportsCount == 0 ? 0 : (work.ReportsCount / work.InternsCount) * 100;
+    var statusClass = "";
+    string status = "";
+
+    switch (work.Status)
+    {
+        case "Active":
+            statusClass = "status-approved";
+            status = "Aktif";
+            break;
+        case "Passive":
+            statusClass = "status-denied";
+            status = "Tarihi Geçti";
+            break;
+    }
+
+    var percentage = work.ReportsCount == 0 ? 0 : (int)(((double)work.ReportsCount / work.InternsCount) * 100);
 
     <div class="col col-6">
         <div class="card card-hover" style="min-height: 500px;">
             <div class="card-header colored-header-row">
-                <p class="work-card-title">@work.WorkName</p>
+                    <p class="work-card-title">@work.WorkName</p>
+                    <span class="applicationview-status-badge @statusClass" style="display:flex;text-align:center;justify-content:center;align-items:center;animation:none;width:80px;margin-top:5px;margin-right:-180px;height:50px;font-size:10px;font-weight:800;">@status</span>
                 <div class="work-circle" data-progress="@percentage">
                     <svg class="work-progress-circle" width="60" height="60">
                         <circle class="work-progress-bg" cx="30" cy="30" r="26"></circle>

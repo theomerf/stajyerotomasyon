@@ -15,14 +15,14 @@
 
     <div class="form-body">
         <div id="login-errors" class="text-danger validation-summary-errors" asp-validation-summary="All"></div>
-        <form method="post" asp-action="AddIntern" id="internForm" class="hxform validation" hx-post="/Interns/AddUser" hx-target="#content">
+        <form method="post" id="internForm" class="hxform validation" hx-post="/Company/AddUser" hx-target="#content">
             @Html.AntiForgeryToken()
             <div class="form-grid">
                 <div class="form-group">
                     <label class="form-label" asp-for="FirstName">
                         <i class="fas fa-user"></i>Ad
                     </label>
-                    <input type="text" class="form-control" hx-on:focus="handleInputFocus(event);" hx-on:blur="handleInputBlur(event);" asp-for="FirstName" placeholder="Adınızı giriniz" />
+                    <input type="text" class="form-control" hx-on:focus="handleInputFocus(event);" hx-on:blur="handleInputBlur(event);" asp-for="FirstName" placeholder="Adınızı giriniz"/>
                     <span asp-validation-for="FirstName" class="text-danger"></span>
                 </div>
 
@@ -109,7 +109,7 @@
                 @foreach (var item in Model.Roles)
                 {
                     <div class="form-role-item">
-                        <input type="checkbox" name="Roles" value="@item" class="form-check-input" id="role-@item" />
+                        <input type="checkbox" name="Roles" value="@item" class="form-check-input" id="role-@item"/>
                         <label class="form-check-label" for="role-@item">@item</label>
                     </div>
                 }

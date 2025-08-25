@@ -96,12 +96,19 @@
                     </div>
 
                     <div class="broadcast-option">
-                        <input type="radio" id="broadcast-users" name="broadcast" class="broadcast-radio" value="Work">
+                        <input type="radio" id="broadcast-users" name="broadcast" class="broadcast-radio" value="Work" @(ViewBag.WorkNames.Count == 0 ? "disabled" : "")>
                         <label for="broadcast-users" class="broadcast-label">
                             <div class="radio-icon"></div>
                             <div class="broadcast-label-text">
                                 <div class="broadcast-label-title">Görev Raporu</div>
-                                <div class="broadcast-label-desc">Rapor seçilen ödevin raporu olarak gönderilir.</div>
+                                @if(ViewBag.WorkNames.Count == 0)
+                                {
+                                    <div class="broadcast-label-desc" style="color:red;"><i class="fas fa-ban"></i> Şu anda aktif göreviniz <br />yok.</div>
+                                }
+                                else
+                                {
+                                    <div class="broadcast-label-desc">Rapor seçilen ödevin raporu olarak gönderilir.</div>
+                                }
                             </div>
                         </label>
                     </div>

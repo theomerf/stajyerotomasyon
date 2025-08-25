@@ -125,7 +125,6 @@
             <div class="form-group">
                 <label for="eventType">Etkinlik Türü:</label>
                 <select asp-for="Event.Type" id="eventType" required>
-                    <option>Lütfen etkinlik türü seçiniz...</option>
                     <option value="Event">Etkinlik</option>
                     <option value="Education">Eğitim</option>
                     <option value="Orientation">Oryantasyon</option>
@@ -142,7 +141,7 @@
             
             <div class="button-group">
                 <button type="button" class="btn btn-cancel" onclick="closeModalForCalendar()">İptal</button>
-                <button type="submit" onclick="closeModalForCalendar()" class="btn btn-save">Kaydet</button>
+                <button type="submit" class="btn btn-save">Kaydet</button>
             </div>
         </form>
     </div>

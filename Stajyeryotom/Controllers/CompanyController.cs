@@ -113,6 +113,11 @@ namespace Stajyeryotom.Controllers
             if (!ModelState.IsValid)
             {
                 await PrepareDropdownsAsync(accountDto.DepartmentId!.Value, accountDto.SectionId!.Value);
+                accountDto.Roles = new HashSet<string?>(_manager
+                .AuthService
+                .Roles
+                .Select(r => r.Name)
+                .ToList());
                 var html = await this.RenderViewAsync("_AddUser", accountDto, true);
                 return Json(new { success = false, html = $"<div id='content' hx-swap-oob='true'>{html}</div>", message = "Kullanıcı oluşturulurken form hatası oluştu.", type = "warning" });
             }

@@ -14,3 +14,7 @@
         }, 200);
     });
 }
+
+initWorkCircles();
+
+document.addEventListener('DOMContentLoaded', initWorkCircles);

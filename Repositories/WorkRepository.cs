@@ -94,6 +94,7 @@ namespace Repositories
                 .Include(w => w.TaskMaster!)
                 .Include(w => w.Reports)
                 .Include(w => w.Interns!)
+                .OrderByDescending(w => w.Status == WorkStatus.Active)
                 .Select(w => new WorkDto()
                 {
                      WorkId = w.WorkId,
@@ -114,7 +115,7 @@ namespace Repositories
 
         public async Task<IEnumerable<WorkDtoForReports?>> GetAllWorkNamesOfOneUserAsync(string userId)
         {
-            var works = await FindAllByCondition(w => w.Interns!.Any(i => i.Id == userId), false)
+            var works = await FindAllByCondition(w => w.Interns!.Any(i => i.Id == userId) && w.Status == WorkStatus.Active, false)
                 .Include(w => w.TaskMaster!)
                 .Include(w => w.Reports)
                 .Include(w => w.Interns!)

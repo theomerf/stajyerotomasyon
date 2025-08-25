@@ -4,9 +4,7 @@
     Layout = Context.Request.Headers["HX-Request"] == "true" ? null : "_Layout";
     var isCollapsed = Context.Request.Cookies["Collapsed"] ?? "true";
     var percentage = Model.ReportsCount == 0 ? 0 : (Model.ReportsCount / Model.InternsCount) * 100;
-}
 
-@{
     var statusClass = "";
     string status = "";
 
@@ -18,7 +16,7 @@
             break;
         case "Passive":
             statusClass = "status-denied";
-            status = "Pasif";
+            status = "Tarihi Geçti";
             break;
     }
 }

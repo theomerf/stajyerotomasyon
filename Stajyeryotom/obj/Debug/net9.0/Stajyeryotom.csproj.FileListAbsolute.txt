@@ -183,7 +183,6 @@ C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Stajyeryotom\obj\Debug\net9
 C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Stajyeryotom\obj\Debug\net9.0\compressed\psrbt7ztjx-87lh84cjwv.gz
 C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Stajyeryotom\obj\Debug\net9.0\compressed\tsoxf7nieb-74k21dpdc7.gz
 C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Stajyeryotom\obj\Debug\net9.0\compressed\g2s3vz5m0f-j1z3u1l3co.gz
-C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Stajyeryotom\obj\Debug\net9.0\compressed\2o56dib60u-4xx8cziofr.gz
 C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Stajyeryotom\obj\Debug\net9.0\compressed\a2ja27nvg2-dpswe2fs2r.gz
 C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Stajyeryotom\obj\Debug\net9.0\compressed\02vs6wi1l9-xac9ajkqjj.gz
 C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Stajyeryotom\obj\Debug\net9.0\compressed\ob3zk483mp-2t05x9ye0y.gz
@@ -208,7 +207,6 @@ C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Stajyeryotom\obj\Debug\net9
 C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Stajyeryotom\obj\Debug\net9.0\compressed\vzz2p4gcgv-ps9br1qo4h.gz
 C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Stajyeryotom\obj\Debug\net9.0\compressed\qeis3ykrs5-dto5rv5jyf.gz
 C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Stajyeryotom\obj\Debug\net9.0\compressed\m7l2hdqiwc-t18mcu457h.gz
-C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Stajyeryotom\obj\Debug\net9.0\compressed\fdkc8bmvqo-h03y7wrv3h.gz
 C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Stajyeryotom\obj\Debug\net9.0\compressed\6wb8wylflt-bqjiyaj88i.gz
 C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Stajyeryotom\obj\Debug\net9.0\compressed\wx44bzcdlq-c2jlpeoesf.gz
 C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Stajyeryotom\obj\Debug\net9.0\compressed\v4x2gavqdv-erw9l3u2r3.gz
@@ -369,4 +367,5 @@ C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Stajyeryotom\obj\Debug\net9
 C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Stajyeryotom\obj\Debug\net9.0\compressed\fsie8alt8k-cb62ch5k8n.gz
 C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Stajyeryotom\obj\Debug\net9.0\compressed\y4vkwh92y1-wkyad331bl.gz
 C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Stajyeryotom\obj\Debug\net9.0\compressed\hxe3pposhk-gsm8um1uua.gz
-C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Stajyeryotom\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
+C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Stajyeryotom\obj\Debug\net9.0\compressed\2o56dib60u-jrrwzf8hqt.gz
+C:\Users\omerf\OneDrive\Masaüstü\Staj\Stajyeryotom\Stajyeryotom\obj\Debug\net9.0\compressed\fdkc8bmvqo-aca8n9ybgv.gz
